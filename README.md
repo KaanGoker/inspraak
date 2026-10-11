@@ -151,7 +151,7 @@ Limits, stated plainly:
 - Non-citizen rows keep the organisation name the submitter typed, except unregistered micro companies (shown by size and country). A small or medium firm named after its owner still shows that name; the guard cannot tell a trading name from a person's name.
 - There are no CSRF tokens. A same-origin check stands in for them.
 
-Sources, counts and traps: [docs/DATA.md](docs/DATA.md). Build notes: [docs/BUILD_LOG.md](docs/BUILD_LOG.md).
+Sources, counts and traps: [docs/DATA.md](docs/DATA.md).
 
 ## Project structure
 
@@ -177,7 +177,7 @@ inspraak/
   evaluate.py       the numbers behind docs/EVAL.md
   migrations/       numbered plain SQL files
 tests/              parsers on recorded fixtures, provider, jobs, graph with interrupt and resume, web, export
-docs/               ARCHITECTURE.md, DATA.md, EVAL.md, BUILD_LOG.md
+docs/               ARCHITECTURE.md, DATA.md, EVAL.md
 assets/             screenshots from the running app
 demo_set.csv        40 Belgian registrants used for the demo
 ```

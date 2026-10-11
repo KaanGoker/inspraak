@@ -49,8 +49,8 @@ graph TD
 
 A cold organisation with one go costs 3 calls (rerank, drafter, critic), plus one shared call
 per matched publication that has no summary yet. The rerank is cached, so a second run of
-the same organisation pays only for its drafts. The real runs of 3 October 2026 are in
-`docs/BUILD_LOG.md`.
+the same organisation pays only for its drafts. The runs that built the snapshot are listed
+under "Runs" in `docs/EVAL.md`.
 
 ## Interrupts and resume
 

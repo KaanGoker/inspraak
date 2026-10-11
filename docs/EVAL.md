@@ -34,6 +34,38 @@ Written on 6 October 2026 from the snapshot refreshed on 5 October, 23:30 Brusse
 The 3 October text below reported 812 held back analyses; the tables gave 776 on 6
 October before the refresh and 778 after it, and 778 is the number used everywhere now.
 
+## Runs
+
+What was actually run to build the snapshot and the pages, in order. Every count was read
+back from the tables or the command output at the time.
+
+- **3 October, ingest.** Register export of 2 October: 17,897 registrants stored, 2,786
+  with a Belgian head office. Have Your Say: 4,109 initiatives from 42 listing pages, 90
+  details, 81 publications in scope (41 open, 40 closed with 20 or more organisation
+  submissions), 31,067 feedback rows, 489 requests at one per second. Documents: 145
+  Commission documents (143 parsed, 6,889 pages, 27,025 chunks) and 3,271 submission
+  attachments (3,257 parsed, 29,622 pages, 112,819 chunks). Vectors for all 139,844 chunks
+  on a laptop CPU at about 50 chunks a second.
+- **3 October, Gemini API.** Open scope precomputed in 195 calls (41 summaries, 154
+  analyses); the pass over the whole scope stopped cleanly at 45 of 81 publications when
+  the daily budget of 300 calls was spent. `inspraak demo`: 38 runs up to go / no-go in
+  22 seconds and 0 calls. Five go decisions, 2 calls each (drafter, critic).
+- **3 October, batch backfill.** The rest of the publication layer through the batch
+  providers: Claude Haiku analysed 1,328 submissions in 17 minutes, Gemini Flash 4,897 in
+  34 minutes (503 batched calls of 10) plus 30 single calls and the 35 missing summaries.
+  0 failed calls; 81 of 81 publications summarised, 0 submissions left.
+- **5 October, matcher v2.** Hub penalty, one card per initiative, rerank: 40 rerank
+  calls for the demo set, 150 more for the recall sample, 35 waiting runs rebuilt for 0
+  calls (every judgment and summary cached).
+- **5 October, refresh and export.** Have Your Say and the meetings file fetched again
+  (138 requests): 38 new organisation rows, 26 analysed in 3 batched calls; 11,531
+  meetings. Export: 166 files, 40 organisation, 81 consultation and 40 run pages.
+
+Provenance of the model output on the pages: feedback analyses by Gemini Flash Lite
+(API, 240), Claude Haiku (batch, 1,328) and Gemini Flash (batch, 4,963); publication
+summaries by Gemini Flash Lite (46) and Gemini Flash (35); match judgments by Gemini
+Flash. The test suite runs on a deterministic stand-in and never calls a model.
+
 ## Demo set
 
 `demo_set.csv`: 40 registrants with their head office in Belgium, all in Brussels except
@@ -149,9 +181,9 @@ slots. Three changes, in `inspraak/agents/matcher.py` and `inspraak/agents/reran
    title and cached summary. The prompt carries the same relevance rule as the hand check
    below. The model returns a relevance in [0, 1] and a one-line reason, shown on the card.
    Under 0.3 the card is dropped; 0.6 and over is the match band. Judgments are cached per
-   organisation, publication and profile text (`match_reranks`). Model: Gemini 3.8 Flash
-   (low) through the Antigravity CLI (`agy`), not the Gemini API budget. The fake provider
-   stands in for it in the tests.
+   organisation, publication and profile text (`match_reranks`). Model: Gemini Flash
+   through the batch provider, outside the Gemini API budget. The fake provider stands in
+   for it in the tests.
 
 ### Recall against real submissions
 
@@ -170,7 +202,7 @@ is what a page with one card per initiative shows.
 | per initiative, random | 0.090 | 0.165 | 0.083 | 31 |
 
 With the rerank, on a random sample of 150 of these registrants
-(`inspraak eval-match --rerank-sample 150`, seed 42, 150 calls through agy, 0 errors): the
+(`inspraak eval-match --rerank-sample 150`, seed 42, 150 batch calls to Gemini Flash, 0 errors): the
 15 strongest initiatives per organisation (open and closed, so every answered file can
 appear) reordered by the model, recall counted per initiative on the same 150.
 
@@ -206,7 +238,7 @@ the rest unrelated.
 
 The organisation pages compute their list on read, so they use the new matcher at once.
 The runs store the list they were started with, so they were rebuilt:
-`inspraak rerank` (40 calls through agy, 0 errors, 558 judgments cached), then
+`inspraak rerank` (40 batch calls to Gemini Flash, 0 errors, 558 judgments cached), then
 `inspraak demo --replace`. The 35 runs that still waited at an undecided go / no-go were
 closed as `superseded` (with their open review items, nothing deleted) and 35 new runs
 started; they cost 0 model calls, every rerank and summary came from the caches. The 5
@@ -364,14 +396,14 @@ at the stop: 46 summaries (41 open, 5 closed), 742 analysis rows (240 analysed, 
 without text) on 37 publications.
 
 **Finished the same evening with the batch providers.** The Gemini API budget was the
-bottleneck, so the backfill moved to two command line providers (`scripts/backfill.py`):
+bottleneck, so the backfill moved to the two batch providers (`scripts/backfill.py`):
 
 | Pass | Provider | Submissions | Time | Errors |
 | --- | --- | --- | --- | --- |
-| single calls, then guarded batches of 10 (stopped by hand) | `claude_cli`, Haiku 4.5, low effort | 1,328 analysed | 17 min | 0 |
-| guarded batches of 10, 30 in parallel | `agy`, Gemini 3.8 Flash low | 4,897 analysed, 503 calls | 34 min | 0 |
-| single calls for the rows a batch skipped or could not tie | `agy` | 30 | 2 min | 0 |
-| summaries of the 35 closed publications | `agy` | 35 calls | 14 min | 0 |
+| single calls, then guarded batches of 10 (stopped by hand) | Claude Haiku, batch | 1,328 analysed | 17 min | 0 |
+| guarded batches of 10, 30 in parallel | Gemini Flash, batch | 4,897 analysed, 503 calls | 34 min | 0 |
+| single calls for the rows a batch skipped or could not tie | Gemini Flash, batch | 30 | 2 min | 0 |
+| summaries of the 35 closed publications | Gemini Flash, batch | 35 calls | 14 min | 0 |
 
 Result: 0 organisation submissions left in scope. 9,117 analysis rows: 6,505 with a model
 analysis, 2,612 without readable text. 81 of 81 publications have a summary.
@@ -390,9 +422,9 @@ had already analysed: the same stance in 18 of 20, and 50 of 50 Haiku quotes ver
 
 | Provider | Quotes | Dropped | Verified |
 | --- | --- | --- | --- |
-| `agy` Gemini Flash | 9,237 | 35 | 99.6% |
-| `gemini` API | 529 | 18 | 96.6% |
-| `claude_cli` Haiku | 3,079 | 159 | 94.8% |
+| Gemini Flash, batch | 9,237 | 35 | 99.6% |
+| Gemini Flash Lite, API | 529 | 18 | 96.6% |
+| Claude Haiku, batch | 3,079 | 159 | 94.8% |
 
 778 analyses have a low confidence or an unclear stance (812 when first counted on 3
 October, 776 before the refresh of 5 October). They are held back from the pages and wait in the review queue.
@@ -428,7 +460,7 @@ open ones were all still open at the time of the fetch.
 | Child Safety Online (26173), submissions | 84 | 1,507 (15 organisations) |
 | Public procurement (25981), deadline | 27 November | 30 November |
 | Organisation submissions in scope, analysis rows | 9,117 | 9,155 |
-| New organisation rows | | 38: 26 analysed through agy in 3 batched calls, 12 without readable text |
+| New organisation rows | | 38: 26 analysed in 3 batched calls (Gemini Flash), 12 without readable text |
 | Quotes verified | 12,585 of 12,797 | 12,633 of 12,845 |
 | Meetings | 11,527 | 11,531 (file of 5 October) |
 

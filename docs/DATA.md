@@ -174,7 +174,7 @@ the row at all (attachment only).
 | Proposal pages | 6,889 |
 | Proposal chunks | 27,025 |
 | Feedback attachments registered | 3,271 |
-| Feedback attachments parsed ok | 3,257 (14 still pending, see BUILD_LOG stage 2) |
+| Feedback attachments parsed ok | 3,257 (14 belong to publications that left the scope and stay pending) |
 | Feedback attachments empty (no text layer) | 0 |
 | Feedback attachments error | 0 |
 | Attachment pages | 29,622 |
