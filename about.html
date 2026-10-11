@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About and method | Inspraak</title>
+<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="author" content="Kaan Goker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Inspraak">
+<meta property="og:title" content="About and method | Inspraak">
+<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<link rel="icon" type="image/svg+xml" href="static/mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="static/favicon.png">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div class="snapshot-bar"><div class="wrap">Static snapshot of 5 Oct 2026: precomputed pages, no drafts or review decisions. <a href="about.html#method">How it works</a></div></div>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html"><img src="static/mark.svg" alt="" width="26" height="26" style="vertical-align:-6px;margin-right:8px">Inspraak <span class="brand-sub">consultation desk</span></a>
+    <nav class="nav">
+      <a href="index.html">Organisations</a>
+      <a href="index.html#consultations">Consultations</a>
+      <a href="about.html">About and method</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+<h1>About and method</h1>
+<p class="lede">Inspraak (Dutch for having a say) is a consultation desk for Brussels organisations. It joins three public sources on one key, the EU Transparency Register ID, and puts a small team of agents on top. This page says who built it, how it works, what it does not do, and where the numbers come from.</p>
+
+<section class="block about-author" id="author">
+  <h2>Who built it</h2>
+  <p>I'm Kaan Goker. I did the Advanced Master of Artificial Intelligence at KU Leuven and specialised in natural language processing and speech recognition. EU consultations looked like a good test for that: the data is public, but it sits on three sites and in many languages, and a small organisation rarely has a free day to read it all. I wanted to see how much of that reading a few agents with strict sourcing rules could do, and where they still get it wrong.</p>
+  <p class="small"><a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source code on GitHub</a> <span class="muted">(MIT licence)</span>. <a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a>. <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a>. Corrections: <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>.</p>
+</section>
+
+<section class="block" id="method">
+  <h2>How it works</h2>
+  <p>A supervisor routes one run per organisation through seven agents. It decides on what the run already holds and calls no model. The run stops twice for a person: at go / no-go, before anything is drafted, and again at draft review. Its state lives in a Postgres checkpointer, so a run can wait days for a decision.</p>
+  <ol>
+    <li><strong>Profiler.</strong> The organisation's own register entry (goals, interests, category, budget), shown as registered, plus its earlier submissions in the snapshot. A reviewer can correct the profile; corrections are stored as memory, the register is never changed.</li>
+    <li><strong>Matcher.</strong> Open Have Your Say consultations are matched to the profile by embedding similarity (a small multilingual model, run locally), with a penalty for consultations that sit close to almost every profile. Consultations of the same initiative share one card. The 15 strongest are then judged by a language model in one call per organisation: a relevance between 0 and 1 and a one-line reason, shown on the card and cached, so reading a page never calls a model. "Not our topic" decisions exclude a consultation and lower the score of similar ones next time.</li>
+    <li><strong>Landscape.</strong> Who already submitted, counted by the stakeholder type and country each submitter declared on the portal. For organisation submissions one model call extracts a stance and up to three key asks with a verbatim quote; a quote that cannot be found character for character in the submission is dropped. Stance labels under 0.6 confidence are held back for review.</li>
+    <li><strong>Lobby mapper.</strong> Meetings from the Commission's file whose recorded subject is close to the consultation's title and summary. The subject is short free text, so this is marked approximate everywhere it appears. Counts by register category of the interest representative, never a label such as "ally" or "opponent".</li>
+    <li><strong>Reader.</strong> The Commission document, page by page. Passages closest to the profile are cited to the page of the PDF.</li>
+    <li><strong>Drafter.</strong> Written only after a person says go, within the 4,000 character limit of the portal, in the organisation's own voice (its earlier submissions).</li>
+    <li><strong>Critic.</strong> Checks every sentence of the draft and removes what it cannot source. A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past submission or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person. Nothing is ever submitted to the Commission by this system.</li>
+  </ol>
+<p class="small muted">This public snapshot shows the output of the first five agents. Drafts, go / no-go decisions and review notes stay in the local app: they are written for the people using it, not for publication.</p></section>
+
+<section class="block" id="evaluation">
+  <h2>Evaluation</h2>
+  <p>In short: useful as a shortlist to check, not as a ranking to trust. Measured on the snapshot of 5 Oct 2026; the same figures are in the project's docs/EVAL.md.</p>
+  <div class="table-wrap"><table class="table small eval-table">
+    <thead><tr><th>What</th><th>Result</th><th>How it was measured</th></tr></thead>
+    <tbody>
+      <tr><td>Match precision</td><td><strong>20 of 30</strong> relevant (67%); 8 of 9 first places right. Before the model rerank: 17 of 30.</td><td class="muted">30 random organisation and consultation pairs, one rater, 5 Oct 2026.</td></tr>
+      <tr><td>Recall against real filings</td><td>The consultation an organisation really answered is in its top 5 in <strong>42.5%</strong> of cases by embedding alone (random order: 6.7%). On a sample of 150, the rerank raises that from 45.3% to <strong>65.1%</strong>, median rank 6 to 2.</td><td class="muted">1,526 registrants that filed on an in-scope consultation.</td></tr>
+      <tr><td>Quotes verified</td><td><strong>12,633 of 12,845</strong> found word for word in their submission (98.3%). The rest were dropped before storage.</td><td class="muted">Every quote, checked by code, not by a model.</td></tr>
+      <tr><td>Submissions processed</td><td>9,155 organisation submissions: 6,531 analysed, 2,624 without readable text (counted only). 778 stances held back for low confidence.</td><td class="muted">All of them, not a sample.</td></tr>
+      <tr><td>Critic</td><td>38 of 49 draft sentences kept (77.6%) across the 5 current drafts; the others were removed and listed.</td><td class="muted">Drafts not rejected by a reviewer.</td></tr>
+      <tr><td>Runs</td><td>49 current runs for 40 organisations (70 older runs replaced when the matcher changed). Reader cache: 560 of 563 summary reads.</td><td class="muted">Summaries and match judgments are shared, so a second organisation costs almost nothing.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">Not measured: whether an organisation would send a draft, and a second rater for precision. Generic profiles (consultancies, think tanks with every interest ticked) still get a mixed list.</p>
+  <details class="small"><summary>Model calls by provider and purpose</summary>
+    <div class="table-wrap"><table class="table small inline-table">
+      <thead><tr><th>Provider</th><th>Purpose</th><th class="num">OK</th><th class="num">Failed</th></tr></thead>
+      <tbody><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>critic</td><td class="num">4</td><td class="num">0</td></tr><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>draft</td><td class="num">4</td><td class="num">0</td></tr><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>feedback analysis</td><td class="num">30</td><td class="num">0</td></tr><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>feedback analysis batch</td><td class="num">507</td><td class="num">0</td></tr><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>match rerank</td><td class="num">190</td><td class="num">0</td></tr><tr><td>Gemini Flash, through the Antigravity CLI <span class="muted">(gemini-3.8-flash-low)</span></td><td>reader summary</td><td class="num">36</td><td class="num">0</td></tr><tr><td>Claude Haiku, through the Claude Code CLI <span class="muted">(haiku)</span></td><td>feedback analysis</td><td class="num">937</td><td class="num">0</td></tr><tr><td>Claude Haiku, through the Claude Code CLI <span class="muted">(haiku)</span></td><td>feedback analysis batch</td><td class="num">86</td><td class="num">0</td></tr><tr><td>Gemini API, free tier <span class="muted">(gemini-3.5-flash-lite)</span></td><td>critic</td><td class="num">5</td><td class="num">0</td></tr><tr><td>Gemini API, free tier <span class="muted">(gemini-3.5-flash-lite)</span></td><td>draft</td><td class="num">5</td><td class="num">0</td></tr><tr><td>Gemini API, free tier <span class="muted">(gemini-3.5-flash-lite)</span></td><td>feedback analysis</td><td class="num">240</td><td class="num">1</td></tr><tr><td>Gemini API, free tier <span class="muted">(gemini-3.5-flash-lite)</span></td><td>reader summary</td><td class="num">46</td><td class="num">0</td></tr></tbody>
+    </table></div>
+    <p class="muted">The command line providers do not report token counts.</p>
+  </details>
+</section>
+
+<section class="block">
+  <h2>Limits, stated plainly</h2>
+  <ul>
+    <li>Everything runs from a local snapshot (taken 5 Oct 2026, 23:30, Brussels time). A consultation published later is missing, and counts and deadlines can have moved since. Deadlines are shown as dates; the countdown is worked out in your browser.</li>
+    <li>The Have Your Say endpoints are the portal's own backend, not a documented API.</li>
+    <li>Scope: consultations closing within 90 days plus up to 40 recently closed ones with at least 20 organisation submissions. Feedback is capped at 5,000 rows per publication; five closed consultations are partial and say so.</li>
+    <li>Matching is similarity plus one model judgment, not a guarantee. The uncertain band is a prompt to check, not a filter.</li>
+    <li>Quotes marked "machine translation by the Commission" come from the English translation the portal publishes next to a submission written in another language. The original language is named; the original wording can differ.</li>
+    <li>Stakeholder types come from the portal's own declaration field and register categories from the register. The model never assigns a category.</li>
+    <li>Meeting subjects are a few words ("EU environmental priorities"). A similarity threshold of 0.45 keeps the list useful, not exact.</li>
+    <li>Scanned PDFs have no text layer and are not OCRed; such submissions appear as "without readable text".</li>
+    <li>Summaries, stances and match reasons are model output. They are cached per publication and shared, so one organisation's page may show a summary written days earlier.</li>
+    <li>Citizens: no name, no text and no register number of an EU or non-EU citizen row is stored. A database constraint makes it impossible to insert one; they are counted and nothing else.</li>
+    <li>Small firms: a submitter with no register number that declared itself a micro company is shown as "Micro company" and its country, because such a name is often a person's name. Long numbers in organisation names (tax or company numbers) are masked.</li>
+  </ul>
+</section>
+
+<section class="block">
+  <h2>Numbers from this snapshot</h2>
+  <div class="stats">
+    <div class="stat"><span class="stat-n">17,897</span><span class="stat-l">registrants (2,786 with a Belgian head office)</span></div>
+    <div class="stat"><span class="stat-n">81</span><span class="stat-l">publications in scope, 41 open on 5 Oct 2026</span></div>
+    <div class="stat"><span class="stat-n">9,181</span><span class="stat-l">organisation submissions; 2,361 join the register</span></div>
+    <div class="stat"><span class="stat-n">23,351</span><span class="stat-l">citizen rows, counted only</span></div>
+    <div class="stat"><span class="stat-n">36,563</span><span class="stat-l">pages from 3,411 documents, 140,033 chunks</span></div>
+    <div class="stat"><span class="stat-n">11,531</span><span class="stat-l">meetings, 16,419 organisation links</span></div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://transparency-register.europa.eu/odplastorganisationxml_en" rel="noopener">EU Transparency Register, full XML export</a> (daily).</li>
+    <li><a href="https://ec.europa.eu/info/law/better-regulation" rel="noopener">Have Your Say</a>: initiative listing and detail, feedback rows, Commission documents, through the portal's JSON backend, one request per second.</li>
+    <li><a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings with interest representatives, 2024 to 2029</a> (XLSX).</li>
+  </ul>
+  <p class="muted small">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for the bulk work and the rerank, with a deterministic stand-in for the tests.</p>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="credit"><strong>Built by Kaan Goker</strong> <span class="credit-links"><a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a> <a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source on GitHub</a> <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a></span></p>
+    <p>Not affiliated with any organisation shown. Data: public EU sources (Have Your Say, the EU Transparency Register, the Commission's meetings file), snapshot of 5 Oct 2026. Spotted an error about your organisation? Write to <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>.</p>
+    <p class="muted">Every number and quote links to its source. Citizens are counted, never named or quoted. Meeting rows are matched on their subject text and are approximate.</p>
+  </div>
+</footer>
+<script>
+/* Deadlines are written as dates with their Brussels time; the countdown is computed in
+   the reader's browser, so a static page read weeks after the snapshot is still right. */
+(function () {
+  var now = Date.now(), day = 86400000, closedSince = 0;
+  document.querySelectorAll('[data-deadline]').forEach(function (el) {
+    var end = new Date(el.getAttribute('data-deadline')).getTime();
+    if (isNaN(end)) { return; }
+    var left = Math.floor((end - now) / day);
+    var out = el.querySelector('.countdown') || el;
+    if (end < now) {
+      out.textContent = 'closed';
+      out.classList.add('closed');
+      var row = el.closest('[data-open-row]');
+      if (row) { row.hidden = true; closedSince++; }
+      var card = el.closest('[data-open-card]');
+      if (card) { card.classList.add('is-closed'); }
+    } else {
+      out.textContent = left < 1 ? 'closes today' : left + (left === 1 ? ' day left' : ' days left');
+      if (left < 7) { out.classList.add('late'); }
+    }
+  });
+  var note = document.getElementById('closed-since');
+  if (note && closedSince) {
+    note.textContent = closedSince + (closedSince === 1 ? ' consultation has' : ' consultations have') + ' closed since the snapshot and ' + (closedSince === 1 ? 'is' : 'are') + ' no longer listed.';
+    note.hidden = false;
+  }
+  var count = document.getElementById('open-count');
+  if (count && closedSince) { count.textContent = String(parseInt(count.getAttribute('data-n'), 10) - closedSince); }
+})();
+</script>
+</body>
+</html>

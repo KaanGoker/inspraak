@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspraak, a multi-agent consultation desk</title>
+<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="author" content="Kaan Goker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Inspraak">
+<meta property="og:title" content="Inspraak, a multi-agent consultation desk">
+<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<link rel="icon" type="image/svg+xml" href="static/mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="static/favicon.png">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div class="snapshot-bar"><div class="wrap">Static snapshot of 5 Oct 2026: precomputed pages, no drafts or review decisions. <a href="about.html#method">How it works</a></div></div>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html"><img src="static/mark.svg" alt="" width="26" height="26" style="vertical-align:-6px;margin-right:8px">Inspraak <span class="brand-sub">consultation desk</span></a>
+    <nav class="nav">
+      <a href="index.html">Organisations</a>
+      <a href="index.html#consultations">Consultations</a>
+      <a href="about.html">About and method</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+<section class="hero">
+  <p class="kicker">Multi-agent system for EU public affairs</p>
+  <h1>Which open Commission consultations should your organisation answer?</h1>
+  <p class="lede">Inspraak reads an organisation's EU Transparency Register profile, finds the open Have Your Say consultations that fit it, and shows who already answered, who met the Commissioners' cabinets on the subject and what the proposal says, with every figure linked to its public source. Seven agents do the work under a supervisor, and a person decides before anything is drafted.</p>
+  <div class="search">
+    <label class="visually-hidden" for="q">Organisation</label>
+    <input id="q" type="search" placeholder="Search the exported organisations, e.g. BEUC" autocomplete="off">
+    <div id="results" class="results" aria-live="polite"></div>
+  </div>
+  <script>
+  (function () {
+    var box = document.getElementById('q'), out = document.getElementById('results'), index = null;
+    fetch('search.json').then(function (r) { return r.json(); }).then(function (d) { index = d; });
+    box.addEventListener('input', function () {
+      var q = box.value.trim().toLowerCase();
+      if (!index || q.length < 2) { out.textContent = ''; return; }
+      var hits = index.filter(function (o) {
+        return (o.name + ' ' + (o.acronym || '') + ' ' + o.tr_id).toLowerCase().indexOf(q) >= 0;
+      }).slice(0, 12);
+      out.textContent = '';
+      if (!hits.length) {
+        var none = document.createElement('p');
+        none.className = 'muted';
+        none.textContent = 'No exported organisation matches. The static demo holds only the precomputed set below.';
+        out.appendChild(none);
+        return;
+      }
+      var ul = document.createElement('ul');
+      ul.className = 'result-list';
+      hits.forEach(function (o) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = o.url;
+        a.textContent = o.name;
+        var meta = document.createElement('span');
+        meta.className = 'muted';
+        meta.textContent = (o.acronym ? o.acronym + ', ' : '') + (o.category || '') + ', ' + (o.country || '');
+        li.appendChild(a);
+        li.appendChild(document.createTextNode(' '));
+        li.appendChild(meta);
+        ul.appendChild(li);
+      });
+      out.appendChild(ul);
+    });
+  })();
+  </script>
+</section>
+
+<section class="agents" aria-labelledby="agents-h">
+  <h2 id="agents-h" class="visually-hidden">How a run works</h2>
+  <ol class="agent-flow">
+    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
+    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
+    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
+    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
+    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
+    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
+    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
+    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+  </ol>
+  <p class="agent-caption small"><span class="agent-sup">Supervisor</span> routes between the agents on what the run already holds, and a second human review closes the run. LangGraph with a Postgres checkpointer, so a run can wait days for a decision. This snapshot shows the first five agents' output; drafts stay in the local app. <a href="about.html#method">Method and evaluation</a></p>
+</section>
+
+<p class="asof small muted">Data as of 5 Oct 2026, 23:30 (Brussels time).</p><section class="stats">
+  <div class="stat"><span class="stat-n">17,897</span><span class="stat-l">registrants in the register export</span></div>
+  <div class="stat"><span class="stat-n" id="open-count" data-n="41">41</span><span class="stat-l">open consultations in scope, as of 5 Oct 2026</span></div>
+  <div class="stat"><span class="stat-n">9,181</span><span class="stat-l">organisation submissions stored</span></div>
+  <div class="stat"><span class="stat-n">23,351</span><span class="stat-l">citizen submissions counted, never stored</span></div>
+  <div class="stat"><span class="stat-n">11,531</span><span class="stat-l">cabinet meetings, 2024 to 2029 mandate</span></div>
+  <div class="stat"><span class="stat-n">36,563</span><span class="stat-l">document pages indexed</span></div>
+</section>
+
+<section id="demo">
+  <h2>Precomputed organisations</h2>
+  <p class="muted">Organisations with a precomputed page: matches with a reason, who already answered, cabinet meetings and the proposal passages closest to their profile.</p>
+  <ul class="card-list">
+    <li class="card">
+      <a class="card-title" href="org/79444464737-58.html">11.11.11, Koepel van Internationale Solidariteit</a>
+      <div class="muted">11.11.11, Non-governmental organisations, platforms and networks and similar, Brussel, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/85679286747-21.html">Acumen Public Affairs</a>
+      <div class="muted">Professional consultancies, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/16549972091-86.html">AGE Platform Europe</a>
+      <div class="muted">AGE, Non-governmental organisations, platforms and networks and similar, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/68004524380-10.html">AGORIA</a>
+      <div class="muted">Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/0649790813-47.html">Association des Constructeurs Européens d&#39;Automobiles</a>
+      <div class="muted">ACEA, Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/800786099665-80.html">Bond Beter Leefmilieu Vlaanderen vzw</a>
+      <div class="muted">BBL vzw, Non-governmental organisations, platforms and networks and similar, Brussel, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/458295331598-02.html">Bruegel</a>
+      <div class="muted">Think tanks and research institutions, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/9505781573-45.html">Bureau Européen des Unions de Consommateurs</a>
+      <div class="muted">BEUC, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/3978240953-79.html">BUSINESSEUROPE</a>
+      <div class="muted">Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/64879142323-90.html">CEFIC - European Chemical Industry Council</a>
+      <div class="muted">Cefic, Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/206201438220-85.html">Centre for European Policy Studies</a>
+      <div class="muted">CEPS, Think tanks and research institutions, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/55888811123-49.html">Climate Action Network Europe</a>
+      <div class="muted">CAN Europe, Non-governmental organisations, platforms and networks and similar, Brussel, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/793675391817-01.html">Confédération des Syndicats Chrétiens de Belgique</a>
+      <div class="muted">ACV-CSC, Trade unions and professional associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/5353162366-85.html">Corporate Europe Observatory</a>
+      <div class="muted">CEO, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/64270747023-20.html">DIGITALEUROPE</a>
+      <div class="muted">Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/363331923608-55.html">Egmont - Royal Institute for International Relations</a>
+      <div class="muted">Egmont, Think tanks and research institutions, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/0014082722-83.html">EUROCHAMBRES - Association of European Chambers of Commerce and Industry</a>
+      <div class="muted">eurochambres, Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/79360311166-84.html">Eurochild AISBL</a>
+      <div class="muted">Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/12493392840-79.html">Eurocities</a>
+      <div class="muted">Non-governmental organisations, platforms and networks and similar, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/84973761187-60.html">EuroCommerce</a>
+      <div class="muted">Trade and business associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/954230536257-09.html">European Centre for International Political Economy</a>
+      <div class="muted">ECIPE, Think tanks and research institutions, Saint-Josse-Ten-Noode, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/241870349815-86.html">European Council on Refugees and Exiles</a>
+      <div class="muted">ECRE, Non-governmental organisations, platforms and networks and similar, Saint-Josse-Ten-Noode, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/16311905144-06.html">European Digital Rights</a>
+      <div class="muted">EDRi, Non-governmental organisations, platforms and networks and similar, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/06798511314-27.html">European Environmental Bureau</a>
+      <div class="muted">EEB, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/89632641000-47.html">European Policy Centre</a>
+      <div class="muted">EPC, Think tanks and research institutions, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/06698681039-26.html">EUROPEAN TRADE UNION CONFEDERATION</a>
+      <div class="muted">ETUC, Trade unions and professional associations, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/92545571128-74.html">European Transport Workers&#39; Federation</a>
+      <div class="muted">ETF, Trade unions and professional associations, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/504693417417-52.html">Fédération Générale du Travail de Belgique - Algemeen Belgisch Vakverbond</a>
+      <div class="muted">FGTB-ABVV, Trade unions and professional associations, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/75818824519-45.html">FoodDrinkEurope</a>
+      <div class="muted">FoodDrinkEurope, Trade and business associations, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/9825553393-31.html">Friends of the Earth Europe</a>
+      <div class="muted">FoEE, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/358284014848-82.html">industriAll European Trade Union</a>
+      <div class="muted">industriAll Europe, Trade unions and professional associations, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/934329423960-72.html">Institute for European Environmental Policy</a>
+      <div class="muted">IEEP, Think tanks and research institutions, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/5067624792-06.html">logos public affairs</a>
+      <div class="muted">logos, Professional consultancies, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/165838227131-07.html">Rud Pedersen Brussels</a>
+      <div class="muted">Rud Pedersen, Professional consultancies, Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/23020671103-67.html">SEC NEWGATE EU</a>
+      <div class="muted">SEC NEWGATE EU, Professional consultancies, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/501222919-71.html">Transparency International Liaison Office to the European Union</a>
+      <div class="muted">TI EU, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/58744833263-19.html">Transport and Environment (European Federation for Transport and Environment)</a>
+      <div class="muted">T&amp;E, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/47676761061-93.html">VERBOND VAN BELGISCHE ONDERNEMINGEN / FEDERATION DES ENTREPRISES DE BELGIQUE</a>
+      <div class="muted">VBO / FEB, Trade and business associations, Brussel / Bruxelles, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/1414929419-24.html">WWF European Policy Programme</a>
+      <div class="muted">WWF EPO, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+    <li class="card">
+      <a class="card-title" href="org/47806848200-34.html">Zero Waste Europe</a>
+      <div class="muted">ZWE, Non-governmental organisations, platforms and networks and similar, Brussels, Belgium</div>
+    </li>
+  </ul>
+</section>
+
+<section id="consultations">
+  <h2>Open consultations in scope <span class="muted h-sub">by deadline, open on 5 Oct 2026</span></h2>
+  <p id="closed-since" class="small muted" hidden></p>
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>Deadline</th><th>Consultation</th><th>Type</th><th class="num">Organisations</th><th class="num">Citizens</th></tr></thead>
+    <tbody>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-05T23:59:59+02:00">5 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25881.html">Freezing of meat of domestic ungulates</a> <span class="muted">SANTE</span></td>
+      <td class="nowrap muted">reg del draft</td>
+      <td class="num">9</td>
+      <td class="num">4</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-06T23:59:59+02:00">6 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25894.html">Revision of Schengen short-stay visa procedures (recast)</a> <span class="muted">HOME</span></td>
+      <td class="nowrap muted">call for evidence</td>
+      <td class="num">4</td>
+      <td class="num">14</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-08T23:59:59+02:00">8 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25931.html">Evaluation of the industrial and agricultural autonomous tariff suspensions and quotas scheme</a> <span class="muted">TAXUD</span></td>
+      <td class="nowrap muted">cfe evl fc</td>
+      <td class="num">5</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-15T23:59:59+02:00">15 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25715.html">Amendment of the Toy Safety Directive - Lilial, BPA, phenol and BIT</a> <span class="muted">GROW</span></td>
+      <td class="nowrap muted">dir draft</td>
+      <td class="num">1</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-15T23:59:59+02:00">15 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25759.html">Omnibus simplification of energy-efficient product legislation</a> <span class="muted">ENER</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">5</td>
+      <td class="num">3</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-15T23:59:59+02:00">15 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25506.html">Evaluation of Regulation (EU) 2021/821 (the ‘Dual-Use Regulation’)</a> <span class="muted">TRADE</span></td>
+      <td class="nowrap muted">cfe evl fc</td>
+      <td class="num">7</td>
+      <td class="num">4</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-15T23:59:59+02:00">15 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25527.html">Evaluation of Regulation (EU) 2021/821 (the ‘Dual-Use Regulation’)</a> <span class="muted">TRADE</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">39</td>
+      <td class="num">11</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-16T23:59:59+02:00">16 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26054.html">Alignment of the renewals of seven low-risk active substances to the renewals of substances with similar properties</a> <span class="muted">SANTE</span></td>
+      <td class="nowrap muted">dec impl draft</td>
+      <td class="num">2</td>
+      <td class="num">8</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-16T23:59:59+02:00">16 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25280.html">European partnerships implemented as joint undertakings under Horizon Europe (2028-2034)</a> <span class="muted">RTD</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">412</td>
+      <td class="num">92</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-16T23:59:59+02:00">16 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26040.html">List of non-OECD countries that are authorized to import certain non-hazardous waste from the EU</a> <span class="muted">ENV</span></td>
+      <td class="nowrap muted">reg del draft</td>
+      <td class="num">11</td>
+      <td class="num">2</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-19T23:59:59+02:00">19 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26057.html">Amending RTS on buy-back programmes and stabilisation measures</a> <span class="muted">FISMA</span></td>
+      <td class="nowrap muted">reg del draft</td>
+      <td class="num">1</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-21T23:59:59+02:00">21 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26084.html">Common format for initial and updated National Air Pollution Control Programmes</a> <span class="muted">ENV</span></td>
+      <td class="nowrap muted">dec impl draft</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-21T23:59:59+02:00">21 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26082.html">Accreditation of aviation qualified entities for certification and oversight</a> <span class="muted">MOVE</span></td>
+      <td class="nowrap muted">reg impl draft</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-22T23:59:59+02:00">22 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26086.html">Amendment of protective measures against pests of plants</a> <span class="muted">SANTE</span></td>
+      <td class="nowrap muted">reg impl draft</td>
+      <td class="num">1</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-26T23:59:59+01:00">26 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26097.html">Early warning report on waste 2027</a> <span class="muted">ENV</span></td>
+      <td class="nowrap muted">call for evidence</td>
+      <td class="num">1</td>
+      <td class="num">6</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-27T23:59:59+01:00">27 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26119.html">&#34;Diversify EU&#34; instrument</a> <span class="muted">TRADE</span></td>
+      <td class="nowrap muted">call for evidence</td>
+      <td class="num">2</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-27T23:59:59+01:00">27 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26118.html">Minimum values for the electrochemical performance and durability of rechargeable industrial batteries</a> <span class="muted">GROW</span></td>
+      <td class="nowrap muted">reg del draft</td>
+      <td class="num">0</td>
+      <td class="num">3</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-27T23:59:59+01:00">27 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26120.html">Chemicals regulation - update of EU rules for test methods</a> <span class="muted">ENV</span></td>
+      <td class="nowrap muted">reg draft</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-28T23:59:59+01:00">28 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26137.html">Endangered animal and plant species - suspensions of imports from specific countries</a> <span class="muted">ENV</span></td>
+      <td class="nowrap muted">reg impl draft</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-10-29T23:59:59+01:00">29 Oct 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26170.html">Training and certification standards of fishers on EU vessels</a> <span class="muted">MARE</span></td>
+      <td class="nowrap muted">cfe impact assess</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-03T23:59:59+01:00">3 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25794.html">EU emissions trading system for maritime, aviation and stationary installations, and market stability reserve - review</a> <span class="muted">CLIMA</span></td>
+      <td class="nowrap muted">prop dir</td>
+      <td class="num">5</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-03T23:59:59+01:00">3 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25761.html">EU emissions trading system for maritime, aviation and stationary installations, and market stability reserve - review</a> <span class="muted">CLIMA</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">0</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-03T23:59:59+01:00">3 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25760.html">EU emissions trading system for maritime, aviation and stationary installations, and market stability reserve - review</a> <span class="muted">CLIMA</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">3</td>
+      <td class="num">2</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-04T23:59:59+01:00">4 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25912.html">VAT and circular economy</a> <span class="muted">TAXUD</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">7</td>
+      <td class="num">3</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-04T23:59:59+01:00">4 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25402.html">Eurojust Regulation Revision</a> <span class="muted">JUST</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">3</td>
+      <td class="num">2</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-04T23:59:59+01:00">4 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25913.html">VAT and circular economy</a> <span class="muted">TAXUD</span></td>
+      <td class="nowrap muted">cfe impact assess</td>
+      <td class="num">13</td>
+      <td class="num">9</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-05T23:59:59+01:00">5 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25731.html">EU Strategy on victims’ rights (2026 - 2030)</a> <span class="muted">JUST</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">21</td>
+      <td class="num">7</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-05T23:59:59+01:00">5 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25923.html">Omnibus on taxation</a> <span class="muted">TAXUD</span></td>
+      <td class="nowrap muted">prop dir</td>
+      <td class="num">4</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-06T23:59:59+01:00">6 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25397.html">Proposal for a new Regulation on the European Union Agency for Law Enforcement Cooperation (Europol)</a> <span class="muted">HOME</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">1</td>
+      <td class="num">2</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-11T23:59:59+01:00">11 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/24198.html">Cloud and AI Development Act</a> <span class="muted">CNECT</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">41</td>
+      <td class="num">77</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-19T23:59:59+01:00">19 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25801.html">Evaluation of the Balanced Approach Regulation on noise at EU airports</a> <span class="muted">MOVE</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">3</td>
+      <td class="num">19</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-24T23:59:59+01:00">24 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25821.html">Review of the Brussels Ia Regulation</a> <span class="muted">JUST</span></td>
+      <td class="nowrap muted">cfe impact assess</td>
+      <td class="num">8</td>
+      <td class="num">8</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-24T23:59:59+01:00">24 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25820.html">Review of the Brussels Ia Regulation</a> <span class="muted">JUST</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">4</td>
+      <td class="num">3</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-26T23:59:59+01:00">26 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26173.html">Child Safety Online</a> <span class="muted">CNECT</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">15</td>
+      <td class="num">1,492</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-26T23:59:59+01:00">26 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26171.html">Atlantic maritime and macro-regional strategy</a> <span class="muted">REGIO</span></td>
+      <td class="nowrap muted">call for evidence</td>
+      <td class="num">0</td>
+      <td class="num">0</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-11-30T23:59:59+01:00">30 Nov 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25981.html">Revision of EU rules on public procurement</a> <span class="muted">GROW</span></td>
+      <td class="nowrap muted">prop reg</td>
+      <td class="num">11</td>
+      <td class="num">3</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-12-01T23:59:59+01:00">1 Dec 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25896.html">Review of the International Procurement Instrument</a> <span class="muted">TRADE</span></td>
+      <td class="nowrap muted">call for evidence</td>
+      <td class="num">1</td>
+      <td class="num">5</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-12-01T23:59:59+01:00">1 Dec 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/25895.html">Review of the International Procurement Instrument</a> <span class="muted">TRADE</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">2</td>
+      <td class="num">1</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-12-04T23:59:59+01:00">4 Dec 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/23919.html">Tackling unjustified territorial supply constraints in the Single Market</a> <span class="muted">GROW</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">31</td>
+      <td class="num">17</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-12-14T23:59:59+01:00">14 Dec 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26059.html">Minimum performance standards for data centres in Europe</a> <span class="muted">ENER</span></td>
+      <td class="nowrap muted">opc launched</td>
+      <td class="num">3</td>
+      <td class="num">2</td>
+    </tr>
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="2026-12-14T23:59:59+01:00">14 Dec 2026 <span class="countdown muted small"></span></td>
+      <td><a href="consultation/26060.html">Minimum performance standards for data centres in Europe</a> <span class="muted">ENER</span></td>
+      <td class="nowrap muted">cfe impact assess</td>
+      <td class="num">5</td>
+      <td class="num">18</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="credit"><strong>Built by Kaan Goker</strong> <span class="credit-links"><a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a> <a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source on GitHub</a> <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a></span></p>
+    <p>Not affiliated with any organisation shown. Data: public EU sources (Have Your Say, the EU Transparency Register, the Commission's meetings file), snapshot of 5 Oct 2026. Spotted an error about your organisation? Write to <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>.</p>
+    <p class="muted">Every number and quote links to its source. Citizens are counted, never named or quoted. Meeting rows are matched on their subject text and are approximate.</p>
+  </div>
+</footer>
+<script>
+/* Deadlines are written as dates with their Brussels time; the countdown is computed in
+   the reader's browser, so a static page read weeks after the snapshot is still right. */
+(function () {
+  var now = Date.now(), day = 86400000, closedSince = 0;
+  document.querySelectorAll('[data-deadline]').forEach(function (el) {
+    var end = new Date(el.getAttribute('data-deadline')).getTime();
+    if (isNaN(end)) { return; }
+    var left = Math.floor((end - now) / day);
+    var out = el.querySelector('.countdown') || el;
+    if (end < now) {
+      out.textContent = 'closed';
+      out.classList.add('closed');
+      var row = el.closest('[data-open-row]');
+      if (row) { row.hidden = true; closedSince++; }
+      var card = el.closest('[data-open-card]');
+      if (card) { card.classList.add('is-closed'); }
+    } else {
+      out.textContent = left < 1 ? 'closes today' : left + (left === 1 ? ' day left' : ' days left');
+      if (left < 7) { out.classList.add('late'); }
+    }
+  });
+  var note = document.getElementById('closed-since');
+  if (note && closedSince) {
+    note.textContent = closedSince + (closedSince === 1 ? ' consultation has' : ' consultations have') + ' closed since the snapshot and ' + (closedSince === 1 ? 'is' : 'are') + ' no longer listed.';
+    note.hidden = false;
+  }
+  var count = document.getElementById('open-count');
+  if (count && closedSince) { count.textContent = String(parseInt(count.getAttribute('data-n'), 10) - closedSince); }
+})();
+</script>
+</body>
+</html>

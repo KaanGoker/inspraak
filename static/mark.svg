@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <path d="M 28 14 H 100 A 16 16 0 0 1 116 30 V 76 A 16 16 0 0 1 100 92 H 44 C 44 105, 34 115, 16 118 C 24 110, 30 100, 32 92 H 28 A 16 16 0 0 1 12 76 V 30 A 16 16 0 0 1 28 14 Z" fill="#1f4e8c" />
+  <g fill="#f6f5f1">
+    <circle cx="46" cy="78" r="4" transform="rotate(0 64 78)" />
+    <circle cx="46" cy="78" r="4" transform="rotate(45 64 78)" />
+    <circle cx="46" cy="78" r="4" transform="rotate(90 64 78)" />
+    <circle cx="46" cy="78" r="4" transform="rotate(135 64 78)" />
+    <circle cx="46" cy="78" r="4" transform="rotate(180 64 78)" />
+
+    <circle cx="34" cy="78" r="4" transform="rotate(0 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(25.714 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(51.429 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(77.143 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(102.857 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(128.571 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(154.286 64 78)" />
+    <circle cx="34" cy="78" r="4" transform="rotate(180 64 78)" />
+
+    <circle cx="22" cy="78" r="4" transform="rotate(0 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(18 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(36 64 78)" />
+    <circle cx="22" cy="78" r="5.5" fill="#d7a93b" transform="rotate(54 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(72 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(90 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(108 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(126 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(144 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(162 64 78)" />
+    <circle cx="22" cy="78" r="4" transform="rotate(180 64 78)" />
+  </g>
+</svg>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run for Institute for European Environmental Policy | Inspraak</title>
+<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="author" content="Kaan Goker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Inspraak">
+<meta property="og:title" content="Run for Institute for European Environmental Policy | Inspraak">
+<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<link rel="icon" type="image/svg+xml" href="../static/mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
+<link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+<div class="snapshot-bar"><div class="wrap">Static snapshot of 5 Oct 2026: precomputed pages, no drafts or review decisions. <a href="../about.html#method">How it works</a></div></div>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="../index.html"><img src="../static/mark.svg" alt="" width="26" height="26" style="vertical-align:-6px;margin-right:8px">Inspraak <span class="brand-sub">consultation desk</span></a>
+    <nav class="nav">
+      <a href="../index.html">Organisations</a>
+      <a href="../index.html#consultations">Consultations</a>
+      <a href="../about.html">About and method</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+<nav class="crumbs"><a href="../index.html">Organisations</a> / <a href="../org/934329423960-72.html">Institute for European Environmental Policy</a> / run</nav>
+<h1>Run trace <span class="muted h-sub">Institute for European Environmental Policy</span></h1>
+<p class="small"><span class="tag">brief stage, up to the human go / no-go</span> <span class="muted">started 5 Oct 2026, 23:33. The run then paused for a person to say go or no-go per consultation; what happened after that stays in the local app.</span></p>
+
+<section class="block">
+  <h2>What each agent did</h2>
+  <p class="muted small">The matches below are the ones this run saw when it ran. The organisation page recomputes them live, so the two lists can differ after new consultations open or old ones close.</p>
+  <div class="table-wrap trace-wrap">
+  <table class="table small trace">
+    <thead><tr><th>#</th><th>Agent</th><th>Tool</th><th>Input</th><th>Output</th><th class="num">Calls</th><th class="num">Tokens in / out</th><th>Cache</th><th class="num">Time</th></tr></thead>
+    <tbody>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">1</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">escalations</td>
+      <td class="small trace-text" data-l="Output">profiler</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-profiler">
+      <td class="num" data-l="#">2</td>
+      <td class="nowrap" data-l="Agent"><strong>profiler</strong></td>
+      <td class="muted nowrap" data-l="Tool">register+memory</td>
+      <td class="small trace-text" data-l="Input">934329423960-72</td>
+      <td class="small trace-text" data-l="Output">Institute for European Environmental Policy (Think tanks and research institutions), 0 past submissions, 0 reviewer edits</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time">13 ms</td>
+    </tr>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">3</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">profile, escalations, next</td>
+      <td class="small trace-text" data-l="Output">matcher</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-matcher">
+      <td class="num" data-l="#">4</td>
+      <td class="nowrap" data-l="Agent"><strong>matcher</strong></td>
+      <td class="muted nowrap" data-l="Tool">pgvector</td>
+      <td class="small trace-text" data-l="Input">0 corrections applied; rerank: 15 cached,  0 calls</td>
+      <td class="small trace-text" data-l="Output">5 matches: 25794:0.63, 26097:0.52, 26171:0.55, 25801:0.57, 24198:0.59</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache">hit</td>
+      <td class="num nowrap" data-l="Time">25 ms</td>
+    </tr>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">5</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">profile, matches, escalations, next</td>
+      <td class="small trace-text" data-l="Output">landscape</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-landscape">
+      <td class="num" data-l="#">6</td>
+      <td class="nowrap" data-l="Agent"><strong>landscape</strong></td>
+      <td class="muted nowrap" data-l="Tool">feedback_analyses cache</td>
+      <td class="small trace-text" data-l="Input">5 publications</td>
+      <td class="small trace-text" data-l="Output">25794: 5 analysed (3 wants changes); 26097: 1 analysed (1 wants changes); 26171: 0 analysed; 25801: 3 analysed; 24198: 41 analysed (1 opposes, 2 supports, 29 wants changes)</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache">hit</td>
+      <td class="num nowrap" data-l="Time">31 ms</td>
+    </tr>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">7</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">profile, matches, landscape, escalations, next</td>
+      <td class="small trace-text" data-l="Output">lobby</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-lobby">
+      <td class="num" data-l="#">8</td>
+      <td class="nowrap" data-l="Agent"><strong>lobby</strong></td>
+      <td class="muted nowrap" data-l="Tool">SQL+publication_meetings</td>
+      <td class="small trace-text" data-l="Input">5 publications</td>
+      <td class="small trace-text" data-l="Output">25794: 30 meetings; 26097: 30 meetings; 26171: 30 meetings; 25801: 30 meetings; 24198: 30 meetings</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache">hit</td>
+      <td class="num nowrap" data-l="Time">34 ms</td>
+    </tr>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">9</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">profile, matches, landscape, lobby, escalations, next</td>
+      <td class="small trace-text" data-l="Output">reader</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-reader">
+      <td class="num" data-l="#">10</td>
+      <td class="nowrap" data-l="Agent"><strong>reader</strong></td>
+      <td class="muted nowrap" data-l="Tool">publication_summaries+chunks</td>
+      <td class="small trace-text" data-l="Input">5 publications,  profile vector</td>
+      <td class="small trace-text" data-l="Output">5/5 summaries from cache; 25794: 8 chunks; 26097: 8 chunks; 26171: 8 chunks; 25801: 0 chunks; 24198: 8 chunks</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache">hit</td>
+      <td class="num nowrap" data-l="Time">37 ms</td>
+    </tr>
+    <tr class="agent-supervisor">
+      <td class="num" data-l="#">11</td>
+      <td class="nowrap" data-l="Agent"><strong>supervisor</strong></td>
+      <td class="muted nowrap" data-l="Tool">route</td>
+      <td class="small trace-text" data-l="Input">profile, matches, landscape, lobby, reading, escalations, next</td>
+      <td class="small trace-text" data-l="Output">go_no_go</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time"></td>
+    </tr>
+    <tr class="agent-go_no_go">
+      <td class="num" data-l="#">12</td>
+      <td class="nowrap" data-l="Agent"><strong>go_no_go</strong></td>
+      <td class="muted nowrap" data-l="Tool">interrupt</td>
+      <td class="small trace-text" data-l="Input">waiting for the reviewer</td>
+      <td class="small trace-text" data-l="Output">run paused in the checkpointer</td>
+      <td class="num" data-l="Calls"></td>
+      <td class="num" data-l="Tokens"></td>
+      <td data-l="Cache"></td>
+      <td class="num nowrap" data-l="Time">16 ms</td>
+    </tr>
+    </tbody>
+    <tfoot><tr><td colspan="5">12 node executions</td><td class="num">0</td><td class="num">0 / 0</td><td>4 hits</td><td class="num nowrap">140 ms</td></tr></tfoot>
+  </table>
+  </div>
+  <p class="muted small">The supervisor routes on what the run already holds; it calls no model. Summaries and match judgments came from caches shared by every organisation, which is why most steps take milliseconds.</p>
+</section>
+
+<section class="block">
+  <h2>Matches</h2>
+  <div class="table-wrap">
+  <table class="table small">
+    <thead><tr><th>Consultation</th><th>Deadline</th><th class="num">Similarity</th><th class="num">Relevance</th><th>Band</th></tr></thead>
+    <tbody>
+    <tr>
+      <td><a href="../consultation/25794.html">EU emissions trading system for maritime, aviation and stationary installations, and market stability reserve - review</a></td>
+      <td class="nowrap">3 Nov 2026</td>
+      <td class="num">0.629</td>
+      <td class="num"><span title="The EU Emissions Trading System review directly addresses core climate action and decarbonisation policy.">1.00</span></td>
+      <td>match</td>
+    </tr>
+    <tr>
+      <td><a href="../consultation/26097.html">Early warning report on waste 2027</a></td>
+      <td class="nowrap">26 Oct 2026</td>
+      <td class="num">0.516</td>
+      <td class="num"><span title="Monitoring compliance with municipal, packaging, and food waste reduction targets lies squarely within environmental and circular economy policy.">1.00</span></td>
+      <td>match</td>
+    </tr>
+    <tr>
+      <td><a href="../consultation/26171.html">Atlantic maritime and macro-regional strategy</a></td>
+      <td class="nowrap">26 Nov 2026</td>
+      <td class="num">0.551</td>
+      <td class="num"><span title="Integrated Atlantic macro-regional and maritime strategies encompass regional environmental protection and sustainable ocean governance.">0.70</span></td>
+      <td>match</td>
+    </tr>
+    <tr>
+      <td><a href="../consultation/25801.html">Evaluation of the Balanced Approach Regulation on noise at EU airports</a></td>
+      <td class="nowrap">19 Nov 2026</td>
+      <td class="num">0.568</td>
+      <td class="num"><span title="Managing airport noise touches on transport environmental impacts although it is a fairly specialized aviation rule.">0.50</span></td>
+      <td>uncertain</td>
+    </tr>
+    <tr>
+      <td><a href="../consultation/24198.html">Cloud and AI Development Act</a></td>
+      <td class="nowrap">11 Nov 2026</td>
+      <td class="num">0.590</td>
+      <td class="num"><span title="The file focuses on digital sovereignty and cloud capacity though it touches peripherally on greening digital infrastructure.">0.40</span></td>
+      <td>uncertain</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="credit"><strong>Built by Kaan Goker</strong> <span class="credit-links"><a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a> <a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source on GitHub</a> <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a></span></p>
+    <p>Not affiliated with any organisation shown. Data: public EU sources (Have Your Say, the EU Transparency Register, the Commission's meetings file), snapshot of 5 Oct 2026. Spotted an error about your organisation? Write to <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>.</p>
+    <p class="muted">Every number and quote links to its source. Citizens are counted, never named or quoted. Meeting rows are matched on their subject text and are approximate.</p>
+  </div>
+</footer>
+<script>
+/* Deadlines are written as dates with their Brussels time; the countdown is computed in
+   the reader's browser, so a static page read weeks after the snapshot is still right. */
+(function () {
+  var now = Date.now(), day = 86400000, closedSince = 0;
+  document.querySelectorAll('[data-deadline]').forEach(function (el) {
+    var end = new Date(el.getAttribute('data-deadline')).getTime();
+    if (isNaN(end)) { return; }
+    var left = Math.floor((end - now) / day);
+    var out = el.querySelector('.countdown') || el;
+    if (end < now) {
+      out.textContent = 'closed';
+      out.classList.add('closed');
+      var row = el.closest('[data-open-row]');
+      if (row) { row.hidden = true; closedSince++; }
+      var card = el.closest('[data-open-card]');
+      if (card) { card.classList.add('is-closed'); }
+    } else {
+      out.textContent = left < 1 ? 'closes today' : left + (left === 1 ? ' day left' : ' days left');
+      if (left < 7) { out.classList.add('late'); }
+    }
+  });
+  var note = document.getElementById('closed-since');
+  if (note && closedSince) {
+    note.textContent = closedSince + (closedSince === 1 ? ' consultation has' : ' consultations have') + ' closed since the snapshot and ' + (closedSince === 1 ? 'is' : 'are') + ' no longer listed.';
+    note.hidden = false;
+  }
+  var count = document.getElementById('open-count');
+  if (count && closedSince) { count.textContent = String(parseInt(count.getAttribute('data-n'), 10) - closedSince); }
+})();
+</script>
+</body>
+</html>
