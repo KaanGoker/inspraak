@@ -1,0 +1,18 @@
+{# expects: draft (draft view dict) #}
+<div class="draft {{ 'draft-machine' if draft.is_machine }}">
+  <div class="draft-head">
+    <span class="tag {{ 'warn' if draft.is_machine else ('ok' if draft.status in ('approved', 'edited') else 'bad') }}">{{ draft.status_label }}</span>
+    <span class="muted small">version {{ draft.version }}, {{ draft.chars | num }} of 4,000 characters, stance proposed by the model, not the organisation: {{ draft.stance_label }}{% if draft.critic_summary %}, critic: {{ draft.critic_summary }}{% endif %}</span>
+    {% if draft.run_id %}<a class="small" href="{{ u('run', draft.run_id) }}">run trace</a>{% endif %}
+  </div>
+  <div class="draft-text">{{ draft.text }}</div>
+  {% if draft.critic and draft.critic.removed %}
+  <details class="small">
+    <summary>{{ draft.critic.removed | length }} sentence{{ 's' if draft.critic.removed | length != 1 }} removed by the critic</summary>
+    <ul>
+      {% for r in draft.critic.removed %}<li>"{{ r.sentence }}" <span class="muted">{{ r.note }}</span></li>{% endfor %}
+    </ul>
+  </details>
+  {% endif %}
+  {% if draft.cited %}<p class="muted small">Supported by: {% for c in draft.cited %}{% if c.source %}<a href="{{ c.source }}" rel="noopener">{{ c.label }}</a>{% else %}{{ c.label }}{% endif %}{{ '; ' if not loop.last }}{% endfor %}.</p>{% elif draft.critic and draft.critic.sources %}<p class="muted small">Supported by {{ draft.critic.sources | length }} source{{ 's' if draft.critic.sources | length != 1 }} (passages no longer in the snapshot).</p>{% endif %}
+</div>

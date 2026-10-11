@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<nav class="crumbs"><a href="{{ u('home') }}">Organisations</a> / <a href="{{ u('org', run.tr_id) }}">{{ run.organisation }}</a> / run</nav>
+<h1>Run trace <span class="muted h-sub">{{ run.organisation }}</span></h1>
+{% if run.public %}
+<p class="small"><span class="tag">{{ run.stage_label }}</span> <span class="muted">started {{ run.created_at | datetime }}. The run then paused for a person to say go or no-go per consultation; what happened after that stays in the local app.</span></p>
+{% else %}
+{% include "partials/run_status.html" %}
+{% endif %}
+
+<section class="block">
+  <h2>What each agent did</h2>
+  <p class="muted small">The matches below are the ones this run saw when it ran. The organisation page recomputes them live, so the two lists can differ after new consultations open or old ones close.</p>
+  <div class="table-wrap trace-wrap">
+  <table class="table small trace">
+    <thead><tr><th>#</th><th>Agent</th><th>Tool</th><th>Input</th><th>Output</th><th class="num">Calls</th><th class="num">Tokens in / out</th><th>Cache</th><th class="num">Time</th></tr></thead>
+    <tbody>
+    {% for t in run.traces %}
+    <tr class="agent-{{ t.agent }}">
+      <td class="num" data-l="#">{{ t.seq }}</td>
+      <td class="nowrap" data-l="Agent"><strong>{{ t.agent }}</strong></td>
+      <td class="muted nowrap" data-l="Tool">{{ t.tool or '' }}</td>
+      <td class="small trace-text" data-l="Input">{{ (t.input_summary or '') | replace(',', ', ') }}</td>
+      <td class="small trace-text" data-l="Output">{{ t.output_summary or '' }}</td>
+      <td class="num" data-l="Calls">{{ t.llm_calls or '' }}</td>
+      <td class="num" data-l="Tokens">{% if t.prompt_tokens or t.output_tokens %}{{ t.prompt_tokens | num }} / {{ t.output_tokens | num }}{% endif %}</td>
+      <td data-l="Cache">{% if t.cache_hit is true %}hit{% elif t.cache_hit is false %}miss{% endif %}</td>
+      <td class="num nowrap" data-l="Time">{{ t.duration_ms | ms }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot><tr><td colspan="5">{{ run.totals.nodes }} node executions</td><td class="num">{{ run.totals.llm_calls }}</td><td class="num">{{ run.totals.prompt_tokens | num }} / {{ run.totals.output_tokens | num }}</td><td>{{ run.totals.cache_hits }} hits</td><td class="num nowrap">{{ run.totals.duration_ms | ms }}</td></tr></tfoot>
+  </table>
+  </div>
+  {% if run.public %}
+  <p class="muted small">The supervisor routes on what the run already holds; it calls no model. Summaries and match judgments came from caches shared by every organisation, which is why most steps take milliseconds.</p>
+  {% else %}
+  <p class="muted small">Model calls counted from the call log ({{ run.llm.calls }} logged for this run, {{ run.llm.prompt_tokens | num }} prompt and {{ run.llm.output_tokens | num }} output tokens). Interrupt nodes appear twice: once when the run pauses, once when it resumes.</p>
+  {% endif %}
+</section>
+
+{% set result = run.result or {} %}
+{% if result.matches %}
+<section class="block">
+  <h2>Matches</h2>
+  <div class="table-wrap">
+  <table class="table small">
+    <thead><tr><th>Consultation</th><th>Deadline</th><th class="num">Similarity</th><th class="num">Relevance</th><th>Band</th>{% if not run.public %}<th>Decision</th>{% endif %}</tr></thead>
+    <tbody>
+    {% set go = result.go_decision or {} %}
+    {% for m in result.matches %}
+    <tr>
+      <td><a href="{{ u('consultation', m.publication_id) }}">{{ m.short_title or m.title }}</a></td>
+      <td class="nowrap">{{ m.end_date | date }}</td>
+      <td class="num">{{ '%.3f' % m.score }}</td>
+      <td class="num">{% if m.relevance is defined and m.relevance is not none %}<span title="{{ m.reason }}">{{ '%.2f' % m.relevance }}</span>{% else %}<span class="muted">none</span>{% endif %}</td>
+      <td>{{ m.band }}</td>
+      {% if not run.public %}<td>{% if m.publication_id in (go.go or []) %}go{% elif m.publication_id in (go.not_our_topic or []) %}not our topic{% elif m.publication_id in (go.no_go or []) %}no-go{% else %}<span class="muted">pending</span>{% endif %}</td>{% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endif %}
+
+{% if run.drafts %}
+<section class="block">
+  <h2>Drafts</h2>
+  {% for d in run.drafts %}
+  <h3 class="small muted">Consultation <a href="{{ u('consultation', d.publication_id) }}">{{ d.publication_id }}</a></h3>
+  {% with draft = d %}{% include "partials/draft.html" %}{% endwith %}
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if run.review_items %}
+<section class="block">
+  <h2>Review items of this run</h2>
+  <ul class="plain small">
+    {% for i in run.review_items %}
+    <li><span class="tag {{ 'warn' if i.blocking and i.status == 'open' }}">{{ i.kind | replace('_', ' ') }}</span> {{ i.status }}{% if i.decided_by %} by {{ i.decided_by }}{% endif %}{% if i.publication_id %}, <a href="{{ u('consultation', i.publication_id) }}">{{ i.publication_id }}</a>{% endif %}{% if i.triggers %} <span class="muted">({{ i.triggers | join('; ') }})</span>{% endif %}</li>
+    {% endfor %}
+  </ul>
+  {% if not static_mode %}<p class="small"><a href="{{ u('inbox') }}">Open the review inbox</a></p>{% endif %}
+</section>
+{% endif %}
+
+{% if run.error %}<section class="block"><h2>Error</h2><pre class="small">{{ run.error }}</pre></section>{% endif %}
+{% endblock %}

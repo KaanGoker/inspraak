@@ -1,0 +1,7 @@
+<div id="run-status" class="status-row" {% if run.active and not static_mode %}hx-get="/run/{{ run.id }}/status" hx-trigger="every 3s" hx-swap="outerHTML"{% endif %}>
+  <span class="tag {{ 'ok' if run.status == 'done' else ('bad' if run.status == 'failed' else 'warn') }}">{{ run.status }}</span>
+  <span>{{ run.stage_label }}</span>
+  {% if run.queue_position %}<span class="muted">queue position {{ run.queue_position }}</span>{% endif %}
+  <span class="muted small">run {{ run.id }}, started {{ run.created_at | datetime }}{% if run.finished_at %}, finished {{ run.finished_at | datetime }}{% endif %}, requested by {{ run.requested_by or 'unknown' }}</span>
+  {% if run.active %}<span class="muted small">refreshing</span>{% endif %}
+</div>

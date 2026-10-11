@@ -1,0 +1,38 @@
+.env
+.venv/
+data/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+site/
+*.egg-info/
+.fastembed_cache/
+
+# celery beat state written by the beat container into the mounted project folder
+celerybeat-schedule*
+
+# secrets and env files (only .env.example is tracked)
+.env
+.env.*
+!.env.example
+venv/
+env/
+
+# large or generated data that must never be committed
+*.xml
+*.xlsx
+*.bin
+*.onnx
+*.parquet
+*.dump
+*.sql.gz
+!tests/fixtures/*.xml
+!tests/fixtures/*.xlsx
+
+# internal build brief and research notes: kept locally, not published
+SPEC.md
+research/
+
+# personal handover notes
+HANDOVER.md

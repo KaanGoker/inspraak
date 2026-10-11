@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{# organisation pages stay out of search engines until the organisations have seen them #}
+{% block head_extra %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block content %}
+{% set p = profile %}
+<nav class="crumbs"><a href="{{ u('home') }}">Organisations</a> / {{ p.acronym or p.name }}</nav>
+<h1>{{ p.name }}{% if p.acronym %} <span class="muted h-sub">{{ p.acronym }}</span>{% endif %}</h1>
+<p class="lede">{{ p.category }}. Head office {{ p.head_city | default('', true) | title }}{{ ', ' if p.head_city }}{{ p.head_country | default('', true) | title }}.
+  Register ID <a href="{{ p.source }}" rel="noopener">{{ p.tr_id }}</a>{% if p.last_update %}, last updated {{ p.last_update | date }}{% endif %}.</p>
+
+<div class="page-grid">
+<aside class="side" id="profile">
+  <section class="box">
+    <h2>Profile as registered</h2>
+    {% if p.edited_fields %}<p class="small"><span class="tag ok">reviewer corrections applied</span> {{ p.edited_fields | join(', ') }}</p>{% endif %}
+    <dl class="dl">
+      <dt>Goals</dt><dd>{% if p.goals and p.goals | length > 900 %}<details><summary>{{ p.goals | truncate(400) }}</summary>{{ p.goals }}</details>{% else %}{{ p.goals or 'not stated' }}{% endif %}</dd>
+      {% if p.interests %}<dt>Interests ({{ p.interests | length }})</dt><dd>{% if p.interests | length > 12 %}<details><summary>{{ p.interests[:10] | join(', ') }} and {{ p.interests | length - 10 }} more</summary>{{ p.interests | join(', ') }}</details>{% else %}{{ p.interests | join(', ') }}{% endif %}</dd>{% endif %}
+      {% if p.levels_of_interest %}<dt>Levels</dt><dd>{{ p.levels_of_interest | join(', ') }}</dd>{% endif %}
+      {% if p.interest_represented %}<dt>Interest represented</dt><dd>{{ p.interest_represented }}</dd>{% endif %}
+      {% if p.eu_legislative_proposals %}<dt>Files followed</dt><dd>{% if p.eu_legislative_proposals | length > 300 %}<details><summary>{{ p.eu_legislative_proposals | truncate(160) }}</summary>{{ p.eu_legislative_proposals }}</details>{% else %}{{ p.eu_legislative_proposals }}{% endif %}</dd>{% endif %}
+      {% if p.website %}<dt>Website</dt><dd><a href="{{ p.website if p.website.startswith('http') else 'https://' ~ p.website }}" rel="noopener">{{ p.website }}</a></dd>{% endif %}
+      {% if p.total_budget or p.costs_min %}<dt>Budget</dt><dd>{% if p.total_budget %}{{ p.total_budget | num }} EUR{% else %}{{ p.costs_min | num }} to {{ p.costs_max | num }} EUR (lobbying costs){% endif %}{% if p.fin_year_end %}, year to {{ p.fin_year_end | date }}{% endif %}</dd>{% endif %}
+      {% if p.members_fte %}<dt>Staff on EU files</dt><dd>{{ "%g" | format(p.members_fte | float | round(1)) }} FTE{% if p.ep_accredited %}, {{ p.ep_accredited }} EP accredited{% endif %}</dd>{% endif %}
+      {% if p.note %}<dt>Reviewer note</dt><dd>{{ p.note }}</dd>{% endif %}
+    </dl>
+    {% if p.edited_fields %}
+    <details class="small"><summary>Register values before correction</summary>
+      <dl class="dl">{% for k, v in p.register_values.items() %}{% if k != 'note' %}<dt>{{ k | replace('_', ' ') }}</dt><dd>{{ v | join(', ') if v is iterable and v is not string else (v or 'empty') }}</dd>{% endif %}{% endfor %}</dl>
+    </details>
+    {% endif %}
+    {% if not static_mode %}
+    <details class="small">
+      <summary>Correct the profile</summary>
+      <form method="post" action="{{ u('org', p.tr_id) }}/profile" class="form">
+        <label>Goals <textarea name="goals" rows="4" placeholder="leave empty to keep"></textarea></label>
+        <label>Interests, comma separated <input name="interests" placeholder="leave empty to keep"></label>
+        <label>Interest represented <input name="interest_represented"></label>
+        <label>Website <input name="website"></label>
+        <label>Note for the drafter <input name="note"></label>
+        <label>Your name <input name="by" value="reviewer"></label>
+        <button type="submit">Save correction</button>
+        <p class="muted">Corrections are stored as memory; the next run reads them. The register itself is never changed.</p>
+      </form>
+    </details>
+    {% endif %}
+  </section>
+
+  <section class="box">
+    <h2>Own voice <span class="muted h-sub">{{ submissions | length }} submission{{ 's' if submissions | length != 1 }} in this snapshot ({{ scope_publications }} consultations)</span></h2>
+    {% if submissions %}
+    <ul class="plain">
+      {% for s in submissions %}
+      <li><a href="{{ u('consultation', s.publication_id) }}">{{ s.short_title or s.publication_title }}</a> <span class="muted small">{{ s.date_feedback | date }}, {{ s.language }}</span> <a class="small" href="{{ s.source }}" rel="noopener">source</a></li>
+      {% endfor %}
+    </ul>
+    <p class="muted small">Only the {{ scope_publications }} consultations in this snapshot are searched; earlier submissions on the portal are not counted here.</p>
+    {% else %}<p class="muted small">No submission in the {{ scope_publications }} consultations of this snapshot. Earlier submissions on the portal are not searched.</p>{% endif %}
+  </section>
+
+  <section class="box">
+    <h2>Own cabinet meetings <span class="muted h-sub">{{ own_meetings_count }}</span></h2>
+    {% if own_meetings %}
+    <ul class="plain small">
+      {% for m in own_meetings[:10] %}<li>{{ m.meeting_date | date }}: {{ m.cabinet | replace('Cabinet of ', '') }}, "{{ m.subject }}"</li>{% endfor %}
+    </ul>
+    {% if own_meetings_count > 10 %}<p class="muted small">{{ own_meetings_count - 10 }} more in the meetings file.</p>{% endif %}
+    {% else %}<p class="muted small">No meeting with a Commissioner cabinet recorded under this register ID in the 2024 to 2029 file.</p>{% endif %}
+  </section>
+
+  <section class="box">
+    <h2>{{ 'Run trace' if static_mode else 'Runs' }}</h2>
+    {% if not static_mode %}
+    <form method="post" action="{{ u('org', p.tr_id) }}/run" class="form inline">
+      <input name="requested_by" value="reviewer" aria-label="Your name">
+      <button type="submit" {% if not has_vector %}disabled{% endif %}>Start a run</button>
+    </form>
+    <p class="muted small">A run matches, reads and maps, then stops for your go / no-go. A draft is written only for consultations you approve. Cost: 2 model calls per approved consultation plus one shared call per consultation without a cached summary.</p>
+    {% endif %}
+    {% if static_mode %}
+      {% if runs %}
+      <p class="small">Every agent step of the run behind this page: tool, input, output, model calls, cache hits and time.</p>
+      <ul class="plain small">{% for r in runs %}<li><a href="{{ u('run', r.id) }}">Run of {{ r.created_at | date }}</a></li>{% endfor %}</ul>
+      {% else %}<p class="muted small">No run trace in this snapshot.</p>{% endif %}
+    {% elif runs %}
+    <ul class="plain small">
+      {% for r in runs %}<li><a href="{{ u('run', r.id) }}">{{ r.created_at | datetime }}</a> <span class="tag {{ 'warn' if r.status == 'waiting' else ('ok' if r.status == 'done' else '') }}">{{ r.status }}{{ ', ' ~ r.stage if r.status == 'waiting' }}</span></li>{% endfor %}
+    </ul>
+    {% else %}<p class="muted small">No run yet.</p>{% endif %}
+    {% if open_review_items and not static_mode %}<p class="small"><a href="{{ u('inbox') }}">{{ open_review_items }} open item{{ 's' if open_review_items != 1 }} in the review inbox</a></p>{% endif %}
+  </section>
+</aside>
+
+<div class="main-col">
+  <section>
+    <h2>Matching open consultations <span class="muted h-sub">{{ consultations | length }}, {{ 'by relevance' if static_mode else 'drafts first, then by relevance' }}{% if snapshot_date %}, open on {{ snapshot_date | date }}{% endif %}</span></h2>
+    {% if not has_vector %}
+    <p class="notice">This profile has no vector yet, so nothing can be matched. Run <code>inspraak embed --target organisations</code>.</p>
+    {% elif not consultations %}
+    <p class="muted">No open in-scope consultation scores above the threshold for this profile{% if corrections %} ({{ corrections | length }} marked "not our topic" are excluded){% endif %}.</p>
+    {% endif %}
+    {% for c in consultations %}
+    <article class="consultation {{ 'uncertain' if c.band == 'uncertain' }}" id="c{{ c.publication_id }}" data-open-card>
+      <header class="c-head">
+        <div>
+          <h3><a href="{{ u('consultation', c.publication_id) }}">{{ c.short_title or c.title }}</a></h3>
+          <p class="muted small">{{ c.title }}</p>
+          {% if c.kept and not static_mode %}<p class="small muted">Shown because it has a draft; the matcher no longer ranks it among the top consultations for this profile.</p>{% endif %}
+          {% if c.reason %}<p class="small fit">Why it fits: {{ c.reason }} <span class="muted" title="{{ c.rerank_model }}">(model judgment; similarity {{ '%.2f' % c.score }})</span></p>{% endif %}
+          {% if c.siblings %}<p class="muted small">Same initiative, also open: {% for s in c.siblings %}<a href="{{ u('consultation', s) }}">{{ s }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
+        </div>
+        <div class="c-meta">
+          <span class="deadline" data-deadline="{{ c.end_date | deadline_iso }}">Deadline {{ c.end_date | date }} <strong class="countdown"></strong></span>
+          <span class="tag {{ 'warn' if c.band == 'uncertain' }}">{{ c.band_label }}, {% if c.reranked %}relevance {{ '%.2f' % c.relevance }}{% else %}similarity {{ '%.2f' % c.score }}{% endif %}</span>
+          {% if c.decision_label and not static_mode %}<span class="tag {{ 'ok' if c.decision_label == 'go' and not c.decision_is_demo else '' }}">{{ 'demo decision, no human review' if c.decision_is_demo else 'reviewer' }}: {{ c.decision_label }}</span>{% endif %}
+          <a class="small" href="{{ c.publication.source }}" rel="noopener">portal</a>
+        </div>
+      </header>
+      {% set thin = c.documents_count == 0 and not c.landscape.read and not c.draft %}
+      {% if thin %}
+      <details class="thin">
+        <summary class="small muted">Little to show yet: no Commission document attached and no organisation submission with readable text. Open for the summary and the meetings.</summary>
+      {% endif %}
+
+      {% if c.summary %}
+      <div class="block">
+        <h4>What the Commission proposes <span class="muted small">(summary from the document, cached {{ c.summary.created_at | date }}, {{ c.summary.model }})</span></h4>
+        <p>{{ c.summary.summary.one_paragraph }}</p>
+        {% if c.summary.summary.key_points %}<ul class="small">{% for k in c.summary.summary.key_points %}<li>{{ k }}</li>{% endfor %}</ul>{% endif %}
+        {% if c.summary.summary.what_is_asked %}<p class="small"><strong>What is asked:</strong> {{ c.summary.summary.what_is_asked }}</p>{% endif %}
+      </div>
+      {% else %}
+      <p class="muted small">No cached summary yet for this consultation; the title, the dossier text and the passages below are what there is.</p>
+      {% endif %}
+
+      <div class="block">
+        <h4>What the proposal says on your topics <span class="muted small">({{ c.documents_count }} Commission document{{ 's' if c.documents_count != 1 }}; passages closest to the profile)</span></h4>
+        {% if c.passages %}
+        <ol class="passages">
+          {% for ps in c.passages %}
+          <li><blockquote>{{ ps.text }}</blockquote><span class="cite"><a href="{{ ps.source }}" rel="noopener">{{ (ps.document_title or ps.document_id) | truncate(70) }}, page {{ ps.page_no }}</a>{% if ps.language %} ({{ ps.language }}){% endif %}, similarity {{ ps.score }}</span></li>
+          {% endfor %}
+        </ol>
+        {% else %}<p class="muted small">No Commission document is attached to this publication, so there is nothing to cite.</p>{% endif %}
+      </div>
+
+      <div class="block">
+        <h4>Who already submitted</h4>
+        {% with land = c.landscape, pub = c.publication %}{% include "partials/landscape.html" %}{% endwith %}
+      </div>
+
+      <div class="block">
+        <details>
+          <summary><h4 class="inline">Who met the cabinets on the subject</h4> <span class="muted small">{{ c.lobby.count }} meeting{{ 's' if c.lobby.count != 1 }} by subject similarity, approximate</span></summary>
+          {% with lobby = c.lobby %}{% include "partials/lobby.html" %}{% endwith %}
+        </details>
+      </div>
+
+      {% if not static_mode %}
+      <div class="block">
+        <h4>Draft response</h4>
+        {% if c.draft %}
+          {% with draft = c.draft %}{% include "partials/draft.html" %}{% endwith %}
+        {% elif c.decision_label == 'go' %}
+          <p class="muted small">Reviewer said go; the draft is being written or waits in the queue. See the latest run.</p>
+        {% elif c.decision_label %}
+          <p class="muted small">No draft: {{ 'the demo decision was' if c.decision_is_demo else 'the reviewer decided' }} "{{ c.decision_label }}".</p>
+        {% else %}
+          <p class="muted small">No draft. A draft is written only after a reviewer says go in the review inbox.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if thin %}</details>{% endif %}
+    </article>
+    {% endfor %}
+  </section>
+
+  {% if memory and not static_mode %}
+  <section>
+    <h2>Memory <span class="muted h-sub">{{ memory | length }} rows</span></h2>
+    <div class="table-wrap">
+    <table class="table small">
+      <thead><tr><th>When</th><th>Kind</th><th>Consultation</th><th>Content</th></tr></thead>
+      <tbody>
+      {% for m in memory | reverse %}
+      <tr><td class="nowrap">{{ m.created_at | datetime }}</td><td>{{ m.kind | replace('_', ' ') }}</td><td>{% if m.publication_id %}<a href="{{ u('consultation', m.publication_id) }}">{{ m.publication_id }}</a>{% endif %}</td>
+        <td>{% for k, v in m.content.items() %}{% if v and (v is string or v is number) %}<span class="muted">{{ k | replace('_', ' ') }}:</span> {{ v | string | truncate(120) }} {% elif v and k == 'interests' %}<span class="muted">interests:</span> {{ v | join(', ') }} {% endif %}{% endfor %}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </section>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,190 @@
+{
+  "generated_at": "2026-10-05T21:33:57+00:00",
+  "measured": {
+    "snapshot": "2026-10-05T21:30:56.388643+00:00",
+    "scope": {
+      "registrants": 17897,
+      "publications": 81,
+      "open": 41,
+      "organisation_submissions": 9181
+    },
+    "analyses": {
+      "rows_total": 9155,
+      "analysed": 6531,
+      "no_text": 2624,
+      "held_back": 778,
+      "from_translation": 1879,
+      "quotes_total": 12845,
+      "quotes_dropped": 212,
+      "quotes_verified": 12633,
+      "quotes_verified_pct": 98.3,
+      "by_provider": [
+        {
+          "provider": "agy",
+          "model": "gemini-3.8-flash-low",
+          "analysed": 4963,
+          "quotes": 9237,
+          "dropped": 35,
+          "verified_pct": 99.6
+        },
+        {
+          "provider": "claude_cli",
+          "model": "haiku",
+          "analysed": 1328,
+          "quotes": 3079,
+          "dropped": 159,
+          "verified_pct": 94.8
+        },
+        {
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "analysed": 240,
+          "quotes": 529,
+          "dropped": 18,
+          "verified_pct": 96.6
+        }
+      ]
+    },
+    "critic": {
+      "drafts": 5,
+      "sentences": 49,
+      "supported": 38,
+      "supported_pct": 77.6
+    },
+    "runs": {
+      "current": 49,
+      "superseded": 70,
+      "organisations": 40
+    },
+    "reader_cache": {
+      "hits": 560,
+      "reads": 563,
+      "hit_pct": 99.5
+    },
+    "calls": [
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "critic",
+        "ok": 4,
+        "failed": 0
+      },
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "draft",
+        "ok": 4,
+        "failed": 0
+      },
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "feedback_analysis",
+        "ok": 30,
+        "failed": 0
+      },
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "feedback_analysis_batch",
+        "ok": 507,
+        "failed": 0
+      },
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "match_rerank",
+        "ok": 190,
+        "failed": 0
+      },
+      {
+        "provider": "agy",
+        "model": "gemini-3.8-flash-low",
+        "purpose": "reader_summary",
+        "ok": 36,
+        "failed": 0
+      },
+      {
+        "provider": "claude_cli",
+        "model": "haiku",
+        "purpose": "feedback_analysis",
+        "ok": 937,
+        "failed": 0
+      },
+      {
+        "provider": "claude_cli",
+        "model": "haiku",
+        "purpose": "feedback_analysis_batch",
+        "ok": 86,
+        "failed": 0
+      },
+      {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "critic",
+        "ok": 5,
+        "failed": 0
+      },
+      {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "draft",
+        "ok": 5,
+        "failed": 0
+      },
+      {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "feedback_analysis",
+        "ok": 240,
+        "failed": 1
+      },
+      {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "purpose": "reader_summary",
+        "ok": 46,
+        "failed": 0
+      }
+    ],
+    "calls_total": 2090
+  },
+  "manual": {
+    "precision": {
+      "measured_on": "2026-10-05",
+      "method": "30 organisation and consultation pairs drawn with random.seed(42) from the demo match lists, judged against the register goals and declared interests by one rater (the coding agent, not blind); docs/EVAL.md lists every pair",
+      "relevant": 20,
+      "pairs": 30,
+      "relevant_with_borderline": 25,
+      "rank_one_relevant": 8,
+      "rank_one_pairs": 9,
+      "before": {
+        "measured_on": "2026-10-03",
+        "relevant": 17,
+        "pairs": 30,
+        "relevant_with_borderline": 19
+      }
+    },
+    "recall": {
+      "measured_on": "2026-10-05",
+      "method": "inspraak eval-match: for registrants that answered an in-scope consultation, is that consultation in their top 5",
+      "registrants": 1526,
+      "pairs": 2259,
+      "embedding_at_5": 0.425,
+      "random_at_5": 0.067,
+      "mrr": 0.301,
+      "sample": 150,
+      "sample_seed": 42,
+      "sample_embedding_at_5": 0.453,
+      "sample_rerank_at_5": 0.651,
+      "sample_embedding_median_rank": 6,
+      "sample_rerank_median_rank": 2
+    },
+    "hubs": {
+      "measured_on": "2026-10-05",
+      "europol_lists_before": 19,
+      "europol_lists_after": 4,
+      "lists": 35
+    }
+  }
+}

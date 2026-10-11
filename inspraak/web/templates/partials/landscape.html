@@ -1,0 +1,54 @@
+{# expects: land (the landscape dict), pub (publication row) #}
+<div class="landscape">
+  <p class="small">
+    {{ land.stored_rows | num }} submissions in the snapshot ({{ land.organisation_rows | num }} from organisations), portal total {{ land.total_feedback | num }}.
+    {% if land.truncated %}<span class="tag warn">sample: the earliest {{ land.stored_rows | num }} of {{ land.total_feedback | num }} by date</span>{% endif %}
+    <a href="{{ pub.feedback_source }}" rel="noopener">Feedback list on the portal</a>.
+  </p>
+  <div class="two-col">
+    <figure>
+      <figcaption>By stakeholder type (as declared on the portal){% if land.truncated %}, stored sample of {{ land.stored_rows | num }} of {{ land.total_feedback | num }}{% endif %}</figcaption>
+      {{ land.by_type_chart | safe }}
+    </figure>
+    <figure>
+      <figcaption>By country, top {{ land.by_country | length }}{% if land.truncated %}, stored sample only{% endif %}</figcaption>
+      {{ land.by_country_chart | safe }}
+    </figure>
+  </div>
+  {% if land.read %}
+  <p class="small">
+    {{ land.read | num }} of {{ land.organisation_rows | num }} organisation submission{{ 's' if land.organisation_rows != 1 }} analysed by the model:
+    {% for k, v in land.stances.items() %}<span class="tag">{{ k }} {{ v }}</span> {% endfor %}
+    {% if land.held_back %} <span class="muted">{{ land.held_back }} held back for review (low confidence).</span>{% endif %}
+    {% if land.without_text %} <span class="muted">{{ land.without_text }} without readable text, so not analysed.</span>{% endif %}
+    {% if land.not_analysed %} <span class="muted">{{ land.not_analysed | num }} not analysed yet (the publication layer works through them within the daily model budget).</span>{% endif %}
+  </p>
+  {% elif land.without_text %}
+  <p class="muted small">{{ land.organisation_rows | num }} organisation submission{{ 's' if land.organisation_rows != 1 }}{% if land.without_text >= land.organisation_rows %}, none with readable text, so not analysed{% else %}: {{ land.without_text }} without readable text, {{ land.not_analysed | num }} not analysed yet{% endif %}.</p>
+  {% elif land.organisation_rows %}
+  <p class="muted small">Submissions not analysed yet for this consultation (the publication layer runs nightly, within the model budget).</p>
+  {% endif %}
+  {% if land.submissions %}
+  <ul class="submissions">
+    {% for s in land.submissions %}
+    <li class="submission">
+      <div class="submission-head">
+        <strong>{{ s.organization }}</strong>
+        <span class="muted">{{ s.user_type }}{{ ', ' ~ s.country if s.country }}{% if s.register_category %}; register: {{ s.register_category }}{% endif %}</span>
+        <span class="tag stance-{{ s.stance }}">{{ s.stance_label }}</span>
+        {% if not static_mode %}<span class="muted small">confidence {{ s.confidence }}</span>{% endif %}
+        <a class="small" href="{{ s.source }}" rel="noopener">source</a>
+      </div>
+      {% if s.key_asks %}
+      <ul class="asks">
+        {% for a in s.key_asks %}
+        <li><span class="ask">{{ a.ask }}</span>{% if a.quote %}<blockquote>{{ a.quote }}</blockquote>{% if s.translated_from %}<span class="mt-label">machine translation by the Commission, original in {{ s.translated_from }}</span>{% endif %}{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% if land.submissions_more %}<p class="muted small">{{ land.submissions_more }} more analysed submissions on the consultation page.</p>{% endif %}
+  {% endif %}
+</div>

@@ -1,0 +1,152 @@
+{
+ "exactMatch": true,
+ "initiativeResultDtoPage": {
+  "pageable": {
+   "pageNumber": 0,
+   "pageSize": 100,
+   "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+   },
+   "offset": 0,
+   "paged": true,
+   "unpaged": false
+  },
+  "last": false,
+  "totalPages": 1,
+  "totalElements": 4,
+  "sort": {
+   "sorted": false,
+   "unsorted": true,
+   "empty": true
+  },
+  "numberOfElements": 4,
+  "size": 100,
+  "number": 0,
+  "first": true,
+  "empty": false,
+  "content": [
+   {
+    "id": 19418.0,
+    "initiativeStatus": "ACTIVE",
+    "reference": "COM(2026)681",
+    "foreseenActType": "PROP_REG",
+    "shortTitle": "Child Safety Online",
+    "initiativeTranslations": [
+     {
+      "value": "Online-Sicherheit von Kindern - Gewährleistung der Verantwortung und Vertrauenswürdigkeit digitaler Räume im Internet (EU KIDS ACT)",
+      "language": "DE",
+      "field": "SHORT_TITLE"
+     }
+    ],
+    "currentStatuses": [
+     {
+      "frontEndStage": "ADOPTION_WORKFLOW",
+      "receivingFeedbackStatus": "OPEN",
+      "feedbackStartDate": "2026/10/01 14:55:29",
+      "feedbackEndDate": "2026/11/26 23:59:59",
+      "isCurrent": true
+     }
+    ],
+    "topics": [
+     {
+      "code": "DIGITAL",
+      "label": "Digital economy and society"
+     }
+    ]
+   },
+   {
+    "id": 19138.0,
+    "initiativeStatus": "ACTIVE",
+    "reference": "Ares(2026)8118256",
+    "foreseenActType": "COMMUNIC",
+    "shortTitle": "Atlantic maritime and macro-regional strategy",
+    "initiativeTranslations": [
+     {
+      "value": "Морска и макрорегионална стратегия за Атлантическия океан",
+      "language": "BG",
+      "field": "SHORT_TITLE"
+     }
+    ],
+    "currentStatuses": [
+     {
+      "frontEndStage": "PLANNING_WORKFLOW",
+      "receivingFeedbackStatus": "OPEN",
+      "feedbackStartDate": "2026/10/01 12:48:00",
+      "feedbackEndDate": "2026/11/26 23:59:59",
+      "isCurrent": true
+     }
+    ],
+    "topics": [
+     {
+      "code": "MARE",
+      "label": "Maritime affairs and fisheries"
+     },
+     {
+      "code": "REGIO",
+      "label": "Regional policy"
+     }
+    ]
+   },
+   {
+    "id": 16352.0,
+    "initiativeStatus": "ACTIVE",
+    "reference": "Ares(2026)183062",
+    "foreseenActType": "PROP_DIR",
+    "shortTitle": "Training and certification standards of fishers on EU vessels",
+    "initiativeTranslations": [
+     {
+      "value": "Рибари от ЕС - стандарти за обучение и сертифициране",
+      "language": "BG",
+      "field": "SHORT_TITLE"
+     }
+    ],
+    "currentStatuses": [
+     {
+      "frontEndStage": "PLANNING_WORKFLOW",
+      "receivingFeedbackStatus": "OPEN",
+      "feedbackStartDate": "2026/10/01 11:48:20",
+      "feedbackEndDate": "2026/10/29 23:59:59",
+      "isCurrent": true
+     }
+    ],
+    "topics": [
+     {
+      "code": "MARE",
+      "label": "Maritime affairs and fisheries"
+     }
+    ]
+   },
+   {
+    "id": 14860.0,
+    "initiativeStatus": "ACTIVE",
+    "reference": "Ares(2025)7729775",
+    "foreseenActType": "REG_IMPL",
+    "shortTitle": "Endangered animal and plant species - suspensions of imports from specific countries",
+    "initiativeTranslations": [
+     {
+      "value": "Застрашени животински и растителни видове - преустановяване на вноса от определени държави",
+      "language": "BG",
+      "field": "SHORT_TITLE"
+     }
+    ],
+    "currentStatuses": [
+     {
+      "frontEndStage": "ISC_WORKFLOW",
+      "receivingFeedbackStatus": "OPEN",
+      "feedbackStartDate": "2026/09/30 18:16:07",
+      "feedbackEndDate": "2026/10/28 23:59:59",
+      "isCurrent": true
+     }
+    ],
+    "topics": [
+     {
+      "code": "ENV",
+      "label": "Environment"
+     }
+    ]
+   }
+  ]
+ }
+}

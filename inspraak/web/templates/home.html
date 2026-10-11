@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="kicker">Multi-agent system for EU public affairs</p>
+  <h1>Which open Commission consultations should your organisation answer?</h1>
+  <p class="lede">Inspraak reads an organisation's EU Transparency Register profile, finds the open Have Your Say consultations that fit it, and shows who already answered, who met the Commissioners' cabinets on the subject and what the proposal says, with every figure linked to its public source. Seven agents do the work under a supervisor, and a person decides before anything is drafted.</p>
+  {% if static_mode %}
+  <div class="search">
+    <label class="visually-hidden" for="q">Organisation</label>
+    <input id="q" type="search" placeholder="Search the exported organisations, e.g. BEUC" autocomplete="off">
+    <div id="results" class="results" aria-live="polite"></div>
+  </div>
+  <script>
+  (function () {
+    var box = document.getElementById('q'), out = document.getElementById('results'), index = null;
+    fetch('search.json').then(function (r) { return r.json(); }).then(function (d) { index = d; });
+    box.addEventListener('input', function () {
+      var q = box.value.trim().toLowerCase();
+      if (!index || q.length < 2) { out.textContent = ''; return; }
+      var hits = index.filter(function (o) {
+        return (o.name + ' ' + (o.acronym || '') + ' ' + o.tr_id).toLowerCase().indexOf(q) >= 0;
+      }).slice(0, 12);
+      out.textContent = '';
+      if (!hits.length) {
+        var none = document.createElement('p');
+        none.className = 'muted';
+        none.textContent = 'No exported organisation matches. The static demo holds only the precomputed set below.';
+        out.appendChild(none);
+        return;
+      }
+      var ul = document.createElement('ul');
+      ul.className = 'result-list';
+      hits.forEach(function (o) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = o.url;
+        a.textContent = o.name;
+        var meta = document.createElement('span');
+        meta.className = 'muted';
+        meta.textContent = (o.acronym ? o.acronym + ', ' : '') + (o.category || '') + ', ' + (o.country || '');
+        li.appendChild(a);
+        li.appendChild(document.createTextNode(' '));
+        li.appendChild(meta);
+        ul.appendChild(li);
+      });
+      out.appendChild(ul);
+    });
+  })();
+  </script>
+  {% else %}
+  <form class="search" action="{{ u('search') }}" method="get" role="search">
+    <label class="visually-hidden" for="q">Organisation</label>
+    <input id="q" name="q" type="search" placeholder="e.g. BEUC, Zero Waste Europe, 9505781573-45" autocomplete="off"
+           hx-get="{{ u('search') }}" hx-trigger="input changed delay:300ms, search" hx-target="#results" hx-indicator="#results">
+    <button type="submit">Search</button>
+    <div id="results" class="results" aria-live="polite"></div>
+  </form>
+  {% endif %}
+</section>
+
+<section class="agents" aria-labelledby="agents-h">
+  <h2 id="agents-h" class="visually-hidden">How a run works</h2>
+  <ol class="agent-flow">
+    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
+    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
+    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
+    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
+    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
+    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
+    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
+    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+  </ol>
+  <p class="agent-caption small"><span class="agent-sup">Supervisor</span> routes between the agents on what the run already holds, and a second human review closes the run. LangGraph with a Postgres checkpointer, so a run can wait days for a decision. {% if static_mode %}This snapshot shows the first five agents' output; drafts stay in the local app. {% endif %}<a href="{{ u('about') }}#method">Method and evaluation</a></p>
+</section>
+
+{% if snapshot_date %}<p class="asof small muted">Data as of {{ snapshot_date | datetime }} (Brussels time).</p>{% endif %}
+<section class="stats">
+  <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants in the register export</span></div>
+  <div class="stat"><span class="stat-n" id="open-count" data-n="{{ open_publications | length }}">{{ open_publications | length }}</span><span class="stat-l">open consultations in scope{% if snapshot_date %}, as of {{ snapshot_date | date }}{% endif %}</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions stored</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen submissions counted, never stored</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">cabinet meetings, 2024 to 2029 mandate</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">document pages indexed</span></div>
+</section>
+
+<section id="demo">
+  <h2>Precomputed organisations</h2>
+  {% if demo_organisations %}
+  <p class="muted">{% if static_mode %}Organisations with a precomputed page: matches with a reason, who already answered, cabinet meetings and the proposal passages closest to their profile.{% else %}Organisations with at least one run. Their pages show the full picture, including drafts where a reviewer said go.{% endif %}</p>
+  <ul class="card-list">
+    {% for o in demo_organisations %}
+    <li class="card">
+      <a class="card-title" href="{{ u('org', o.tr_id) }}">{{ o.name }}</a>
+      <div class="muted">{{ o.acronym ~ ', ' if o.acronym }}{{ o.category }}, {{ o.head_city | default('', true) | title }}{{ ', ' if o.head_city }}{{ o.head_country | title }}</div>
+      {% if not static_mode %}
+      <div class="tags">
+        <span class="tag">{{ o.runs }} run{{ 's' if o.runs != 1 }}</span>
+        {% if o.drafts %}<span class="tag">{{ o.drafts }} draft{{ 's' if o.drafts != 1 }}</span>{% endif %}
+        {% if o.machine_drafts %}<span class="tag warn">{{ o.machine_drafts }} awaiting review</span>{% endif %}
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No run yet. Search an organisation above and start one from its page.</p>
+  {% endif %}
+</section>
+
+<section id="consultations">
+  <h2>Open consultations in scope <span class="muted h-sub">by deadline{% if snapshot_date %}, open on {{ snapshot_date | date }}{% endif %}</span></h2>
+  <p id="closed-since" class="small muted" hidden></p>
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>Deadline</th><th>Consultation</th><th>Type</th><th class="num">Organisations</th><th class="num">Citizens</th></tr></thead>
+    <tbody>
+    {% for p in open_publications %}
+    <tr data-open-row>
+      <td class="nowrap" data-deadline="{{ p.end_date | deadline_iso }}">{{ p.end_date | date }} <span class="countdown muted small"></span></td>
+      <td><a href="{{ u('consultation', p.id) }}">{{ p.short_title or p.title }}</a>{% if p.dg %} <span class="muted">{{ p.dg }}</span>{% endif %}</td>
+      <td class="nowrap muted">{{ p.type | replace('_', ' ') | lower }}</td>
+      <td class="num">{{ p.org_feedback_count | num }}</td>
+      <td class="num">{{ p.citizen_feedback_count | num }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}

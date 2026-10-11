@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Review inbox</h1>
+<p class="lede">Nothing leaves this desk without a person. Blocking items pause a run until you decide; the others are flags to look at. {% if counts %}Open: {% for k, v in counts.items() %}<span class="tag">{{ k }} {{ v }}</span> {% endfor %}{% endif %}</p>
+
+<section>
+  <h2>Waiting for a decision <span class="muted h-sub">{{ blocking | length }}</span></h2>
+  {% if not blocking %}<p class="muted">No run is waiting.</p>{% endif %}
+  {% set drafts_first = blocking | selectattr('kind', 'equalto', 'draft_review') | list %}
+  {% set go_items = blocking | rejectattr('kind', 'equalto', 'draft_review') | list %}
+  {% if drafts_first %}<h3>Draft reviews <span class="muted h-sub">{{ drafts_first | length }}</span></h3>{% endif %}
+  {% for item in drafts_first %}{% include "partials/inbox_item.html" %}{% endfor %}
+  {% if go_items %}
+  <details {{ 'open' if not drafts_first and go_items | length <= 5 }}>
+    <summary><h3 class="inline">Go / no-go decisions</h3> <span class="muted small">{{ go_items | length }} run{{ 's' if go_items | length != 1 }} waiting{% if go_items | selectattr('requested_by', 'equalto', 'demo') | list %}, {{ go_items | selectattr('requested_by', 'equalto', 'demo') | list | length }} from the demo set{% endif %}</span></summary>
+    {% for item in go_items %}{% include "partials/inbox_item.html" %}{% endfor %}
+  </details>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Flags <span class="muted h-sub">{{ other | length }}</span></h2>
+  {% if not other %}<p class="muted">Nothing flagged.</p>{% else %}
+  <details>
+    <summary class="small">Show {{ other | length }} flag{{ 's' if other | length != 1 }} (uncertain relevance, near deadlines, low-confidence stances, critic removals)</summary>
+    {% for item in other %}{% include "partials/inbox_item.html" %}{% endfor %}
+  </details>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Decided recently <span class="muted h-sub">{{ decided | length }}</span></h2>
+  {% if decided %}
+  <div class="table-wrap">
+  <table class="table small">
+    <thead><tr><th>Decided</th><th>Kind</th><th>Organisation</th><th>Consultation</th><th>Decision</th><th>By</th></tr></thead>
+    <tbody>
+    {% for d in decided %}
+    <tr>
+      <td class="nowrap">{{ d.decided_at | datetime }}</td>
+      <td>{{ d.kind_label }}</td>
+      <td>{% if d.tr_id %}<a href="{{ u('org', d.tr_id) }}">{{ d.organisation or d.tr_id }}</a>{% endif %}</td>
+      <td>{% if d.publication_id %}<a href="{{ u('consultation', d.publication_id) }}">{{ (d.publication_title or d.publication_id) | string | truncate(60) }}</a>{% endif %}</td>
+      <td>{% set dec = d.decision or {} %}{% if d.kind == 'go_no_go' %}go {{ dec.go | join(', ') }}{% if dec.no_go %}; no-go {{ dec.no_go | join(', ') }}{% endif %}{% if dec.not_our_topic %}; not our topic {{ dec.not_our_topic | join(', ') }}{% endif %}{% elif d.kind == 'draft_review' %}{% for k, v in (dec['items'] or {}).items() %}{{ k }}: {{ v.action }}{{ '; ' if not loop.last }}{% endfor %}{% else %}{{ dec.action or '' }}{{ ' ' ~ dec.stance if dec.stance }}{% endif %}</td>
+      <td>{{ d.decided_by }}{% if d.run_id %} <a class="small" href="{{ u('run', d.run_id) }}">run</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}<p class="muted">Nothing decided yet.</p>{% endif %}
+</section>
+{% endblock %}

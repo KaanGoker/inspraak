@@ -1,0 +1,174 @@
+{
+ "pageable": {
+  "pageNumber": 0,
+  "pageSize": 100,
+  "sort": {
+   "sorted": true,
+   "unsorted": false,
+   "empty": false
+  },
+  "offset": 0,
+  "paged": true,
+  "unpaged": false
+ },
+ "last": true,
+ "totalPages": 1,
+ "totalElements": 5,
+ "sort": {
+  "sorted": true,
+  "unsorted": false,
+  "empty": false
+ },
+ "numberOfElements": 5,
+ "size": 100,
+ "number": 0,
+ "first": true,
+ "empty": false,
+ "content": [
+  {
+   "id": 33575822,
+   "referenceInitiative": "COM(2026)681",
+   "dateFeedback": "2026/10/03 04:22:05",
+   "feedback": "A citizen wrote this. It must never be stored.",
+   "language": "EN",
+   "userType": "EU_CITIZEN",
+   "country": "DNK",
+   "publication": "ANONYMOUS",
+   "status": "PUBLISHED",
+   "firstName": "Testa",
+   "surname": "Zorblatt",
+   "login": "",
+   "attachments": [
+    {
+     "id": 1,
+     "fileName": "testa_citizen_letter.pdf",
+     "pages": 2,
+     "documentId": "0900000000000001",
+     "size": 100
+    }
+   ],
+   "publicationId": 26173,
+   "isMyFeedback": false,
+   "isLikedByMe": false,
+   "isDislikedByMe": false,
+   "publicationStatus": "OPEN"
+  },
+  {
+   "id": 33575748,
+   "referenceInitiative": "COM(2026)681",
+   "dateFeedback": "2026/10/02 15:43:29",
+   "feedback": "Our organisation welcomes the proposal but asks for a clear definition of age assurance in Article 5.",
+   "language": "EN",
+   "userType": "NGO",
+   "country": "USA",
+   "companySize": "MEDIUM",
+   "publication": "WITHINFO",
+   "status": "PUBLISHED",
+   "firstName": "Contact",
+   "surname": "Pearsonic",
+   "login": "",
+   "organization": "Electronic Frontier Foundation (EFF)",
+   "attachments": [
+    {
+     "id": 2,
+     "fileName": "position_paper.pdf",
+     "ersFileName": "position_paper.pdf",
+     "pages": 12,
+     "documentId": "0900000000000002",
+     "size": 50000,
+     "pdfSize": 48000
+    }
+   ],
+   "publicationId": 26173,
+   "isMyFeedback": false,
+   "isLikedByMe": false,
+   "isDislikedByMe": false,
+   "publicationStatus": "OPEN",
+   "trNumber": "9832909575-41"
+  },
+  {
+   "id": 33575742,
+   "referenceInitiative": "COM(2026)681",
+   "dateFeedback": "2026/10/02 14:31:40",
+   "feedback": "We oppose the extension in Article 12.",
+   "language": "DE",
+   "userType": "COMPANY",
+   "country": "NLD",
+   "companySize": "SMALL",
+   "publication": "WITHINFO",
+   "status": "PUBLISHED",
+   "firstName": "Contact",
+   "surname": "Pearsonic",
+   "login": "",
+   "organization": "AI & Partners",
+   "attachments": [],
+   "publicationId": 26173,
+   "isMyFeedback": false,
+   "isLikedByMe": false,
+   "isDislikedByMe": false,
+   "publicationStatus": "OPEN",
+   "feedbackTextUserLanguage": "We oppose the extension in Article 12."
+  },
+  {
+   "id": 99999999,
+   "referenceInitiative": "COM(2026)681",
+   "dateFeedback": "2026/10/03 04:22:05",
+   "feedback": "Unknown type text, must be treated as a citizen row.",
+   "language": "EN",
+   "userType": "SOMETHING_NEW",
+   "country": "DNK",
+   "publication": "ANONYMOUS",
+   "status": "PUBLISHED",
+   "firstName": "Testa",
+   "surname": "Zorblatt",
+   "login": "",
+   "attachments": [
+    {
+     "id": 1,
+     "fileName": "testa_citizen_letter.pdf",
+     "pages": 2,
+     "documentId": "0900000000000001",
+     "size": 100
+    }
+   ],
+   "publicationId": 26173,
+   "isMyFeedback": false,
+   "isLikedByMe": false,
+   "isDislikedByMe": false,
+   "publicationStatus": "OPEN"
+  },
+  {
+   "id": 99999998,
+   "referenceInitiative": "COM(2026)681",
+   "dateFeedback": "2026/10/02 15:43:29",
+   "feedback": "NGO row without organisation name, treated as citizen.",
+   "language": "EN",
+   "userType": "NGO",
+   "country": "USA",
+   "companySize": "MEDIUM",
+   "publication": "WITHINFO",
+   "status": "PUBLISHED",
+   "firstName": "Contact",
+   "surname": "Pearsonic",
+   "login": "",
+   "organization": "",
+   "attachments": [
+    {
+     "id": 2,
+     "fileName": "position_paper.pdf",
+     "ersFileName": "position_paper.pdf",
+     "pages": 12,
+     "documentId": "0900000000000002",
+     "size": 50000,
+     "pdfSize": 48000
+    }
+   ],
+   "publicationId": 26173,
+   "isMyFeedback": false,
+   "isLikedByMe": false,
+   "isDislikedByMe": false,
+   "publicationStatus": "OPEN",
+   "trNumber": "9832909575-41"
+  }
+ ]
+}

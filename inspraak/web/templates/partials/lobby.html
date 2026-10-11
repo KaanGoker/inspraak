@@ -1,0 +1,31 @@
+{# expects: lobby (the lobby dict) #}
+<div class="lobby">
+  <p class="small">
+    <span class="tag warn">{{ lobby.note }}</span>
+    {% if lobby.capped %}The top {{ lobby.count }} cabinet meetings by similarity (the list stops at {{ lobby.count }}){% else %}{{ lobby.count }} cabinet meeting{{ 's' if lobby.count != 1 }}{% endif %} whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more{{ ', cached from the nightly map' if lobby.cached else ', computed from the snapshot' }}). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+    Source: <a href="{{ lobby.source_file }}" rel="noopener">Commission meetings file</a>, <a href="{{ lobby.source_portal }}" rel="noopener">portal</a>.
+  </p>
+  {% if lobby.count %}
+  <figure>
+    <figcaption>These {{ lobby.count }} meetings by register category of the interest representatives (a meeting with participants from two categories counts in both)</figcaption>
+    {{ lobby.by_category_chart | safe }}
+  </figure>
+  <div class="table-wrap">
+  <table class="table small">
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <tbody>
+    {% for m in lobby.meetings %}
+    <tr>
+      <td class="nowrap">{{ m.date | date }}</td>
+      <td>{{ m.cabinet | replace('Cabinet of ', '') }}</td>
+      <td>{% for o in m.orgs %}{% if o.tr_id %}<a href="{{ u('org', o.tr_id) }}">{{ o.name }}</a>{% else %}{{ o.name }}{% endif %}{% if o.category %} <span class="muted">({{ o.category }})</span>{% endif %}{{ '; ' if not loop.last }}{% endfor %}</td>
+      <td>{{ m.subject }}</td>
+      <td class="num">{{ m.score }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% if lobby.count > lobby.meetings | length %}<p class="muted small">Showing {{ lobby.meetings | length }} of {{ lobby.count }}.</p>{% endif %}
+  {% endif %}
+</div>

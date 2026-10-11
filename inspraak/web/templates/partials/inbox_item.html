@@ -1,0 +1,77 @@
+{# expects: item (inbox item dict); optional decided_now #}
+{% set pl = item.payload or {} %}
+<article class="item {{ 'blocking' if item.blocking }}" id="item-{{ item.id }}" data-kind="{{ item.kind }}" data-status="{{ item.status }}">
+  <header class="item-head">
+    <span class="tag {{ 'warn' if item.blocking }}">{{ item.kind_label }}</span>
+    {% if item.tr_id %}<a href="{{ u('org', item.tr_id) }}">{{ item.organisation or item.tr_id }}</a>{% endif %}
+    {% if item.publication_id %}<span class="muted">on</span> <a href="{{ u('consultation', item.publication_id) }}">{{ (item.publication_title or item.publication_id) | string | truncate(90) }}</a>{% endif %}
+    <span class="muted small">#{{ item.id }}, {{ item.created_at | datetime }}{% if item.run_id %}, <a href="{{ u('run', item.run_id) }}">run trace</a>{% endif %}</span>
+    {% if item.triggers %}<span class="muted small">triggers: {{ item.triggers | join('; ') }}</span>{% endif %}
+  </header>
+
+  {% if item.status == 'decided' %}
+  <p class="small"><span class="tag ok">decided</span> by {{ item.decided_by }} at {{ item.decided_at | datetime }}.
+    {% if decided_now and decided_now.run %} Run is now <strong>{{ decided_now.run.status }}{{ ', ' ~ decided_now.run.stage if decided_now.run.status == 'waiting' }}</strong> ({{ decided_now.dispatch }}). <a href="{{ u('run', decided_now.run.id) }}">Open the run</a>.{% endif %}</p>
+  {% else %}
+  <form method="post" action="/review/{{ item.id }}" hx-post="/review/{{ item.id }}" hx-target="#item-{{ item.id }}" hx-swap="outerHTML" class="form">
+
+    {% if item.kind == 'go_no_go' %}
+    <p class="small">{{ pl.consultations | length }} matching consultation{{ 's' if pl.consultations | length != 1 }}. Decide each one; "not our topic" also teaches the matcher.</p>
+    {% for c in pl.consultations %}
+    <fieldset class="choice">
+      <legend><a href="{{ u('consultation', c.publication_id) }}">{{ c.short_title or c.title }}</a> <span class="muted small">deadline {{ c.end_date | date }}{% if c.days_left is not none %}, {{ c.days_left }} days{% endif %}; similarity {{ '%.2f' % c.score }}, {{ c.band }}{% if c.escalations %}; {{ c.escalations | join(', ') }}{% endif %}</span></legend>
+      {% if c.summary %}<p class="small">{{ c.summary.one_paragraph }}</p>{% endif %}
+      {% if c.stances_labelled %}<p class="small muted">Stances so far: {% for k, v in c.stances_labelled.items() %}{{ k }} {{ v }}{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
+      <div class="radios">
+        <label><input type="radio" name="decision_{{ c.publication_id }}" value="go"> go, draft a response</label>
+        <label><input type="radio" name="decision_{{ c.publication_id }}" value="no_go" checked> no-go this time</label>
+        <label><input type="radio" name="decision_{{ c.publication_id }}" value="not_our_topic"> not our topic</label>
+      </div>
+    </fieldset>
+    {% endfor %}
+
+    {% elif item.kind == 'draft_review' %}
+    <p class="small"><span class="tag warn">{{ pl.label }}</span> Approve as is, edit the text (your version is kept as a preference for the next draft), or reject.</p>
+    {% for d in pl.drafts %}
+    <fieldset class="choice">
+      <legend><a href="{{ u('consultation', d.publication_id) }}">{{ d.title or d.publication_id }}</a> <span class="muted small">{{ d.chars | num }} of 4,000 characters, stance {{ d.stance_label }}{% if d.critic %}, critic kept {{ d.critic.supported }} of {{ d.critic.sentences }} sentences{% endif %}</span></legend>
+      <textarea name="text_{{ d.publication_id }}" rows="14" maxlength="4000">{{ d.text }}</textarea>
+      {% if d.critic and d.critic.removed %}
+      <details class="small"><summary>{{ d.critic.removed | length }} sentence{{ 's' if d.critic.removed | length != 1 }} removed by the critic (not in the text above)</summary>
+        <ul>{% for r in d.critic.removed %}<li>"{{ r.sentence }}" <span class="muted">{{ r.note }}</span></li>{% endfor %}</ul></details>
+      {% endif %}
+      <div class="radios">
+        <label><input type="radio" name="action_{{ d.publication_id }}" value="approve" checked> approve</label>
+        <label><input type="radio" name="action_{{ d.publication_id }}" value="edit"> approve my edited text</label>
+        <label><input type="radio" name="action_{{ d.publication_id }}" value="reject"> reject</label>
+      </div>
+      <label>Note <input name="note_{{ d.publication_id }}" placeholder="optional"></label>
+    </fieldset>
+    {% endfor %}
+
+    {% else %}
+    <div class="small">
+      {% if item.kind == 'relevance' %}Matched with similarity {{ '%.2f' % (pl.score or 0) }}, in the uncertain band.
+      {% elif item.kind == 'deadline' %}Feedback period closes in {{ pl.deadline_days }} days.
+      {% elif item.kind == 'critic' %}The critic removed {{ pl.removed }} unsupported sentence{{ 's' if pl.removed != 1 }} from the draft; they are listed on the draft.
+      {% elif item.kind == 'stance' %}Model stance "{{ pl.stance }}" at confidence {{ pl.confidence }} for {{ pl.organization or 'a submission' }}; held back from the page until you set it.
+      {% elif item.kind == 'attachment' %}{{ pl.organization or 'A submission' }} has no text and {{ pl.attachments or pl.count or 0 }} attachment{{ 's' if (pl.attachments or pl.count or 0) != 1 }}{% if item.triggers and 'unparseable attachment' in item.triggers %} that could not be read (scanned or unsupported format){% else %}; the consultation is a questionnaire or the submission was an upload{% endif %}.
+      {% elif item.kind == 'conflict' %}Earlier stored position "{{ pl.earlier }}", draft says "{{ pl.draft }}".
+      {% else %}{{ pl }}{% endif %}
+      {% if item.feedback %}<span class="muted">{{ item.feedback.user_type }}{{ ', ' ~ item.feedback.country if item.feedback.country }}.</span> <a href="{{ item.feedback.source }}" rel="noopener">source</a>{% endif %}
+    </div>
+    <div class="radios">
+      <label><input type="radio" name="action" value="acknowledge" checked> seen</label>
+      {% if item.kind == 'relevance' %}<label><input type="radio" name="action" value="not_our_topic"> not our topic (teaches the matcher)</label>{% endif %}
+      {% if item.kind == 'stance' %}<label>set stance <select name="stance"><option value="">keep model stance</option>{% for code, lab in stances %}<option value="{{ code }}">{{ lab }}</option>{% endfor %}</select></label>{% endif %}
+    </div>
+    <label>Note <input name="note" placeholder="optional"></label>
+    {% endif %}
+
+    <div class="form-row">
+      <label>Your name <input name="decided_by" value="reviewer"></label>
+      <button type="submit">{{ 'Decide and resume the run' if item.blocking else 'Record' }}</button>
+    </div>
+  </form>
+  {% endif %}
+</article>

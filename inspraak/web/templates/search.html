@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Search</h1>
+<form class="search" action="{{ u('search') }}" method="get" role="search">
+  <label class="visually-hidden" for="q">Organisation</label>
+  <input id="q" name="q" type="search" value="{{ q }}" autocomplete="off">
+  <button type="submit">Search</button>
+</form>
+<div class="results">{% include "partials/search_results.html" %}</div>
+{% endblock %}

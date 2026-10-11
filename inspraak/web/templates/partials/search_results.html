@@ -1,0 +1,15 @@
+{% if q and q | trim | length >= 2 %}
+  {% if results %}
+  <ul class="result-list">
+    {% for o in results %}
+    <li>
+      <a href="{{ u('org', o.tr_id) }}">{{ o.name }}</a>
+      <span class="muted">{{ o.acronym ~ ', ' if o.acronym }}{{ o.category }}, {{ o.head_country | default('', true) | title }}</span>
+      {% if o.has_runs %}<span class="tag">precomputed</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No registrant matches "{{ q }}". The search covers names, acronyms and register IDs of the {{ "whole register export" }}.</p>
+  {% endif %}
+{% endif %}

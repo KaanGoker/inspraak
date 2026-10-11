@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+{% set p = publication %}
+<nav class="crumbs"><a href="{{ u('home') }}#consultations">Consultations</a> / {{ p.id }}</nav>
+<h1>{{ p.short_title or p.title }}</h1>
+<p class="lede">{{ p.title }}</p>
+<p class="small">
+  <span class="tag {{ 'ok' if p.is_open else '' }}">{{ 'open on ' ~ (snapshot_date | date) if p.is_open and static_mode and snapshot_date else ('open' if p.is_open else 'closed') }}</span>
+  {{ p.type | replace('_', ' ') | lower }}{% if p.initiative_reference %}, {{ p.initiative_reference }}{% endif %}{% if p.dg %}, {{ p.dg }}{% endif %}.
+  Feedback period {{ p.published_at | date }} to <strong>{{ p.end_date | date }}</strong>{% if p.is_open %} <span data-deadline="{{ p.end_date | deadline_iso }}">(<span class="countdown">open</span>)</span>{% endif %}.
+  <a href="{{ p.source }}" rel="noopener">Initiative on the portal</a>.
+  {% if p.topics %}<span class="muted">Topics: {{ p.topics | join(', ') }}.</span>{% endif %}
+</p>
+{% if initiatives | length > 1 %}
+<p class="small muted">Grouped call: this publication belongs to {{ initiatives | length }} initiatives: {% for i in initiatives %}<a href="{{ i.source }}" rel="noopener">{{ i.short_title }}</a>{{ '; ' if not loop.last }}{% endfor %}.</p>
+{% endif %}
+
+<section class="block">
+  <h2>What the Commission proposes</h2>
+  {% if summary %}
+  <p>{{ summary.summary.one_paragraph }}</p>
+  {% if summary.summary.key_points %}<ul>{% for k in summary.summary.key_points %}<li>{{ k }}</li>{% endfor %}</ul>{% endif %}
+  {% if summary.summary.affected_groups %}<p class="small"><strong>Affected, as named in the text:</strong> {{ summary.summary.affected_groups | join('; ') }}.</p>{% endif %}
+  {% if summary.summary.what_is_asked %}<p class="small"><strong>What is asked:</strong> {{ summary.summary.what_is_asked }}</p>{% endif %}
+  <p class="muted small">Summary written from {{ summary.source_chunks }} passages of the Commission document by {{ summary.model }} on {{ summary.created_at | date }}; cached and shared by every organisation.</p>
+  {% else %}
+  <p class="muted">No cached summary yet.</p>
+  {% endif %}
+  {% if dossier_summary %}
+  <details class="small"><summary>Dossier summary from the portal</summary><p>{{ dossier_summary }}</p></details>
+  {% endif %}
+  {% if documents %}
+  <p class="small">Commission documents: {% for d in documents %}<a href="{{ d.source }}" rel="noopener">{{ (d.title or d.filename or d.document_id) | truncate(80) }}</a> ({{ d.language }}{% if d.pages_extracted %}, {{ d.pages_extracted }} pages{% endif %}{% if d.parse_status != 'ok' %}, {{ d.parse_status }}{% endif %}){{ '; ' if not loop.last }}{% endfor %}.</p>
+  {% else %}<p class="muted small">No Commission document attached to this publication.</p>{% endif %}
+</section>
+
+<section class="block">
+  <h2>Who already submitted</h2>
+  {% with land = landscape, pub = p %}{% include "partials/landscape.html" %}{% endwith %}
+</section>
+
+<section class="block">
+  <h2>Who met the cabinets on the subject</h2>
+  {% with lobby = lobby %}{% include "partials/lobby.html" %}{% endwith %}
+</section>
+
+{% if not static_mode %}
+<section class="block">
+  <h2>Drafts written for this consultation</h2>
+  {% if drafts %}
+  <ul class="plain">
+    {% for d in drafts %}
+    <li><a href="{{ u('org', d.tr_id) }}#c{{ p.id }}">{{ d.organisation }}</a>: <span class="tag {{ 'warn' if d.status == 'machine_draft' else ('ok' if d.status in ('approved', 'edited') else 'bad') }}">{{ d.status_label }}</span> <span class="muted small">version {{ d.version }}, {{ d.chars | num }} characters, {{ d.created_at | datetime }}, <a href="{{ u('run', d.run_id) }}">run trace</a></span></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="muted small">None. Drafts are written only after a reviewer says go for an organisation.</p>{% endif %}
+</section>
+{% endif %}
+{% endblock %}
