@@ -29,7 +29,7 @@ services:
       timeout: 3s
       retries: 20
 
-  # api, worker and beat run the checked-out code from the uv image: the first start
+  # api and worker run the checked-out code from the uv image: the first start
   # syncs the environment into a named volume (a few minutes), later starts are quick.
   api:
     image: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
@@ -79,32 +79,13 @@ services:
         condition: service_healthy
     profiles: ["workers"]
 
-  beat:
-    image: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
-    working_dir: /app
-    volumes:
-      - .:/app
-      - beat_venv:/opt/venv
-      - uv_cache:/root/.cache/uv
-    env_file: .env
-    environment:
-      DATABASE_URL: postgresql://inspraak:${POSTGRES_PASSWORD:-inspraak}@postgres:5432/inspraak
-      REDIS_URL: redis://redis:6379/0
-      UV_PROJECT_ENVIRONMENT: /opt/venv
-    command: uv run celery -A inspraak.queue beat -l info
-    depends_on:
-      redis:
-        condition: service_healthy
-    profiles: ["workers"]
-
   # `docker compose up` starts postgres, redis and the api on http://localhost:8010.
-  # `docker compose --profile workers up` adds the worker and beat; without the profile
-  # `make worker` / `make beat` run them on the host and the api falls back to inline
-  # runs when no broker consumer is there.
+  # `docker compose --profile workers up` adds the worker; without the profile
+  # `make worker` runs it on the host and the api falls back to inline runs when no
+  # broker consumer is there.
 
 volumes:
   pgdata:
   api_venv:
   worker_venv:
-  beat_venv:
   uv_cache:

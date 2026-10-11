@@ -1,7 +1,7 @@
 UV ?= uv
 RUN := $(UV) run
 
-.PHONY: up down migrate ingest ingest-offline embed precompute demo worker beat probe web export test lint stats
+.PHONY: up down migrate ingest ingest-offline embed precompute demo worker probe web export test lint stats
 
 up:            ## start postgres (5544) and redis (6390), wait until healthy, migrate
 	docker compose up -d --wait
@@ -30,9 +30,6 @@ demo:          ## brief stage for demo_set.csv (one run per organisation without
 
 worker:        ## celery worker for the brief and nightly queues
 	$(RUN) celery -A inspraak.queue worker -Q brief,nightly -l info --concurrency 1
-
-beat:          ## celery beat: nightly snapshot 02:30, precompute 04:30 (Europe/Brussels)
-	$(RUN) celery -A inspraak.queue beat -l info
 
 probe:         ## one tiny model call with the configured provider
 	$(RUN) inspraak llm probe

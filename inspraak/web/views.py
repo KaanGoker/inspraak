@@ -775,10 +775,9 @@ def exported_run_ids(conn: psycopg.Connection, tr_id: str) -> list[str]:
 
 
 PROVIDER_LABELS = {
-    "agy": "Gemini Flash, through the Antigravity CLI",
-    "claude_cli": "Claude Haiku, through the Claude Code CLI",
-    "gemini": "Gemini API, free tier",
-    "anthropic": "Anthropic API",
+    "agy": "Gemini Flash, batch",
+    "claude_cli": "Claude Haiku, batch",
+    "gemini": "Gemini Flash Lite, API",
 }
 EVAL_PATH = Path(__file__).resolve().parents[2] / "docs" / "eval.json"
 

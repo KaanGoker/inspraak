@@ -1,5 +1,6 @@
-"""LLM providers: gemini, anthropic (optional), fake. `get_provider()` builds the one
-named by LLM_PROVIDER with the shared Redis token bucket and the call log."""
+"""LLM providers: gemini, fake, and two command line providers for bulk work (claude_cli,
+agy). `get_provider()` builds the one named by LLM_PROVIDER with the shared Redis token
+bucket and the call log."""
 
 from __future__ import annotations
 
@@ -54,16 +55,6 @@ def make_provider(
             recorder=recorder,
             max_attempts=settings.llm_max_attempts,
         )
-    if name == "anthropic":
-        from inspraak.llm.anthropic_provider import AnthropicProvider
-
-        return AnthropicProvider(
-            settings.anthropic_model,
-            settings.anthropic_api_key,
-            bucket=bucket,
-            recorder=recorder,
-            max_attempts=settings.llm_max_attempts,
-        )
     if name == "claude_cli":
         import os
 
@@ -87,9 +78,7 @@ def make_provider(
             recorder=recorder,
             max_attempts=settings.llm_max_attempts,
         )
-    raise ValueError(
-        f"unknown LLM_PROVIDER {name!r}; use gemini, anthropic, claude_cli, agy or fake"
-    )
+    raise ValueError(f"unknown LLM_PROVIDER {name!r}; use gemini, claude_cli, agy or fake")
 
 
 @lru_cache(maxsize=1)

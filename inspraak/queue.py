@@ -1,10 +1,9 @@
 """Celery app: the `brief` queue for organisation runs (with a visible queue position kept
-in a Redis list), the `nightly` queue for the snapshot and the publication-layer
-precompute, and the beat schedule. The model rate limit is not a Celery setting: every
-process shares the Redis token bucket in `inspraak.llm.bucket`.
+in a Redis list) and the `nightly` queue for the snapshot and the publication-layer
+precompute, sent by hand or by an external scheduler. The model rate limit is not a Celery
+setting: every process shares the Redis token bucket in `inspraak.llm.bucket`.
 
     uv run celery -A inspraak.queue worker -Q brief,nightly -l info
-    uv run celery -A inspraak.queue beat -l info
 """
 
 from __future__ import annotations
@@ -12,7 +11,6 @@ from __future__ import annotations
 from typing import Any
 
 from celery import Celery
-from celery.schedules import crontab
 
 from inspraak.config import get_settings
 
@@ -33,18 +31,6 @@ celery_app.conf.update(
     timezone=settings.timezone,
     enable_utc=True,
     broker_connection_retry_on_startup=True,
-    beat_schedule={
-        "nightly-snapshot": {
-            "task": "inspraak.nightly_snapshot",
-            "schedule": crontab(hour=2, minute=30),
-            "options": {"queue": "nightly"},
-        },
-        "precompute-publications": {
-            "task": "inspraak.precompute_publications",
-            "schedule": crontab(hour=4, minute=30),
-            "options": {"queue": "nightly"},
-        },
-    },
 )
 
 QUEUE_KEY = "inspraak:brief:queue"

@@ -47,8 +47,6 @@ class Settings:
     llm_provider: str
     gemini_api_key: str
     gemini_model: str
-    anthropic_api_key: str
-    anthropic_model: str
     llm_rpm: int
     llm_rpd: int
     llm_max_attempts: int
@@ -105,8 +103,6 @@ def get_settings() -> Settings:
         # Verified 3 October 2026 with a real call: served on the free tier, structured
         # output works. The pricing page lists it as free of charge.
         gemini_model=os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite"),
-        anthropic_api_key=os.environ.get("ANTHROPIC_API_KEY", ""),
-        anthropic_model=os.environ.get("ANTHROPIC_MODEL", "claude-haiku-4-5"),
         # Self-imposed budget, shared through Redis by every process. Google no longer
         # publishes a free-tier table (the docs point to AI Studio); third-party pages
         # report 30 requests per minute and 1,000 per day for flash-lite. Stay well under.

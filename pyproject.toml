@@ -32,11 +32,6 @@ dependencies = [
 [project.scripts]
 inspraak = "inspraak.cli:app"
 
-[project.optional-dependencies]
-anthropic = [
-    "anthropic>=0.40",
-]
-
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
 

@@ -64,7 +64,7 @@ Choices worth knowing about:
 - **Frugal model use.** The live path uses the Gemini free tier (`gemini-3.5-flash-lite`) behind a shared Redis token bucket. A cold organisation with one go costs 3 calls: one rerank of its 15 strongest candidates, then draft and critic. The rerank is cached per organisation and publication, so page reads never call a model. Embeddings run locally with a small multilingual model, so they use no quota.
 - **Matching in three steps.** Embedding similarity with a hub penalty (consultations close to almost every profile lose a little), one card per initiative, and a batched model rerank that returns a relevance and a reason. Without a model the embedding order stands.
 - **Batch providers for the backfill.** Two command line providers handle bulk work: `agy` (Antigravity CLI, Gemini Flash, with a fallback chain of models) and `claude_cli` (the Claude Code CLI, Haiku at low effort). The batch job puts 10 submissions into one call; each answer must echo the opening words of its own submission, or it is discarded and that submission goes through a single call instead.
-- **Runs without a key.** `LLM_PROVIDER=fake` is a deterministic stub. The whole system and the full test suite run on it. An `anthropic` API provider exists but was not exercised.
+- **Runs without a key.** `LLM_PROVIDER=fake` is a deterministic stub. The whole system and the full test suite run on it. 
 - **Privacy guard.** Names are dropped from every feedback row. Rows from EU and non-EU citizens are counted and nothing else of them is stored; a database constraint refuses content on those rows. On the pages, a submitter with no register number that declared itself a micro company is shown as "Micro company, <country>", and digit runs of 8 or more in organisation names (tax numbers) are masked.
 - **Request time never touches the live sites.** Pages are computed from the local snapshot.
 - **Guarded writes.** Optional `REVIEW_TOKEN` basic auth on the inbox and every POST, a same-origin check, a per-client rate limit, one run in flight per organisation. Postgres, Redis and the app are bound to 127.0.0.1.
@@ -110,7 +110,7 @@ make ingest                       # full snapshot, 1 request per second, resumab
 make web                          # http://127.0.0.1:8010
 ```
 
-`docker compose up -d --wait` also starts the app on http://127.0.0.1:8010 (it applies the migrations first; the first start installs the environment into a volume, which takes a few minutes). `docker compose --profile workers up` adds the Celery worker and beat. Without a worker, runs execute inside the request.
+`docker compose up -d --wait` also starts the app on http://127.0.0.1:8010 (it applies the migrations first; the first start installs the environment into a volume, which takes a few minutes). `docker compose --profile workers up` adds the Celery worker. Without a worker, runs execute inside the request.
 
 The first full ingest downloads about 120 MB for the register and 160 MB for the Commission data, and takes a while because requests are spaced one second apart.
 
@@ -168,7 +168,7 @@ inspraak/
   embeddings.py     fills the vector columns
   http.py           polite fetcher with retries
   ingest/           register, hys, meetings, documents, raw cache
-  llm/              provider interface, gemini, anthropic, fake, token bucket, schemas
+  llm/              provider interface, gemini, fake, batch providers, token bucket, schemas
   jobs/             publication layer: reader, analyst (quote verification), meetings map
   agents/           the graph: state, nodes, matcher, memory, trace, service API
   queue.py          Celery app, brief queue with position, nightly schedule

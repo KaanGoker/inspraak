@@ -98,13 +98,12 @@ validated pydantic object. The base class owns the Redis token bucket (`LLM_RPM`
 backoff on 429 and 5xx (5, 15, 30, 60 s), one corrective retry on invalid JSON, the dash
 post-filter on every string the model returns, and the `llm_calls` log. When the daily
 budget is spent, `QuotaExhausted` is raised and the job stops and reports. Providers:
-`gemini` (google-genai, JSON mode with the schema), `anthropic` (optional extra, forced
-tool), `fake` (deterministic, purpose-aware, used by every test), and two command line
-providers for bulk backfills on a machine where the CLI is logged in: `agy` (Antigravity
-CLI, schema in the prompt, a model chain from `AGY_MODELS` that moves to the next model
-when one reports its quota spent) and `claude_cli` (`claude -p` with `--json-schema`, no
-tools, no settings, model and effort from `CLAUDE_CLI_MODEL` and `CLAUDE_CLI_EFFORT`,
-default Haiku at low effort). Neither uses the Gemini token bucket.
+`gemini` (google-genai, JSON mode with the schema, the live path), `fake` (deterministic,
+purpose-aware, used by every test), and two batch providers for the one-off backfill of
+the publication layer: `agy` (Gemini Flash, schema in the prompt, a model chain from
+`AGY_MODELS` that moves to the next model when one reports its quota spent) and
+`claude_cli` (Claude Haiku, model and effort from `CLAUDE_CLI_MODEL` and
+`CLAUDE_CLI_EFFORT`). Neither uses the Gemini token bucket.
 
 `inspraak/jobs/batch.py` runs the feedback analyst in parallel threads for those
 providers, 10 submissions per call. Each answer must echo the opening words of its own
@@ -118,8 +117,8 @@ single pass and the publication summaries down a provider list (default `agy,cla
 Celery on Redis (`inspraak/queue.py`). Queue `brief`: `run_brief`, `resume_brief`, one task at
 a time per worker (`worker_prefetch_multiplier = 1`, `acks_late`), queue position kept in
 the Redis list `inspraak:brief:queue` and shown by `get_run`. Queue `nightly`:
-`nightly_snapshot` (02:30) and `precompute_publications` (04:30), Europe/Brussels. The
-precompute walks the scope in budget order (`jobs.publications_to_precompute`: open
+`nightly_snapshot` and `precompute_publications`, sent by hand or by an external
+scheduler (there is no built-in schedule). The precompute walks the scope in budget order (`jobs.publications_to_precompute`: open
 publications by nearest deadline, then the closed ones, most recently closed first), the
 analyst's `feedback_limit` caps model calls per publication and pass (rows without readable
 text are free and always recorded), and the pass stops cleanly when the daily budget is
@@ -205,5 +204,5 @@ The about page reads its evaluation numbers from `docs/eval.json`. At the end of
 (organisations) or plain text, so the export has no broken internal links.
 
 `docker-compose.yml`: `api` on 8010 (migrates, then `uv run inspraak web`, healthcheck on `/healthz`,
-first start syncs the environment into a named volume), `worker` and `beat` under the
+first start syncs the environment into a named volume), `worker` under the
 `workers` profile, each with its own venv volume and a shared uv cache.

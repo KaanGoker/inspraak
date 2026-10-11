@@ -1,4 +1,4 @@
-"""Celery app: routes, beat schedule, queue position list (Redis)."""
+"""Celery app: routes, queue position list (Redis)."""
 
 from __future__ import annotations
 
@@ -7,12 +7,11 @@ import pytest
 from inspraak import queue
 
 
-def test_tasks_routes_and_beat_schedule():
+def test_tasks_and_routes():
     conf = queue.celery_app.conf
     assert conf.task_routes["inspraak.run_brief"]["queue"] == "brief"
     assert conf.task_routes["inspraak.nightly_snapshot"]["queue"] == "nightly"
-    assert set(conf.beat_schedule) == {"nightly-snapshot", "precompute-publications"}
-    assert conf.beat_schedule["nightly-snapshot"]["task"] == "inspraak.nightly_snapshot"
+    assert not conf.beat_schedule  # no built-in schedule: the nightly tasks are sent by hand
     assert conf.worker_prefetch_multiplier == 1 and conf.task_acks_late is True
     assert {
         "inspraak.run_brief",
