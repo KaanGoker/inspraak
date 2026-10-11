@@ -203,10 +203,12 @@ a new one, so the run carries the current match list; nothing is deleted). Evalu
 
 ## Guarding the web app
 
-A middleware in `web/app.py` guards every write. `REVIEW_TOKEN`, when set, puts basic auth on
-`/inbox` and every POST. A POST from another origin gets 403 (a same-origin check stands in
-for CSRF tokens). `WRITE_RATE_PER_10MIN` (default 20) limits writes per client. Compose binds
-the app, Postgres and Redis to 127.0.0.1.
+A middleware in `web/app.py` guards the app. `REVIEW_TOKEN`, when set, puts basic auth on
+every path except `/static/` and `/healthz`: the pages show drafts, decisions and reviewer
+notes, so reading is as private as writing, and the public face is the static export. A
+POST from another origin gets 403 (a same-origin check stands in for CSRF tokens).
+`WRITE_RATE_PER_10MIN` (default 20) limits writes per client. Compose binds the app,
+Postgres and Redis to 127.0.0.1.
 
 ## Web and static export
 

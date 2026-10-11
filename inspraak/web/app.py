@@ -38,10 +38,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
 
     # ------------------------------------------------------------------ guards
-    # Writes start model calls (runs, go decisions) or change what later prompts read
-    # (profile edits), so they are guarded: same-origin check against cross-site form
-    # posts, optional shared-secret basic auth, a per-client rate limit.
+    # With REVIEW_TOKEN set, every path but the static files and the health check asks
+    # for the token: the app shows drafts, decisions and reviewer notes on its pages, so
+    # reading is as private as writing. Writes also start model calls (runs, go
+    # decisions) or change what later prompts read (profile edits), so they get a
+    # same-origin check against cross-site form posts and a per-client rate limit.
     recent: dict[str, deque[float]] = defaultdict(deque)
+    OPEN_PATHS = ("/healthz",)
+    OPEN_PREFIXES = ("/static/",)
 
     def _authorised(request: Request) -> bool:
         if not settings.review_token:
@@ -76,7 +80,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def guard(request: Request, call_next):
         path = request.url.path
         writes = request.method == "POST"
-        if writes or path.startswith("/inbox"):
+        if path not in OPEN_PATHS and not path.startswith(OPEN_PREFIXES):
             if not _authorised(request):
                 return Response(
                     "review token required",

@@ -85,7 +85,7 @@ def test_export_writes_a_relative_static_site(snapshot, agent_env, tmp_path):
     # consultation pages carry model readings of named submissions: out of search engines too
     assert noindex in (out / "consultation" / f"{PUB}.html").read_text(encoding="utf-8")
     assert noindex not in (out / "about.html").read_text(encoding="utf-8")
-    assert "model reads as:" in org  # a stance is the model's reading, never the organisation's label
+    assert "model reads as:" in org  # a stance is the model's reading, not a label
     assert "Start a run" not in org and "<form" not in org
     assert "submissions in this snapshot" in org or "submission in this snapshot" in org
     assert 'data-deadline="' in org
@@ -109,10 +109,23 @@ def test_export_writes_a_relative_static_site(snapshot, agent_env, tmp_path):
 
 
 def test_export_with_an_explicit_organisation_and_no_runs(snapshot, agent_env, tmp_path):
+    edits = {"goals": "Corrected goals text", "note": "for the drafter"}
+    service.edit_profile(GREENPEACE, edits, by="kaan")
     out = tmp_path / "site"
     stats = export_site(out, organisations=[GREENPEACE, "000-00"])
     assert stats["organisations"] == 1 and stats["runs"] == 0
     org = (out / "org" / f"{GREENPEACE}.html").read_text(encoding="utf-8")
     assert "No run trace in this snapshot" in org
+    # a reviewer's correction is shown as the profile; the fact of the correction, the
+    # register values before it and the note for the drafter stay in the app
+    assert "Corrected goals text" in org
+    private = (
+        "reviewer corrections applied",
+        "Register values before correction",
+        "for the drafter",
+        "Reviewer note",
+    )
+    for text in private:
+        assert text not in org, text
     forbidden = "[" + "".join(chr(c) for c in (0x2012, 0x2013, 0x2014, 0x2015, 0x2212)) + "]"
     assert not re.search(forbidden, (out / "about.html").read_text("utf-8"))

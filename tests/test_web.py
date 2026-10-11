@@ -227,12 +227,17 @@ def test_write_actions_are_guarded(snapshot, agent_env, monkeypatch):
     monkeypatch.setenv("REVIEW_TOKEN", "s3cret")
     monkeypatch.setenv("WRITE_RATE_PER_10MIN", "2")
     client = TestClient(create_app(), follow_redirects=False)
-    assert client.get("/").status_code == 200  # reading stays open
+    # with a token every page asks for it: the app shows drafts and decisions
+    assert client.get("/").status_code == 401
+    assert client.get(f"/org/{GREENPEACE}").status_code == 401
     assert client.get("/inbox").status_code == 401
     assert client.post(f"/org/{GREENPEACE}/profile", data={"note": "x"}).status_code == 401
+    assert client.get("/healthz").status_code == 200  # the container health check stays open
+    assert client.get("/static/style.css").status_code == 200
     auth = {"Authorization": "Basic " + base64.b64encode(b"reviewer:s3cret").decode()}
     wrong = {"Authorization": "Basic " + base64.b64encode(b"reviewer:nope").decode()}
     assert client.get("/inbox", headers=wrong).status_code == 401
+    assert client.get("/", headers=auth).status_code == 200
     assert client.get("/inbox", headers=auth).status_code == 200
     evil = {**auth, "Origin": "https://evil.example"}
     r = client.post(f"/org/{GREENPEACE}/profile", data={"note": "x"}, headers=evil)

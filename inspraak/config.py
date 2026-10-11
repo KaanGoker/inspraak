@@ -118,8 +118,9 @@ def get_settings() -> Settings:
         deadline_days=_int("DEADLINE_DAYS", 7),
         draft_max_chars=_int("DRAFT_MAX_CHARS", 4000),
         analyst_min_confidence=_float("ANALYST_MIN_CONFIDENCE", 0.6),
-        # When set, the review inbox and every write action ask for HTTP basic auth with
-        # this password (any user name). Compose binds the ports to 127.0.0.1 either way.
+        # When set, every page but the static files and the health check asks for HTTP
+        # basic auth with this password (any user name). Compose binds the ports to
+        # 127.0.0.1 either way.
         review_token=os.environ.get("REVIEW_TOKEN", ""),
         write_rate_per_10min=_int("WRITE_RATE_PER_10MIN", 20),
     )

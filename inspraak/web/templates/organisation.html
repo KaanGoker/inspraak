@@ -12,7 +12,7 @@
 <aside class="side" id="profile">
   <section class="box">
     <h2>Profile as registered</h2>
-    {% if p.edited_fields %}<p class="small"><span class="tag ok">reviewer corrections applied</span> {{ p.edited_fields | join(', ') }}</p>{% endif %}
+    {% if p.edited_fields and not static_mode %}<p class="small"><span class="tag ok">reviewer corrections applied</span> {{ p.edited_fields | join(', ') }}</p>{% endif %}
     <dl class="dl">
       <dt>Goals</dt><dd>{% if p.goals and p.goals | length > 900 %}<details><summary>{{ p.goals | truncate(400) }}</summary>{{ p.goals }}</details>{% else %}{{ p.goals or 'not stated' }}{% endif %}</dd>
       {% if p.interests %}<dt>Interests ({{ p.interests | length }})</dt><dd>{% if p.interests | length > 12 %}<details><summary>{{ p.interests[:10] | join(', ') }} and {{ p.interests | length - 10 }} more</summary>{{ p.interests | join(', ') }}</details>{% else %}{{ p.interests | join(', ') }}{% endif %}</dd>{% endif %}
@@ -22,9 +22,9 @@
       {% if p.website %}<dt>Website</dt><dd><a href="{{ p.website if p.website.startswith('http') else 'https://' ~ p.website }}" rel="noopener">{{ p.website }}</a></dd>{% endif %}
       {% if p.total_budget or p.costs_min %}<dt>Budget</dt><dd>{% if p.total_budget %}{{ p.total_budget | num }} EUR{% else %}{{ p.costs_min | num }} to {{ p.costs_max | num }} EUR (lobbying costs){% endif %}{% if p.fin_year_end %}, year to {{ p.fin_year_end | date }}{% endif %}</dd>{% endif %}
       {% if p.members_fte %}<dt>Staff on EU files</dt><dd>{{ "%g" | format(p.members_fte | float | round(1)) }} FTE{% if p.ep_accredited %}, {{ p.ep_accredited }} EP accredited{% endif %}</dd>{% endif %}
-      {% if p.note %}<dt>Reviewer note</dt><dd>{{ p.note }}</dd>{% endif %}
+      {% if p.note and not static_mode %}<dt>Reviewer note</dt><dd>{{ p.note }}</dd>{% endif %}
     </dl>
-    {% if p.edited_fields %}
+    {% if p.edited_fields and not static_mode %}
     <details class="small"><summary>Register values before correction</summary>
       <dl class="dl">{% for k, v in p.register_values.items() %}{% if k != 'note' %}<dt>{{ k | replace('_', ' ') }}</dt><dd>{{ v | join(', ') if v is iterable and v is not string else (v or 'empty') }}</dd>{% endif %}{% endfor %}</dl>
     </details>
