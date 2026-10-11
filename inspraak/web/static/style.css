@@ -207,7 +207,8 @@ svg.bars { max-width: 560px; height: auto; display: block; }
 .hero h1 { max-width: 32ch; }
 .hero .lede { max-width: 75ch; }
 .asof { margin: 1rem 0 -.4rem; }
-.agents { margin: 1.2rem 0 .4rem; }
+.agents { margin: 1.6rem 0 .4rem; }
+.agents h2 { margin-bottom: .6rem; }
 .agent-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: .4rem; counter-reset: agent; }
 .agent { position: relative; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px; padding: .45rem .55rem .5rem; font-size: .78rem; line-height: 1.3; }
 .agent.human { border-top-color: var(--warn-ink); background: var(--warn-bg); }

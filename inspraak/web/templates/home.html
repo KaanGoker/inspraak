@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
-  <p class="kicker">Multi-agent system for EU public affairs</p>
+  <p class="kicker">Consultation radar for Brussels organisations</p>
   <h1>Which open Commission consultations should your organisation answer?</h1>
-  <p class="lede">Inspraak reads an organisation's EU Transparency Register profile, finds the open Have Your Say consultations that fit it, and shows who already answered, who met the Commissioners' cabinets on the subject and what the proposal says, with every figure linked to its public source. Seven agents do the work under a supervisor, and a person decides before anything is drafted.</p>
+  <p class="lede">Pick an organisation and get the open Have Your Say consultations that fit it, who already answered and what they asked, who met the Commissioners' cabinets on the subject and what the proposal says, with every figure linked to its public source. Agents do the reading; a person decides before anything is drafted.</p>
   {% if static_mode %}
   <div class="search">
     <label class="visually-hidden" for="q">Organisation</label>
-    <input id="q" type="search" placeholder="Search the exported organisations, e.g. BEUC" autocomplete="off">
+    <input id="q" type="search" placeholder="Find one of the {{ demo_organisations | length }} organisations, e.g. BEUC" autocomplete="off">
     <div id="results" class="results" aria-live="polite"></div>
   </div>
   <script>
@@ -24,7 +24,7 @@
       if (!hits.length) {
         var none = document.createElement('p');
         none.className = 'muted';
-        none.textContent = 'No exported organisation matches. The static demo holds only the precomputed set below.';
+        none.textContent = 'No match. This demo holds the organisations listed below.';
         out.appendChild(none);
         return;
       }
@@ -58,35 +58,10 @@
   {% endif %}
 </section>
 
-<section class="agents" aria-labelledby="agents-h">
-  <h2 id="agents-h" class="visually-hidden">How a run works</h2>
-  <ol class="agent-flow">
-    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
-    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
-    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
-    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
-    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
-    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
-    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
-    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
-  </ol>
-  <p class="agent-caption small"><span class="agent-sup">Supervisor</span> routes between the agents on what the run already holds, and a second human review closes the run. LangGraph with a Postgres checkpointer, so a run can wait days for a decision. {% if static_mode %}This snapshot shows the first five agents' output; drafts stay in the local app. {% endif %}<a href="{{ u('about') }}#method">Method and evaluation</a></p>
-</section>
-
-{% if snapshot_date %}<p class="asof small muted">Data as of {{ snapshot_date | datetime }} (Brussels time).</p>{% endif %}
-<section class="stats">
-  <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants in the register export</span></div>
-  <div class="stat"><span class="stat-n" id="open-count" data-n="{{ open_publications | length }}">{{ open_publications | length }}</span><span class="stat-l">open consultations in scope{% if snapshot_date %}, as of {{ snapshot_date | date }}{% endif %}</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions stored</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen submissions counted, never stored</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">cabinet meetings, 2024 to 2029 mandate</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">document pages indexed</span></div>
-</section>
-
 <section id="demo">
-  <h2>Precomputed organisations</h2>
+  <h2>Organisations <span class="muted h-sub">{{ demo_organisations | length }} with a page</span></h2>
   {% if demo_organisations %}
-  <p class="muted">{% if static_mode %}Organisations with a precomputed page: matches with a reason, who already answered, cabinet meetings and the proposal passages closest to their profile.{% else %}Organisations with at least one run. Their pages show the full picture, including drafts where a reviewer said go.{% endif %}</p>
+  <p class="muted">{% if static_mode %}Each page shows the open consultations that fit the organisation, with a reason, who already answered, cabinet meetings on the subject and the proposal passages closest to its profile.{% else %}Organisations with at least one run. Their pages show the full picture, including drafts where a reviewer said go.{% endif %}</p>
   <ul class="card-list">
     {% for o in demo_organisations %}
     <li class="card">
@@ -105,6 +80,31 @@
   {% else %}
   <p class="muted">No run yet. Search an organisation above and start one from its page.</p>
   {% endif %}
+</section>
+
+{% if snapshot_date %}<p class="asof small muted">Data as of {{ snapshot_date | datetime }} (Brussels time).</p>{% endif %}
+<section class="stats">
+  <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants in the register export</span></div>
+  <div class="stat"><span class="stat-n" id="open-count" data-n="{{ open_publications | length }}">{{ open_publications | length }}</span><span class="stat-l">consultations open today</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions stored</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen submissions counted, never stored</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">cabinet meetings, 2024 to 2029 mandate</span></div>
+  <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">document pages indexed</span></div>
+</section>
+
+<section class="agents" aria-labelledby="agents-h">
+  <h2 id="agents-h">How a page is made</h2>
+  <ol class="agent-flow">
+    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
+    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
+    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
+    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
+    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
+    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
+    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
+    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+  </ol>
+  <p class="agent-caption small"><span class="agent-sup">Supervisor</span> routes between the agents on what the run already holds, and a second human review closes the run. LangGraph with a Postgres checkpointer, so a run can wait days for a decision. {% if static_mode %}This snapshot shows the first five agents' output; drafts and decisions stay in the local app. {% endif %}<a href="{{ u('about') }}#method">Method and evaluation</a></p>
 </section>
 
 <section id="consultations">

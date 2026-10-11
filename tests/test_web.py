@@ -31,7 +31,7 @@ def client(snapshot, agent_env, monkeypatch):
 def test_pages_render_from_the_snapshot(client):
     r = client.get("/")
     assert r.status_code == 200
-    assert "Open consultations in scope" in r.text and "Precomputed organisations" in r.text
+    assert "Open consultations in scope" in r.text and "with a page" in r.text
     assert "/consultation/26173" in r.text
 
     r = client.get("/search", params={"q": "greenpeace"}, headers={"HX-Request": "true"})
