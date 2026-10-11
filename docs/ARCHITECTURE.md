@@ -4,6 +4,66 @@ Two layers over one Postgres snapshot. The publication layer runs nightly and is
 every organisation; the organisation layer runs on request, one LangGraph thread per run,
 and stops twice for a human.
 
+## Design notes
+
+- **Neutral framing.** The pages show counts and quotes. They never call an organisation
+  an opponent or an ally, and the stakeholder category comes from the register or the
+  feedback record, never from the model. Stance labels read "model reads as".
+- **Frugal model use.** The live path uses `gemini-3.5-flash-lite` on the free tier behind
+  a Redis token bucket shared by every process (`LLM_RPM`, `LLM_RPD`). A cold organisation
+  with one go costs 3 calls: one rerank of its 15 strongest candidates, then draft and
+  critic. The rerank is cached per organisation and publication, so page reads never call
+  a model. Embeddings run locally with a small multilingual model and use no quota.
+- **Matching in three steps.** Embedding similarity with a hub penalty (consultations
+  close to almost every profile lose a little), one card per initiative, and a batched
+  model rerank that returns a relevance and a reason. Without a model the embedding order
+  stands.
+- **Batch providers for the backfill.** Two batch providers (Gemini Flash and Claude
+  Haiku) handled the one-off backfill of the publication layer. The batch job puts 10
+  submissions into one call; each answer must echo the opening words of its own
+  submission, or it is discarded and that submission goes through a single call instead.
+- **Runs without a key.** `LLM_PROVIDER=fake` is a deterministic stand-in. The whole
+  system and the full test suite run on it.
+- **Privacy guard.** Names are dropped from every feedback row. Rows from EU and non-EU
+  citizens are counted and nothing else of them is stored; a database constraint refuses
+  content on those rows. On the pages, a submitter with no register number that declared
+  itself a micro company is shown as "Micro company, <country>", and digit runs of 8 or
+  more in organisation names (tax numbers) are masked.
+- **Request time never touches the live sites.** Pages are computed from the local
+  snapshot.
+- **Guarded writes.** Optional `REVIEW_TOKEN` basic auth on every page but `/static` and
+  `/healthz`, a same-origin check on every POST, a per-client rate limit, one run in
+  flight per organisation. Postgres, Redis and the app are bound to 127.0.0.1.
+
+## Project structure
+
+```
+inspraak/
+  cli.py            the `inspraak` command
+  config.py         settings from the environment, Brussels clock
+  db.py             connections, pool, SQL migrations
+  store.py          read-side queries
+  privacy.py        the guard for feedback rows
+  pdf.py            document bytes to text per page
+  textutil.py       cleaning, page-bound chunking
+  embed.py          local embedder (fastembed) and a test stand-in
+  embeddings.py     fills the vector columns
+  http.py           polite fetcher with retries
+  ingest/           register, hys, meetings, documents, raw cache
+  llm/              provider interface, gemini, fake, batch providers, token bucket, schemas
+  jobs/             publication layer: reader, analyst (quote verification), meetings map
+  agents/           the graph: state, nodes, matcher, memory, trace, service API
+  queue.py          Celery app, brief queue with position
+  web/              FastAPI app, view models, Jinja2 templates, SVG charts, CSS, htmx
+  export.py         static export with relative links
+  evaluate.py       the numbers behind docs/EVAL.md
+  migrations/       numbered plain SQL files
+tests/              parsers on recorded fixtures, provider, jobs, graph with interrupt and resume, web, export
+docs/               ARCHITECTURE.md, DATA.md, EVAL.md, eval.json, eval/ (precision judge)
+assets/             screenshots from the running app, brand files
+demo_set.csv        40 Belgian registrants used for the demo
+```
+
 ## Graph
 
 ```mermaid

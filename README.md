@@ -2,36 +2,37 @@
 
 # Inspraak
 
-Type the name of a Brussels organisation and get one page: the open European Commission consultations that fit it, who already answered, who met the cabinets on the subject, and what the proposal says, with every number linked to its public source.
+[![CI](https://github.com/KaanGoker/inspraak/actions/workflows/ci.yml/badge.svg)](https://github.com/KaanGoker/inspraak/actions/workflows/ci.yml)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue)](pyproject.toml)
+[![Licence MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
-**Live demo:** [kaangoker.github.io/inspraak](https://kaangoker.github.io/inspraak/), a static snapshot of 5 October 2026 (no drafts, no review decisions).
+Inspraak finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Built with LangGraph (two human checkpoints and a critic that removes any sentence it cannot cite), Postgres with pgvector and the Gemini free tier.
+
+**Live demo:** [kaangoker.github.io/inspraak](https://kaangoker.github.io/inspraak/), a static snapshot of 5 October 2026 with 40 Brussels organisations and 81 consultations. No drafts and no review decisions are public.
 
 Built by [Kaan Goker](https://kaangoker.dev) ([LinkedIn](https://linkedin.com/in/kaangoker)). Not affiliated with any organisation it shows.
 
-"Inspraak" is Dutch for having a say. The Commission's Have Your Say portal, the Transparency Register and the Commission meeting lists are three separate sites. This project joins them on a local Postgres snapshot, so a small organisation can see in a minute what a public affairs team would spend a day collecting.
-
 ![Organisation page](assets/organisation.png)
 
-## Features
+## What you get
 
-- **One page per organisation.** The profile as the EU Transparency Register states it (goals, interests, category), correctable by a reviewer. Below it the open consultations that match, one card per initiative, each with a one-line reason why it fits, and a draft on top when there is one.
-- **Who already answered.** Submissions per consultation, counted by stakeholder type and country, with verbatim quotes and up to three key asks per organisation submission. Every quote is checked against the source text and dropped when it is not found word for word.
-- **Who met the cabinets.** Commission meetings on a similar subject, counted by register category. The match is by subject similarity, so the page says "subject match, approximate" and shows the raw subject line of each row.
-- **What the proposal says.** The passages of the Commission document closest to the organisation's profile, each cited to a document and a page.
-- **A draft that a human approves.** Up to 4,000 characters, the Have Your Say limit. It is written only after a go decision and checked sentence by sentence by a critic: a fact needs a Commission passage, a position ("we support", "the Commission must") needs the organisation's own past submission or register goals, and anything else is removed. Nothing is ever submitted by the system.
-- **A review inbox.** Go or no-go, approve, edit, reject, "not our topic" (which reweights the matcher), and stance corrections. Drafts come first.
-- **A run trace.** Every agent step, tool call, token count, cache hit and duration is stored and readable.
-- **A public static export.** `inspraak export` writes the precomputed pages as plain files with relative links, so they serve from any sub-path (GitHub Pages included). The public pages leave out what belongs to the people using the app: drafts, go / no-go decisions, review notes, model confidence numbers and every run step after the pause for the human decision. Deadlines are dates with a countdown worked out in the reader's browser, so a page read weeks later still says "closed" at the right time. Organisation pages carry a robots noindex for now.
+Type the name or the Transparency Register ID of an organisation and get one page:
 
-![Draft with citations](assets/draft.png)
+- **The open consultations that fit it.** One card per initiative, each with a one-line reason why it fits, sorted by relevance.
+- **Who already answered.** Submissions counted by stakeholder type and country, and for each organisation submission the stance the model reads and up to three key asks with a verbatim quote. Every quote is checked word for word against the source and dropped when it is not found.
+- **What the proposal says.** The passages of the Commission document closest to the organisation's profile, each cited to a page of the PDF.
+- **Who met the cabinets** on a similar subject, from the Commission's own meeting lists. The match is by subject text and is marked approximate.
+- **A draft response** of at most 4,000 characters, the Have Your Say limit. It is written only after a reviewer says go, checked sentence by sentence by a critic, and waits for a second human decision. Nothing is ever submitted by the system.
 
-## Design notes
+Every number and quote links to its public source. The public demo shows the first four parts; drafts and review decisions stay in the local app.
 
-Two layers sit on one Postgres snapshot.
+## How it works
 
-The **publication layer** runs once per consultation and is shared by every organisation. It writes one summary per publication, one analysis per organisation submission, and a meetings map that uses no model at all. All of it is cached forever. A second organisation that matches the same consultation costs zero model calls.
+Two layers sit on one Postgres snapshot of three public sources: the EU Transparency Register (17,897 registrants), the Commission's Have Your Say portal (81 consultations in scope, 41 of them open) and the Commission's list of meetings with interest representatives (11,531 meetings).
 
-The **organisation layer** runs on request as one LangGraph thread. It stops twice for a human, at go or no-go and at draft review, and the state lives in a Postgres checkpointer, so a run can wait for days and resume in another process.
+The **publication layer** runs once per consultation and is shared by every organisation: a summary of the Commission document, one analysis per organisation submission with its quotes verified, and a meetings map that uses no model. All of it is cached forever, so a second organisation on the same consultation costs no model call.
+
+The **organisation layer** is one LangGraph run per organisation. A supervisor routes between the agents on what the state already holds. The run stops twice for a person, at go or no-go and at draft review, and waits in a Postgres checkpointer, for days if needed.
 
 ```mermaid
 graph TD
@@ -58,71 +59,52 @@ graph TD
     memory --> END([end])
 ```
 
-Choices worth knowing about:
+| Agent | Model calls | What it does |
+| --- | --- | --- |
+| profiler | 0 | The register entry, reviewer corrections, past submissions as the organisation's voice |
+| matcher | 0 or 1 | Embedding similarity with a hub penalty, one card per initiative, then one batched rerank that returns a relevance and a reason per consultation, cached |
+| landscape | 0 | Counts, stances and verified quotes from the cache |
+| lobby | 0 | Cabinet meetings on a similar subject |
+| reader | 0 or 1 | The cached summary and the passages closest to the profile, with page numbers |
+| go / no-go | 0 | Human checkpoint: the run pauses until a person decides per consultation |
+| drafter | 1 per go | A draft in the organisation's voice, within 4,000 characters |
+| critic | 1 per draft | A fact needs a Commission passage, a position needs the organisation's own past submission or register goals, anything else is removed and listed |
+| review | 0 | Human checkpoint: approve, edit or reject; an edit is kept as a preference for the next draft |
 
-- **Neutral framing.** The page shows counts and quotes. It never calls an organisation an opponent or an ally, and the stakeholder category comes from the register or the feedback record, never from the model.
-- **Frugal model use.** The live path uses the Gemini free tier (`gemini-3.5-flash-lite`) behind a shared Redis token bucket. A cold organisation with one go costs 3 calls: one rerank of its 15 strongest candidates, then draft and critic. The rerank is cached per organisation and publication, so page reads never call a model. Embeddings run locally with a small multilingual model, so they use no quota.
-- **Matching in three steps.** Embedding similarity with a hub penalty (consultations close to almost every profile lose a little), one card per initiative, and a batched model rerank that returns a relevance and a reason. Without a model the embedding order stands.
-- **Batch providers for the backfill.** Two command line providers handle bulk work: `agy` (Antigravity CLI, Gemini Flash, with a fallback chain of models) and `claude_cli` (the Claude Code CLI, Haiku at low effort). The batch job puts 10 submissions into one call; each answer must echo the opening words of its own submission, or it is discarded and that submission goes through a single call instead.
-- **Runs without a key.** `LLM_PROVIDER=fake` is a deterministic stub. The whole system and the full test suite run on it. 
-- **Privacy guard.** Names are dropped from every feedback row. Rows from EU and non-EU citizens are counted and nothing else of them is stored; a database constraint refuses content on those rows. On the pages, a submitter with no register number that declared itself a micro company is shown as "Micro company, <country>", and digit runs of 8 or more in organisation names (tax numbers) are masked.
-- **Request time never touches the live sites.** Pages are computed from the local snapshot.
-- **Guarded writes.** Optional `REVIEW_TOKEN` basic auth on the inbox and every POST, a same-origin check, a per-client rate limit, one run in flight per organisation. Postgres, Redis and the app are bound to 127.0.0.1.
+A cold organisation with one go costs 3 model calls. Reading a page costs none. The live path uses `gemini-3.5-flash-lite` on the free tier behind a shared rate limit; `LLM_PROVIDER=fake` is a deterministic stand-in that runs the whole system and the full test suite without a key. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-More detail in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+## Measured
 
-## Screenshots
+All numbers come from one file, [docs/eval.json](docs/eval.json), which the about page reads at render time; a test fails when this README or [docs/EVAL.md](docs/EVAL.md) quotes a different number. Snapshot of 5 October 2026.
 
-| Home | Review inbox |
-| --- | --- |
-| ![Home](assets/home.png) | ![Inbox](assets/inbox.png) |
+- **Matching precision.** On 30 random organisation and consultation pairs, 15 of 30 suggested consultations were relevant (50%) and 6 of 9 first places were right, judged by a blind language-model judge against a written rubric (inputs and labels in [docs/eval/](docs/eval/)). The list is a shortlist to check, not a ranking to trust.
+- **Recall against real behaviour.** For 1,526 registrants that really answered an in-scope consultation, the one they answered is in their top 5 in 42.5% of cases by embedding alone (random order: 6.7%). On a sample of 150, the hub penalty and the rerank raise that to 65.1% and move the median rank from 6 to 2.
+- **Quotes.** 12,633 of 12,845 key-ask quotes were found verbatim in their own submission (98.3%). The other 212 were dropped before storage.
+- **Submissions.** 9,155 organisation submissions: 6,531 analysed, 2,624 without readable text and counted only. 778 analyses with a low confidence or an unclear stance are held back from the pages.
+- **Critic.** Across the 5 current drafts, 38 of 49 sentences were supported by a retrieved passage or the organisation's own material (77.6%); the 11 others were removed and listed on the draft.
+- **Cost.** The whole open scope cost 195 model calls. After that, the brief for 40 organisations cost one cached rerank call each, and each draft costs 2. Reader cache: 560 of 563 summary reads.
 
-| Consultation | About and method |
-| --- | --- |
-| ![Consultation](assets/consultation.png) | ![About](assets/about.png) |
+## Limits, stated plainly
 
-The organisation page at phone width:
+- Everything runs from a local snapshot. Deadlines are dates; the countdown is computed in the reader's browser, so a page read weeks later still says "closed" at the right time.
+- Stances, key asks, summaries and match reasons are model output. They are labelled as such on the pages, and the stance tag reads "model reads as".
+- Matching is similarity plus one model judgment. Half of the suggested consultations in the sample above were relevant; broad profiles (think tanks, consultancies) get a mixed list.
+- The meetings link is by subject text only. Generic subjects such as "exchange of views" also pass.
+- Submissions that arrive as a questionnaire answer or a scanned attachment are counted, not analysed.
+- Citizens are counted and never stored: no name, text or register number of a citizen row reaches the database, and a constraint refuses one. Unregistered micro companies are shown by size and country, because such a name is often a person's name.
+- The Have Your Say endpoints are the portal's own backend, not a documented API.
 
-![Organisation page on a phone](assets/organisation-phone.png)
-
-## Measured results
-
-The figures below come from one file, [docs/eval.json](docs/eval.json), written by `uv run inspraak eval-report --write docs/eval.json` (table counts) plus the hand-measured block it keeps. The about page reads the same file, and a test fails when this README or [docs/EVAL.md](docs/EVAL.md) quotes a different number. Have Your Say and the meeting list were refreshed on 5 October 2026 at 23:30 Brussels time; the register is the export of 2 October. 17,897 registrants and 81 consultations (41 open).
-
-- **Matching precision.** On 30 random organisation and consultation pairs, 15 of 30 suggested consultations were relevant (50%) and 6 of 9 first places were right, judged by a blind language-model judge against a written rubric (inputs and labels in [docs/eval/](docs/eval/)). The Europol Regulation, which led lists it did not fit, dropped from 19 of 35 lists to 4. Broad profiles (think tanks, consultancies) still get a mixed list.
-- **Recall against real behaviour.** For 1,526 registrants that really answered an in-scope consultation, the one they answered is in their top 5 in 42.5% of cases by embedding alone (random order: 6.7%). On a sample of 150 of them, counting one card per initiative, the hub penalty and the model rerank raise that from 45.3% to 65.1%, and the median rank from 6 to 2.
-- **Every organisation submission is processed.** 9,155 rows: 6,531 analysed by a model, 2,624 without readable text (questionnaire answers, scanned attachments), counted and not analysed.
-- **Quotes.** 12,633 of 12,845 key-ask quotes were found verbatim in their own submission (98.3%). The other 212 were dropped before storage. By provider: Gemini Flash through agy 99.6%, Gemini API 96.6%, Haiku 94.8%. 1,879 analyses read the Commission's English machine translation of a submission; their quotes carry a "machine translation by the Commission, original in XX" label.
-- **Critic.** On the 5 current drafts (version 1 of every draft a reviewer did not reject), 38 of 49 sentences were supported by a retrieved passage or the profile (77.6%). The 11 others were removed and listed on the draft page. These drafts predate the stricter rule for positions described above.
-- **Cost.** The whole open scope cost 195 model calls. After that, the brief for 40 organisations cost 0 calls apart from one cached rerank call each (40 through agy), and each draft costs 2.
-- **Cache.** 560 of 563 summary reads by runs came from the cache.
-
-The 5 drafts in the local demo are labelled "machine draft, awaiting human review" or "auto-approved for the demo, no human review". Nobody has judged whether an organisation would send them, and none of them is in the public export.
-
-## How to run
+## Run it locally
 
 You need Docker, Python 3.12 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 cp .env.example .env              # LLM_PROVIDER=fake works without a key
 make up                           # postgres on 5544, redis on 6390, migrations
-make ingest                       # full snapshot, 1 request per second, resumable
 make web                          # http://127.0.0.1:8010
 ```
 
-`docker compose up -d --wait` also starts the app on http://127.0.0.1:8010 (it applies the migrations first; the first start installs the environment into a volume, which takes a few minutes). `docker compose --profile workers up` adds the Celery worker. Without a worker, runs execute inside the request.
-
-The first full ingest downloads about 120 MB for the register and 160 MB for the Commission data, and takes a while because requests are spaced one second apart.
-
-```bash
-uv run inspraak ingest hys --skip-closed   # refresh the open consultations (pages older than 20 h)
-make precompute                   # publication layer, open consultations first; stops on the daily budget
-uv run python scripts/backfill.py agy,claude_cli   # backfill with the CLI providers (needs agy or claude logged in)
-make demo                         # brief stage for the 40 organisations in demo_set.csv
-make export                       # public static site under site/ (no drafts or decisions)
-make test                         # 120 tests (each run gets its own test database)
-make lint                         # ruff
-```
+A full snapshot (`make ingest`) downloads about 280 MB from the Commission at one request per second and takes a few hours; `make precompute` and `make demo` then build the publication layer and the 40 demo pages within the daily model budget. `make export` writes the public static site under `site/`. `make test` runs the 120 tests, each run on its own test database; `make lint` runs ruff.
 
 A run from the command line:
 
@@ -132,56 +114,18 @@ uv run inspraak run start 9505781573-45        # stops at go or no-go
 uv run inspraak review list
 uv run inspraak review decide 10 '{"go": [25981]}'
 uv run inspraak run show <run_id>              # trace, drafts, call counts
-uv run inspraak llm calls                      # real call counts
 ```
 
-Set `GEMINI_API_KEY` and `LLM_PROVIDER=gemini` for real model output. Before the app is reachable by anyone else, set `REVIEW_TOKEN` and a real `POSTGRES_PASSWORD`.
+Set `GEMINI_API_KEY` and `LLM_PROVIDER=gemini` for real model output. Before the app is reachable by anyone else, set `REVIEW_TOKEN` (it then guards every page) and a real `POSTGRES_PASSWORD`.
 
-## Data sources and limits
+## Data sources and reuse
 
-- **EU Transparency Register.** The full export, 17,897 registrants, streamed into Postgres. The file declares XML 1.1 with illegal characters, so the loader cleans the stream before a strict parse.
-- **Have Your Say.** The portal's own undocumented JSON backend, with no stability promise. Scope: consultations open and closing within 90 days (41) plus 40 recently closed ones with at least 20 organisation submissions. Five very large closed consultations are samples of the earliest 5,000 rows, and the pages say so.
-- **Commission meetings with interest representatives.** Mandate 2024 to 2029, 11,531 meetings. Linking a meeting to a consultation is by subject similarity and is approximate. The list stops at the 60 closest meetings.
-- **Documents.** Commission documents are parsed per page and chunked so that a citation is always one page.
+- [EU Transparency Register](https://transparency-register.europa.eu/odplastorganisationxml_en), full XML export.
+- [Have Your Say](https://ec.europa.eu/info/law/better-regulation/have-your-say_en): initiatives, feedback and Commission documents, through the portal's JSON backend.
+- [Commission meetings with interest representatives](https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0), mandate 2024 to 2029.
 
-Limits, stated plainly:
+Commission documents and data are reused with attribution under the Commission's reuse policy. The feedback backend publishes no terms, so it was read at one request per second, once, into a local snapshot; no page ever calls it. Sources, counts and traps: [docs/DATA.md](docs/DATA.md).
 
-- 778 analyses have a low confidence or an unclear stance. They sit in the review queue and are kept off the pages until a person looks at them.
-- Submissions that arrive as a questionnaire answer or an unreadable attachment are counted, not analysed.
-- Non-citizen rows keep the organisation name the submitter typed, except unregistered micro companies (shown by size and country). A small or medium firm named after its owner still shows that name; the guard cannot tell a trading name from a person's name.
-- There are no CSRF tokens. A same-origin check stands in for them.
+## More
 
-Sources, counts and traps: [docs/DATA.md](docs/DATA.md).
-
-## Project structure
-
-```
-inspraak/
-  cli.py            the `inspraak` command
-  config.py         settings from the environment, Brussels clock
-  db.py             connections, pool, SQL migrations
-  store.py          read-side queries
-  privacy.py        the guard for feedback rows
-  pdf.py            document bytes to text per page
-  textutil.py       cleaning, page-bound chunking
-  embed.py          local embedder (fastembed) and a test stand-in
-  embeddings.py     fills the vector columns
-  http.py           polite fetcher with retries
-  ingest/           register, hys, meetings, documents, raw cache
-  llm/              provider interface, gemini, fake, batch providers, token bucket, schemas
-  jobs/             publication layer: reader, analyst (quote verification), meetings map
-  agents/           the graph: state, nodes, matcher, memory, trace, service API
-  queue.py          Celery app, brief queue with position, nightly schedule
-  web/              FastAPI app, view models, Jinja2 templates, SVG charts, CSS, htmx
-  export.py         static export with relative links
-  evaluate.py       the numbers behind docs/EVAL.md
-  migrations/       numbered plain SQL files
-tests/              parsers on recorded fixtures, provider, jobs, graph with interrupt and resume, web, export
-docs/               ARCHITECTURE.md, DATA.md, EVAL.md
-assets/             screenshots from the running app
-demo_set.csv        40 Belgian registrants used for the demo
-```
-
-## License
-
-MIT, see [LICENSE](LICENSE). Copyright 2026 Kaan Goker.
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (graph, interrupts, tables, providers, export), [docs/DATA.md](docs/DATA.md) (sources and their traps), [docs/EVAL.md](docs/EVAL.md) (every number and how it was measured). Licence: MIT, see [LICENSE](LICENSE). Copyright 2026 Kaan Goker.
