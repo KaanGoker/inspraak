@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{# consultation pages carry model readings of named organisations' submissions, so they stay out of search engines #}
+{% block head_extra %}<meta name="robots" content="noindex, nofollow">{% endblock %}
 {% block content %}
 {% set p = publication %}
 <nav class="crumbs"><a href="{{ u('home') }}#consultations">Consultations</a> / {{ p.id }}</nav>

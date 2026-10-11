@@ -77,7 +77,12 @@ def test_export_writes_a_relative_static_site(snapshot, agent_env, tmp_path):
         assert "days left" not in html or "data-deadline" in html  # no frozen countdown
 
     org = (out / "org" / f"{GREENPEACE}.html").read_text(encoding="utf-8")
-    assert '<meta name="robots" content="noindex, nofollow">' in org
+    noindex = '<meta name="robots" content="noindex, nofollow">'
+    assert noindex in org
+    # consultation pages carry model readings of named submissions: out of search engines too
+    assert noindex in (out / "consultation" / f"{PUB}.html").read_text(encoding="utf-8")
+    assert noindex not in (out / "about.html").read_text(encoding="utf-8")
+    assert "model reads as:" in org  # a stance is the model's reading, never the organisation's label
     assert "Start a run" not in org and "<form" not in org
     assert "submissions in this snapshot" in org or "submission in this snapshot" in org
     assert 'data-deadline="' in org

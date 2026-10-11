@@ -17,7 +17,7 @@
   </div>
   {% if land.read %}
   <p class="small">
-    {{ land.read | num }} of {{ land.organisation_rows | num }} organisation submission{{ 's' if land.organisation_rows != 1 }} analysed by the model:
+    {{ land.read | num }} of {{ land.organisation_rows | num }} organisation submission{{ 's' if land.organisation_rows != 1 }} analysed; the model reads them as:
     {% for k, v in land.stances.items() %}<span class="tag">{{ k }} {{ v }}</span> {% endfor %}
     {% if land.held_back %} <span class="muted">{{ land.held_back }} held back for review (low confidence).</span>{% endif %}
     {% if land.without_text %} <span class="muted">{{ land.without_text }} without readable text, so not analysed.</span>{% endif %}
@@ -35,7 +35,7 @@
       <div class="submission-head">
         <strong>{{ s.organization }}</strong>
         <span class="muted">{{ s.user_type }}{{ ', ' ~ s.country if s.country }}{% if s.register_category %}; register: {{ s.register_category }}{% endif %}</span>
-        <span class="tag stance-{{ s.stance }}">{{ s.stance_label }}</span>
+        <span class="tag stance-{{ s.stance }}">model reads as: {{ s.stance_label }}</span>
         {% if not static_mode %}<span class="muted small">confidence {{ s.confidence }}</span>{% endif %}
         <a class="small" href="{{ s.source }}" rel="noopener">source</a>
       </div>
