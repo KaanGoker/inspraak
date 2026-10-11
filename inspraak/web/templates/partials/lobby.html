@@ -2,7 +2,7 @@
 <div class="lobby">
   <p class="small">
     <span class="tag warn">{{ lobby.note }}</span>
-    {% if lobby.capped %}The top {{ lobby.count }} cabinet meetings by similarity (the list stops at {{ lobby.count }}){% else %}{{ lobby.count }} cabinet meeting{{ 's' if lobby.count != 1 }}{% endif %} whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more{{ ', cached from the nightly map' if lobby.cached else ', computed from the snapshot' }}). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+    {% if lobby.capped %}The top {{ lobby.count }} cabinet meetings by similarity (the list stops at {{ lobby.count }}){% else %}{{ lobby.count }} cabinet meeting{{ 's' if lobby.count != 1 }}{% endif %} whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more{{ ', cached from the nightly map' if lobby.cached else ', computed from the snapshot' }}). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="{{ lobby.source_file }}" rel="noopener">Commission meetings file</a>, <a href="{{ lobby.source_portal }}" rel="noopener">portal</a>.
   </p>
   {% if lobby.count %}
