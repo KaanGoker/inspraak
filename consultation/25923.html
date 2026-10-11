@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Omnibus on taxation | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Omnibus on taxation | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -66,14 +67,14 @@
     </figure>
   </div>
   <p class="small">
-    4 of 4 organisation submissions analysed by the model:
+    4 of 4 organisation submissions analysed; the model reads them as:
 <span class="tag">supports 1</span> <span class="tag">wants changes 3</span>   </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>Wirtschaftskammer Österreich /WKÖ</strong>
         <span class="muted">Business association, AUT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16912/F33574714_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -86,7 +87,7 @@
       <div class="submission-head">
         <strong>Irish Tax Institute</strong>
         <span class="muted">Business association, IRL; register: Trade and business associations</span>
-        <span class="tag stance-supports">supports</span>
+        <span class="tag stance-supports">model reads as: supports</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16912/F33575204_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -98,7 +99,7 @@
       <div class="submission-head">
         <strong>EPRA (European Public Real Estate Association)</strong>
         <span class="muted">Business association, BEL; register: Trade and business associations</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16912/F33575597_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -111,7 +112,7 @@
       <div class="submission-head">
         <strong>DigitalTrade4.EU</strong>
         <span class="muted">Other, EST; register: Other organisations, public or mixed entities</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16912/F33574691_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -124,11 +125,12 @@
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -137,35 +139,31 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">27 Feb 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=60402754518-05" rel="noopener" title="Transparency Register entry (no page in this demo)">PricewaterhouseCoopers International Limited</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>International and EU tax issues</td>
-      <td class="num">0.79</td>
     </tr>
     <tr>
       <td class="nowrap">18 Feb 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=43763731235-75" rel="noopener" title="Transparency Register entry (no page in this demo)">Mouvement des Entreprises de France</a> <span class="muted">(Trade and business associations)</span></td>
       <td>International and EU tax issues</td>
-      <td class="num">0.79</td>
     </tr>
     <tr>
       <td class="nowrap">17 Feb 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1771817758-48" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband der Deutschen Industrie e.V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>International and EU tax issues</td>
-      <td class="num">0.79</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jun 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=4722660838-23" rel="noopener" title="Transparency Register entry (no page in this demo)">European Banking Federation</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Taxation of EU’s financial sector</td>
-      <td class="num">0.78</td>
     </tr>
     <tr>
       <td class="nowrap">15 Apr 2026</td>
@@ -173,7 +171,6 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0764199368-97" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband deutscher Banken e.V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Commission proposal for a harmonised corporate legal EU Inc
 regime</td>
-      <td class="num">0.75</td>
     </tr>
     <tr>
       <td class="nowrap">9 Sep 2025</td>
@@ -181,112 +178,96 @@ regime</td>
       <td><a href="../org/165838227131-07.html">Rud Pedersen Brussels</a> <span class="muted">(Professional consultancies)</span></td>
       <td>Insights from the US and the global accounting profession and
 discussing EU’s ongoing work on tax-related policies</td>
-      <td class="num">0.73</td>
     </tr>
     <tr>
       <td class="nowrap">24 Jun 2025</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=17909506129-41" rel="noopener" title="Transparency Register entry (no page in this demo)">EUROGAS</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Implementation of EU legislation</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">24 Feb 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=9832909575-41" rel="noopener" title="Transparency Register entry (no page in this demo)">Greenpeace European Unit</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>EU environmental tax issues</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">19 May 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=04201463642-88" rel="noopener" title="Transparency Register entry (no page in this demo)">APPLiA (Home Appliance Europe)</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU product legislation</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">18 Mar 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=857466510849-71" rel="noopener" title="Transparency Register entry (no page in this demo)">Koch Government Affairs, LLC</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>International taxation and simplification agenda</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">29 Jan 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=13255254129-80" rel="noopener" title="Transparency Register entry (no page in this demo)">Vereniging VNO-NCW</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Tax priorities under the new Commission mandate</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">26 May 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=621519548304-62" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband Güterkraftverkehr Logistik und Entsorgung (BGL) e.V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Regulatory developments in the EU Transport Sector</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">17 Sep 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=65780747925-05" rel="noopener" title="Transparency Register entry (no page in this demo)">Aedes vereniging van woningcorporaties</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Taxation Omnibus : Anti Tax Avoidance Directive</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">3 Feb 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=90142503473-81" rel="noopener" title="Transparency Register entry (no page in this demo)">Vodafone Belgium SA</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Upcoming EU legislation and challenges ahead</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">25 Jun 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1894704851-83" rel="noopener" title="Transparency Register entry (no page in this demo)">European Express Association</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=54210841652-13" rel="noopener" title="Transparency Register entry (no page in this demo)">Forward Global</a> <span class="muted">(Professional consultancies)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=833656146084-28" rel="noopener" title="Transparency Register entry (no page in this demo)">FedEx Express BE BV</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=48544465107-88" rel="noopener" title="Transparency Register entry (no page in this demo)">DHL Group</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=07691616536-09" rel="noopener" title="Transparency Register entry (no page in this demo)">UPS Europe SRL/BV</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchanges on the EU Customs Reform</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2025</td>
       <td>Executive Vice-President Roxana Mînzatu</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=781385241347-65" rel="noopener" title="Transparency Register entry (no page in this demo)">EIT Health</a></td>
       <td>Relevant policy developments on EU level</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">29 Jan 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=22400601191-42" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Industrie- und Handelskammer</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Latest initiatives in the area of EU industrial policy (Competitiveness Compass, Clean Industrial Deal, Simplification)</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">11 Feb 2025</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="../org/3978240953-79.html">BUSINESSEUROPE</a> <span class="muted">(Trade and business associations)</span></td>
       <td>reduction of administrative burden in the EU</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=090733392865-65" rel="noopener" title="Transparency Register entry (no page in this demo)">Alliance du Commerce</a> <span class="muted">(Trade unions and professional associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=223214892989-96" rel="noopener" title="Transparency Register entry (no page in this demo)">CLAI</a> <span class="muted">(Professional consultancies)</span></td>
       <td>Le futur de la directive des délais de paiements, les tarifs et seuils douaniers (avec de nombreuses tractations politiques entre le Conseil, le Parlement et la Commission), ou encore les grands enjeux de simplification (Omnibus).</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">23 Mar 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=685934152245-39" rel="noopener" title="Transparency Register entry (no page in this demo)">Syensqo</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU chemicals legislation</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">20 Jan 2026</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0223480577-59" rel="noopener" title="Transparency Register entry (no page in this demo)">International Capital Market Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Discussion on the upcoming regulatory and supervisory priorities concerning the European Capital Markets</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">24 Nov 2025</td>
@@ -294,7 +275,6 @@ discussing EU’s ongoing work on tax-related policies</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=326347337793-89" rel="noopener" title="Transparency Register entry (no page in this demo)">Medtronic</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>OECD’s Pillar Two tax framework
 Minimum Tax Directive</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">13 Feb 2025</td>
@@ -302,7 +282,6 @@ Minimum Tax Directive</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=40386322300-77" rel="noopener" title="Transparency Register entry (no page in this demo)">eBay EU liaison office</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on the implementation and functioning of Council
 Directive (EU) 2021/514 ‘DAC7’</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">14 Apr 2026</td>
@@ -310,35 +289,30 @@ Directive (EU) 2021/514 ‘DAC7’</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=43763731235-75" rel="noopener" title="Transparency Register entry (no page in this demo)">Mouvement des Entreprises de France</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Competitiveness and simplification of EU financial regulation;
 impact on financing of the European economy</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">3 Sep 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03094871618-32" rel="noopener" title="Transparency Register entry (no page in this demo)">UniCredit</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>General discussion on the priorities of the European Commission</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">5 Jun 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=22400601191-42" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Industrie- und Handelskammer</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Priorities in direct and indirect taxation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">8 Apr 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=035366013790-68" rel="noopener" title="Transparency Register entry (no page in this demo)">Koninklijke Philips</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Current economic situation (tariffs), EU regulation, Innovation, Single Market, Public Procurement, Sustainability, data Protection</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">19 Feb 2025</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=686385826434-06" rel="noopener" title="Transparency Register entry (no page in this demo)">Optiver</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange with Optiver on Regulation (EU) 2019/2033 (IFR)</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">6 Mar 2025</td>
@@ -347,19 +321,19 @@ impact on financing of the European economy</td>
       <td>• Omnibus package
 • Implementation dialogue with the banking sector in the central European Member States
 • Payment Services Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">16 Jun 2026</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=147908916864-59" rel="noopener" title="Transparency Register entry (no page in this demo)">European Factories of the Future Research Association</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Exchange on the manufacturing sector and the Commission proposal of a European Competitiveness Fund</td>
-      <td class="num">0.65</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

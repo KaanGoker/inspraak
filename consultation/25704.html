@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Implementing rules on registering in and reporting to the register of producers | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Implementing rules on registering in and reporting to the register of producers | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -66,14 +67,14 @@
     </figure>
   </div>
   <p class="small">
-    2,020 of 2,020 organisation submissions analysed by the model:
+    2,020 of 2,020 organisation submissions analysed; the model reads them as:
 <span class="tag">opposes 552</span> <span class="tag">supports 1</span> <span class="tag">wants changes 1465</span>  <span class="muted">2 held back for review (low confidence).</span>  </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543928_en" rel="noopener">source</a>
       </div>
     </li>
@@ -81,7 +82,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543929_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -94,7 +95,7 @@
       <div class="submission-head">
         <strong>Micro company, GBR</strong>
         <span class="muted">Company, GBR</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543934_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -105,7 +106,7 @@
       <div class="submission-head">
         <strong>twp</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543933_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -118,7 +119,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543941_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -130,7 +131,7 @@
       <div class="submission-head">
         <strong>Micro company, BEL</strong>
         <span class="muted">Company, BEL</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543990_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -143,7 +144,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33548320_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -154,7 +155,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33554401_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -167,7 +168,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33563920_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -179,7 +180,7 @@
       <div class="submission-head">
         <strong>Henning OHG</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543887_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -190,7 +191,7 @@
       <div class="submission-head">
         <strong>Every normal person in europe</strong>
         <span class="muted">Public authority, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33553626_en" rel="noopener">source</a>
       </div>
     </li>
@@ -198,7 +199,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544191_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -211,7 +212,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544199_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -223,7 +224,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544214_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -236,7 +237,7 @@
       <div class="submission-head">
         <strong>Micro company, GRC</strong>
         <span class="muted">Company, GRC</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544590_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -247,7 +248,7 @@
       <div class="submission-head">
         <strong>Micro company, ESP</strong>
         <span class="muted">Company, ESP</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544711_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -260,7 +261,7 @@
       <div class="submission-head">
         <strong>Micro company, SVN</strong>
         <span class="muted">Company, SVN</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544721_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -273,7 +274,7 @@
       <div class="submission-head">
         <strong>Micro company, ROU</strong>
         <span class="muted">Company, ROU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33544726_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -285,7 +286,7 @@
       <div class="submission-head">
         <strong>Micro company, BGR</strong>
         <span class="muted">Company, BGR</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33547590_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -298,7 +299,7 @@
       <div class="submission-head">
         <strong>Micro company, FRA</strong>
         <span class="muted">Company, FRA</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33548395_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -309,7 +310,7 @@
       <div class="submission-head">
         <strong>Micro company, FRA</strong>
         <span class="muted">Company, FRA</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33552147_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -320,7 +321,7 @@
       <div class="submission-head">
         <strong>Music equipment GmbH</strong>
         <span class="muted">Company, AUT</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33558610_en" rel="noopener">source</a>
       </div>
     </li>
@@ -328,7 +329,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33559832_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -341,7 +342,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33562973_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -353,7 +354,7 @@
       <div class="submission-head">
         <strong>Micro company, GRC</strong>
         <span class="muted">Company, GRC</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33563756_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -366,7 +367,7 @@
       <div class="submission-head">
         <strong>Micro company, AUT</strong>
         <span class="muted">Company, AUT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33563764_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -379,7 +380,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33541488_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -391,7 +392,7 @@
       <div class="submission-head">
         <strong>Micro company, DNK</strong>
         <span class="muted">Business association, DNK</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33541605_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -403,7 +404,7 @@
       <div class="submission-head">
         <strong>Free Pack Net Holding SA</strong>
         <span class="muted">Company, CHE; register: Companies &amp; groups</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33541614_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -415,7 +416,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543902_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -428,7 +429,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543903_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -440,7 +441,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543904_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -453,7 +454,7 @@
       <div class="submission-head">
         <strong>WoP GmbH</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543905_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -466,7 +467,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543911_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -477,7 +478,7 @@
       <div class="submission-head">
         <strong>Micro company, AUT</strong>
         <span class="muted">Company, AUT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543920_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -489,7 +490,7 @@
       <div class="submission-head">
         <strong>Micro company, AUT</strong>
         <span class="muted">Company, AUT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543921_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -501,7 +502,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543923_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -513,7 +514,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543924_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -525,7 +526,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543926_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -537,7 +538,7 @@
       <div class="submission-head">
         <strong>Micro company, PRT</strong>
         <span class="muted">Company, PRT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543927_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -549,7 +550,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543930_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -560,7 +561,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543931_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -571,7 +572,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543937_en" rel="noopener">source</a>
       </div>
     </li>
@@ -579,7 +580,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543938_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -591,7 +592,7 @@
       <div class="submission-head">
         <strong>Micro company, AUT</strong>
         <span class="muted">Company, AUT</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543940_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -602,7 +603,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543943_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -615,7 +616,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543945_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -628,7 +629,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543954_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -641,7 +642,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543956_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -654,7 +655,7 @@
       <div class="submission-head">
         <strong>Micro company, SRB</strong>
         <span class="muted">Company, SRB</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543958_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -666,7 +667,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Business association, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543959_en" rel="noopener">source</a>
       </div>
     </li>
@@ -674,7 +675,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543960_en" rel="noopener">source</a>
       </div>
     </li>
@@ -682,7 +683,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543961_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -693,7 +694,7 @@
       <div class="submission-head">
         <strong>Micro company, BGR</strong>
         <span class="muted">Company, BGR</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543966_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -705,7 +706,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Other, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543969_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -718,7 +719,7 @@
       <div class="submission-head">
         <strong>Micro company, NLD</strong>
         <span class="muted">Company, NLD</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543972_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -730,7 +731,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543970_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -742,7 +743,7 @@
       <div class="submission-head">
         <strong>Micro company, PRI</strong>
         <span class="muted">Company, PRI</span>
-        <span class="tag stance-opposes">opposes</span>
+        <span class="tag stance-opposes">model reads as: opposes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543973_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -753,7 +754,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543974_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -765,7 +766,7 @@
       <div class="submission-head">
         <strong>Micro company, DEU</strong>
         <span class="muted">Company, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/15352/F33543975_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -777,11 +778,12 @@
 <p class="muted small">1958 more analysed submissions on the consultation page.</p></div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -790,7 +792,7 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
@@ -799,14 +801,12 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td>Exchange views on the simplification of extended producer
 responsibility (EPR) obligations (suspension of authorized
 representative (AR) under the Environmental Omnibus)</td>
-      <td class="num">0.73</td>
     </tr>
     <tr>
       <td class="nowrap">12 May 2026</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0001976677-12" rel="noopener" title="Transparency Register entry (no page in this demo)">The European Organisation for Packaging and the Environment</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Challenges of the European packaging industry relating to EPR compliance, and expectations towards the Circular Economy Act and other packaging related policy measures.</td>
-      <td class="num">0.71</td>
     </tr>
     <tr>
       <td class="nowrap">18 Feb 2025</td>
@@ -819,161 +819,138 @@ Extended producer responsibility
 End-of-Waste criteria
 
 Ecodesign for Sustainable Product Regulation (ESPR)</td>
-      <td class="num">0.71</td>
     </tr>
     <tr>
       <td class="nowrap">22 May 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=099785450113-49" rel="noopener" title="Transparency Register entry (no page in this demo)">Humana People to People Italia Soc. Coop. a r.l.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Waste Framework Directive and extended producer responsibility (EPR)</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">19 Nov 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0001976677-12" rel="noopener" title="Transparency Register entry (no page in this demo)">The European Organisation for Packaging and the Environment</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Current challenges facing the packaging industry and upcoming EU initiatives</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">20 Jan 2026</td>
       <td>Commissioner Olivér Várhelyi</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=700829026603-04" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesvereinigung der Deutschen Ernährungsindustrie e. V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Commission initiatives in relation to EU food producers</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">2 Apr 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=063789047077-65" rel="noopener" title="Transparency Register entry (no page in this demo)">European Thermal Paper Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Concerns and priorities in relation to trade and chemical regulations</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=40386322300-77" rel="noopener" title="Transparency Register entry (no page in this demo)">eBay EU liaison office</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Simplification of environmental compliance obligations, Environmental Omnibus, Circular Economy Act and European Product Act.</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">6 Nov 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=814014013312-48" rel="noopener" title="Transparency Register entry (no page in this demo)">ASOCIACIÓN ESPAÑOLA DE FABRICANTES DE PASTA, PAPEL Y CARTÓN</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging waste regulation</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">31 Mar 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=382047292009-53" rel="noopener" title="Transparency Register entry (no page in this demo)">Danish Brewers&#39; Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging waste regulation</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">12 Sep 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=99937329074-65" rel="noopener" title="Transparency Register entry (no page in this demo)">Mars Incorporated</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EUDR and Packaging Waste Regulation</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">9 Apr 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="../org/75818824519-45.html">FoodDrinkEurope</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Meeting with FoodDrinkEurope on the implementation of the Packaging and Packaging Waste Regulation.</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">17 Jun 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=36538072001-07" rel="noopener" title="Transparency Register entry (no page in this demo)">Serving Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">17 Jun 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=196997510883-76" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband Kooperierender Mittelstand</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">14 Apr 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="../org/75818824519-45.html">FoodDrinkEurope</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">18 Mar 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=048387711728-21" rel="noopener" title="Transparency Register entry (no page in this demo)">Carlsberg Breweries A/S</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">16 Mar 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=25492952296-56" rel="noopener" title="Transparency Register entry (no page in this demo)">UNESDA</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">27 Aug 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=173965849779-20" rel="noopener" title="Transparency Register entry (no page in this demo)">Fibre Packaging Europe</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">4 Feb 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=494193449119-32" rel="noopener" title="Transparency Register entry (no page in this demo)">Asociación Aguas Minerales de España</a></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">13 Jan 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=173965849779-20" rel="noopener" title="Transparency Register entry (no page in this demo)">Fibre Packaging Europe</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">10 Dec 2024</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=897997048897-11" rel="noopener" title="Transparency Register entry (no page in this demo)">Flexible Packaging Initiative</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Packaging and Packaging Waste Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">27 Jan 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=291009697017-37" rel="noopener" title="Transparency Register entry (no page in this demo)">Representation of German Forest Owners at the EU</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=600994616595-50" rel="noopener" title="Transparency Register entry (no page in this demo)">Arbeitsgemeinschaft Deutscher Waldbesitzerverbände e. V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EUDR, Nature Restauration Regulation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">19 May 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=04201463642-88" rel="noopener" title="Transparency Register entry (no page in this demo)">APPLiA (Home Appliance Europe)</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU product legislation</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">4 Nov 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=7824139202-85" rel="noopener" title="Transparency Register entry (no page in this demo)">EUROPEAN APPAREL AND TEXTILE CONFEDERATION</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Waste Framework Directive, extended producer responsibility (EPR), Ecodesign for sustainable regulation (ESPR), EU Customs reform.</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">23 Apr 2026</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=041415315167-65" rel="noopener" title="Transparency Register entry (no page in this demo)">Managed Funds Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Exchange of views on the Market Integration and Supervision Package and the Securitisation Regulation review</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">1 Dec 2025</td>
@@ -982,21 +959,18 @@ Ecodesign for Sustainable Product Regulation (ESPR)</td>
       <td>Circular Economy Act, Environmental Omnibus, Packaging and
 Packaging Waste Regulation and Ecodesign for Sustainable
 Products Regulation.</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jan 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=83575061669-96" rel="noopener" title="Transparency Register entry (no page in this demo)">Cosmetics Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Omnibus IV and packaging waste regulation</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">18 Mar 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=89093924456-06" rel="noopener" title="Transparency Register entry (no page in this demo)">Vereinigung der österreichischen Industrie - Industriellenvereinigung</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Regulatory burden (including omnibus) and Clean Industrial Deal</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">1 Oct 2025</td>
@@ -1004,19 +978,19 @@ Products Regulation.</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0001976677-12" rel="noopener" title="Transparency Register entry (no page in this demo)">The European Organisation for Packaging and the Environment</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Discussion on the implementation of the Packaging and
 Packaging Waste Regulation (PPWR)</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">24 Mar 2025</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=76648765687-29" rel="noopener" title="Transparency Register entry (no page in this demo)">NASDAQ</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on market and regulatory developments</td>
-      <td class="num">0.63</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

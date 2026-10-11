@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Minimum values for the electrochemical performance and durability of rechargeable industrial batteries | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Minimum values for the electrochemical performance and durability of rechargeable industrial batteries | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -68,11 +69,12 @@
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -81,35 +83,31 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">7 May 2026</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=28666427835-74" rel="noopener" title="Transparency Register entry (no page in this demo)">Meta Platforms Ireland Limited and its various subsidiaries</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Scope of EU Batteries regulation</td>
-      <td class="num">0.85</td>
     </tr>
     <tr>
       <td class="nowrap">13 May 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=919483727476-25" rel="noopener" title="Transparency Register entry (no page in this demo)">Duracell International Operations Sàrl</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=486438336738-84" rel="noopener" title="Transparency Register entry (no page in this demo)">CNC - Communications &amp; Network Consulting AG</a> <span class="muted">(Professional consultancies)</span></td>
       <td>EU Batteries Regulation and Omnibus I</td>
-      <td class="num">0.8</td>
     </tr>
     <tr>
       <td class="nowrap">14 May 2025</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=505812893025-79" rel="noopener" title="Transparency Register entry (no page in this demo)">Samsung SDI Europe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Challenges and opportunities of the battery sector in the EU.</td>
-      <td class="num">0.77</td>
     </tr>
     <tr>
       <td class="nowrap">16 Apr 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=454237953057-37" rel="noopener" title="Transparency Register entry (no page in this demo)">Contemporary Amperex Technology Hungary</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU&#39;s battery production</td>
-      <td class="num">0.76</td>
     </tr>
     <tr>
       <td class="nowrap">29 Jan 2025</td>
@@ -117,91 +115,78 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=222322396145-94" rel="noopener" title="Transparency Register entry (no page in this demo)">Refurb Battery Productions BV</a></td>
       <td>Presentation of Refurb Battery and discussion on the future of the
 battery value chain in Europe.</td>
-      <td class="num">0.75</td>
     </tr>
     <tr>
       <td class="nowrap">5 May 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=71549072613-57" rel="noopener" title="Transparency Register entry (no page in this demo)">European Portable Battery Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Batteries Regulation Due Diligence and Omnibus I proposal</td>
-      <td class="num">0.75</td>
     </tr>
     <tr>
       <td class="nowrap">12 Jun 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=673674011803-02" rel="noopener" title="Transparency Register entry (no page in this demo)">RECHARGE aisbl</a> <span class="muted">(Trade and business associations)</span>; <a href="../org/5067624792-06.html">logos public affairs</a> <span class="muted">(Professional consultancies)</span></td>
       <td>Regulations on batteries</td>
-      <td class="num">0.75</td>
     </tr>
     <tr>
       <td class="nowrap">14 Jul 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=78662404191-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Umicore</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Presentation of the company, state of the batteries sector in the EU</td>
-      <td class="num">0.74</td>
     </tr>
     <tr>
       <td class="nowrap">25 Feb 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=78662404191-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Umicore</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>“Made in EU” batteries</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">15 Apr 2026</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=6504541970-40" rel="noopener" title="Transparency Register entry (no page in this demo)">Volkswagen Aktiengesellschaft</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Current state of the automotive industry, Battery Booster and Made in EU</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">14 Feb 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=28666427835-74" rel="noopener" title="Transparency Register entry (no page in this demo)">Meta Platforms Ireland Limited and its various subsidiaries</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Batteries regulation</td>
-      <td class="num">0.71</td>
     </tr>
     <tr>
       <td class="nowrap">20 Apr 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=919483727476-25" rel="noopener" title="Transparency Register entry (no page in this demo)">Duracell International Operations Sàrl</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery regulation</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">8 Apr 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=919483727476-25" rel="noopener" title="Transparency Register entry (no page in this demo)">Duracell International Operations Sàrl</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Batteries Regulation</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">25 Mar 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=28666427835-74" rel="noopener" title="Transparency Register entry (no page in this demo)">Meta Platforms Ireland Limited and its various subsidiaries</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Batteries Regulation</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">28 Jan 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=44203689086-96" rel="noopener" title="Transparency Register entry (no page in this demo)">VinylPlus</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Batteries Regulation</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">13 Apr 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=9406964100836-91" rel="noopener" title="Transparency Register entry (no page in this demo)">Vianode AS</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Europe’s battery supply chain</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">18 Nov 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=409219492047-56" rel="noopener" title="Transparency Register entry (no page in this demo)">Finnish Minerals Group</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=441712047593-26" rel="noopener" title="Transparency Register entry (no page in this demo)">Tingvoll</a> <span class="muted">(Professional consultancies)</span></td>
       <td>Discussion on Europe’s EV battery value chain</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">21 Mar 2025</td>
@@ -211,77 +196,66 @@ battery value chain in Europe.</td>
 - Compétitivité
 - Transport
 - Batterie électrique</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">30 Sep 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=090276247302-31" rel="noopener" title="Transparency Register entry (no page in this demo)">Sunfire GmbH</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Role of the electrolyser industry in strengthening the EU’s decarbonisation, resilience, and competitiveness agendas</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">14 Oct 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=348369030395-22" rel="noopener" title="Transparency Register entry (no page in this demo)">Orano</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery production and value-chain</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">3 Apr 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=731215792388-92" rel="noopener" title="Transparency Register entry (no page in this demo)">Automotive cells company</a>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=673674011803-02" rel="noopener" title="Transparency Register entry (no page in this demo)">RECHARGE aisbl</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=459816748143-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Verkor</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery production and value-chain</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">18 Mar 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=462849021886-85" rel="noopener" title="Transparency Register entry (no page in this demo)">KIC InnoEnergy SE</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Future of the battery sector</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">13 Mar 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=459816748143-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Verkor</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Future of the battery sector</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">22 May 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=015001392003-96" rel="noopener" title="Transparency Register entry (no page in this demo)">LG Chem Europe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Automotive sector - Batteries</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">14 May 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=505812893025-79" rel="noopener" title="Transparency Register entry (no page in this demo)">Samsung SDI Europe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Automotive sector - Batteries</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">21 Jan 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=459816748143-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Verkor</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery Industry Development and Strategic Challenges</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">21 Jan 2026</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=368029129221-78" rel="noopener" title="Transparency Register entry (no page in this demo)">ABN AMRO Clearing Bank N.V.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery Industry Development and Strategic Challenges</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">10 Apr 2026</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=170724492922-04" rel="noopener" title="Transparency Register entry (no page in this demo)">LG Energy Solution</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Battery and Automotive industries</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">15 Sep 2025</td>
@@ -292,19 +266,19 @@ battery value chain in Europe.</td>
 - Decarbonation
 - Batterie, chaine de valeur
 - Voiture electrique</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">26 Mar 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=46302264606-44" rel="noopener" title="Transparency Register entry (no page in this demo)">Schneider Electric</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on how Schneider Electric can contribute to the priorities of the European Commission</td>
-      <td class="num">0.65</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

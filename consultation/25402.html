@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eurojust Regulation Revision | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Eurojust Regulation Revision | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -67,14 +68,14 @@ The Commission will conduct an impact assessment to explore how to strengthen Eu
     </figure>
   </div>
   <p class="small">
-    3 of 3 organisation submissions analysed by the model:
+    3 of 3 organisation submissions analysed; the model reads them as:
 <span class="tag">wants changes 3</span>   </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>Bundesverband ANUAS e.V. - HO für Mit-Opfer von Tötungsdelikten</strong>
         <span class="muted">NGO, DEU</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/14820/F33512937_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -86,7 +87,7 @@ The Commission will conduct an impact assessment to explore how to strengthen Eu
       <div class="submission-head">
         <strong>Fundatia International Justice Mission Bucharest</strong>
         <span class="muted">NGO, ROU; register: Non-governmental organisations, platforms and networks and similar</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/14820/F33569556_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -99,7 +100,7 @@ The Commission will conduct an impact assessment to explore how to strengthen Eu
       <div class="submission-head">
         <strong>DigitalTrade4.EU</strong>
         <span class="muted">Other, EST; register: Other organisations, public or mixed entities</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/14820/F33569778_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -112,11 +113,12 @@ The Commission will conduct an impact assessment to explore how to strengthen Eu
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -125,7 +127,7 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">29 May 2026</td>
@@ -133,7 +135,6 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=986644617102-08" rel="noopener" title="Transparency Register entry (no page in this demo)">European Endowment for Democracy</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Cooperation of European Commission and the European
 Endowment for Democracy (EED) on democracy and rule of law</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">4 Sep 2025</td>
@@ -143,84 +144,72 @@ Endowment for Democracy (EED) on democracy and rule of law</td>
 • in the fight against child sexual abuse (Regulation to prevent and combat child sexual abuse),
 • on lawful access to data for law enforcement (EU Protect Roadmap) and
 • on encryption (expected roadmap)</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">20 May 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5265780509-97" rel="noopener" title="Transparency Register entry (no page in this demo)">American Chamber of Commerce to the European Union</a> <span class="muted">(Trade and business associations)</span></td>
       <td>A simpler, clearer and better enforced EU rulebook</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">24 Jun 2025</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=17909506129-41" rel="noopener" title="Transparency Register entry (no page in this demo)">EUROGAS</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Implementation of EU legislation</td>
-      <td class="num">0.67</td>
     </tr>
     <tr>
       <td class="nowrap">11 Sep 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=9989425105479-46" rel="noopener" title="Transparency Register entry (no page in this demo)">Human Bridge Stiftelse</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=13073098010-57" rel="noopener" title="Transparency Register entry (no page in this demo)">Energiföretagen / Swedenergy</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=269853831446-79" rel="noopener" title="Transparency Register entry (no page in this demo)">Stora Enso Oyj</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=547393443282-22" rel="noopener" title="Transparency Register entry (no page in this demo)">Avfall Sverige</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Exchange of views on implementation of EU legislation.</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">8 Sep 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=281155638075-51" rel="noopener" title="Transparency Register entry (no page in this demo)">OVH Groupe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Feuille de route de la Commission européenne en matière de compétitivité et de souveraineté ; réforme des marchés publics ; Cyber resilience act ; localisation des data centers.</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">22 May 2025</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=496227428572-68" rel="noopener" title="Transparency Register entry (no page in this demo)">Magyar Helsinki Bizottság</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Rule of Law, European Democracy Shield</td>
-      <td class="num">0.65</td>
     </tr>
     <tr>
       <td class="nowrap">4 Feb 2025</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=60052162589-72" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Telekom</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Developments in European policies</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">3 Sep 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03094871618-32" rel="noopener" title="Transparency Register entry (no page in this demo)">UniCredit</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>General discussion on the priorities of the European Commission</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2025</td>
       <td>Executive Vice-President Roxana Mînzatu</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=781385241347-65" rel="noopener" title="Transparency Register entry (no page in this demo)">EIT Health</a></td>
       <td>Relevant policy developments on EU level</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">22 Jan 2026</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=389356530261-76" rel="noopener" title="Transparency Register entry (no page in this demo)">Stripe, Inc.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on the upcoming 28th Regime and the European Commission’s competitiveness agenda</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jun 2025</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=891384838981-16" rel="noopener" title="Transparency Register entry (no page in this demo)">Irish Human Rights and Equality Commission.</a> <span class="muted">(Associations and networks of public authorities)</span></td>
       <td>Exchange of views on issues on fundamental rights, Rule of Law and European Democracy Shield</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2026</td>
       <td>Executive Vice-President Roxana Mînzatu</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=490049891801-93" rel="noopener" title="Transparency Register entry (no page in this demo)">Foundation for European Progressive Studies</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>EU Initiatives</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">15 Jan 2025</td>
@@ -229,70 +218,60 @@ Endowment for Democracy (EED) on democracy and rule of law</td>
       <td>- Priorities of Commissioner&#39;s mandate
 - Presentation of the upcoming Eurochambres strategy (4S: Simplification, Scale, Security, Skills)
 - Simplification</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">27 Feb 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1083162721-43" rel="noopener" title="Transparency Register entry (no page in this demo)">Stichting BirdLife Europe</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0285583802-96" rel="noopener" title="Transparency Register entry (no page in this demo)">Naturschutzbund Deutschland e.V.</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="../org/06798511314-27.html">European Environmental Bureau</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Implementation and enforcement of EU environmental legislation</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">6 Feb 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1274604847-34" rel="noopener" title="Transparency Register entry (no page in this demo)">Confederation of Finnish Industries EK</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU Competitiveness Policy, White Paper on the Future of European Defence and the EU Preparedness Union Strategy</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">14 Jan 2026</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=799142914971-03" rel="noopener" title="Transparency Register entry (no page in this demo)">Banco Santander, S.A.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange of views on EU competition and decarbonization policies</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">3 Nov 2025</td>
       <td>Executive Vice-President Teresa Ribera Rodríguez</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=191319744634-58" rel="noopener" title="Transparency Register entry (no page in this demo)">Stegra III (formerly Stegra and H2GS AB)</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Decarbonization project; European Commission (EC) policies.</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">15 Oct 2025</td>
       <td>President Ursula von der Leyen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=161157710612-65" rel="noopener" title="Transparency Register entry (no page in this demo)">Anheuser-Busch InBev nv/sa</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>To exchange views on the European Union’s forthcoming work on competition policy</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">19 Jun 2025</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=968421535984-01" rel="noopener" title="Transparency Register entry (no page in this demo)">World Leadership Alliance-Club de Madrid</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>European Democracy Shield, EU Civil Society Strategy</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jul 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=968470099863-39" rel="noopener" title="Transparency Register entry (no page in this demo)">Fachverband der Holzindustrie Österreichs</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Further developments regarding the EUDR</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">8 Oct 2025</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5480691101801-34" rel="noopener" title="Transparency Register entry (no page in this demo)">Atviros Lietuvos fondas</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Discussion on the European Democracy Shield and the EU Strategy for Civil Society</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">16 Sep 2026</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=676502643674-70" rel="noopener" title="Transparency Register entry (no page in this demo)">Vereinigung Baden-Württembergische Wertpapierbörse e.V.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange of views on the EU Market Infrastructure and Supervisory Package, including the DLT Pilot Regime</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">15 Apr 2026</td>
@@ -300,54 +279,49 @@ Endowment for Democracy (EED) on democracy and rule of law</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0764199368-97" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband deutscher Banken e.V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Commission proposal for a harmonised corporate legal EU Inc
 regime</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">17 Feb 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03506017714-81" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Umwelthilfe e.V.</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>European Commission Priorities</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">25 Sep 2026</td>
       <td>President Ursula von der Leyen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=118453295368-28" rel="noopener" title="Transparency Register entry (no page in this demo)">Stichting Sustainable Finance Lab</a> <span class="muted">(Think tanks and research institutions)</span></td>
       <td>28th regime and EU Inc proposal</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">23 Apr 2026</td>
       <td>Commissioner Olivér Várhelyi</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=139568839023-49" rel="noopener" title="Transparency Register entry (no page in this demo)">PIERRE FABRE SA</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Presentation of Pierre Fabre from the perspective of the European regulatory environment</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">14 May 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=389578230437-31" rel="noopener" title="Transparency Register entry (no page in this demo)">Patria Oyj</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Defence Initiatives</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2026</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=552069443013-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Stiftung Familienunternehmen und Politik</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Presentation of the Commission’s EU Inc proposal</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">26 May 2026</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="../org/3978240953-79.html">BUSINESSEUROPE</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Review of the EU ETS Directive</td>
-      <td class="num">0.62</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

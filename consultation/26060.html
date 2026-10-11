@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Minimum performance standards for data centres in Europe | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Minimum performance standards for data centres in Europe | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -66,14 +67,14 @@
     </figure>
   </div>
   <p class="small">
-    5 of 5 organisation submissions analysed by the model:
+    5 of 5 organisation submissions analysed; the model reads them as:
 <span class="tag">wants changes 2</span>  <span class="muted">3 held back for review (low confidence).</span>  </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>Hydrogen Ireland Association</strong>
         <span class="muted">Business association, IRL; register: Trade and business associations</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/19293/F33574752_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -86,7 +87,7 @@
       <div class="submission-head">
         <strong>DigitalTrade4.EU</strong>
         <span class="muted">Other, EST; register: Other organisations, public or mixed entities</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/19293/F33575680_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -99,11 +100,12 @@
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -112,63 +114,55 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">11 Jun 2026</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=2297623104264-89" rel="noopener" title="Transparency Register entry (no page in this demo)">Data4</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Data centers in Europe</td>
-      <td class="num">0.68</td>
     </tr>
     <tr>
       <td class="nowrap">9 Apr 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=936723992663-56" rel="noopener" title="Transparency Register entry (no page in this demo)">Everpure, Inc.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on the energy efficiency potential for data centers</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">9 Apr 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=475203895048-73" rel="noopener" title="Transparency Register entry (no page in this demo)">Madoqua Renewables Holding</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on the energy efficiency potential for data centers</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">3 Apr 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=347494446863-32" rel="noopener" title="Transparency Register entry (no page in this demo)">Copenhagen Infrastructure Partners P/S</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>How Europe can build up the capacity of energy instruments capacity</td>
-      <td class="num">0.64</td>
     </tr>
     <tr>
       <td class="nowrap">17 Feb 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03506017714-81" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Umwelthilfe e.V.</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>European Commission Priorities</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">8 Sep 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=281155638075-51" rel="noopener" title="Transparency Register entry (no page in this demo)">OVH Groupe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Feuille de route de la Commission européenne en matière de compétitivité et de souveraineté ; réforme des marchés publics ; Cyber resilience act ; localisation des data centers.</td>
-      <td class="num">0.63</td>
     </tr>
     <tr>
       <td class="nowrap">8 May 2026</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=433247896522-92" rel="noopener" title="Transparency Register entry (no page in this demo)">Grundfos A/S</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Energy efficiency and data centres</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">9 Apr 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=936723992663-56" rel="noopener" title="Transparency Register entry (no page in this demo)">Everpure, Inc.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Energy efficiency, data centres</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">1 Oct 2025</td>
@@ -179,84 +173,72 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
 • Commission’s proposal for the Euratom Research and
 Training Programme 2028-2034
 • Developments in innovat</td>
-      <td class="num">0.61</td>
     </tr>
     <tr>
       <td class="nowrap">27 May 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03501997362-71" rel="noopener" title="Transparency Register entry (no page in this demo)">Fortum Oyj</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Commission’s draft Delegated Regulation establishing a common Union rating scheme for datacenters</td>
-      <td class="num">0.61</td>
     </tr>
     <tr>
       <td class="nowrap">21 Feb 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=582824527068-76" rel="noopener" title="Transparency Register entry (no page in this demo)">Suomen itsenäisyyden juhlarahasto</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>EU data union</td>
-      <td class="num">0.61</td>
     </tr>
     <tr>
       <td class="nowrap">7 Jul 2026</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=2297623104264-89" rel="noopener" title="Transparency Register entry (no page in this demo)">Data4</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>General exchange on data centre infrastructure and its role in European digital and industrial competitiveness.</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">20 Nov 2025</td>
       <td>President Ursula von der Leyen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=281155638075-51" rel="noopener" title="Transparency Register entry (no page in this demo)">OVH Groupe</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>To discuss European Cloud and Data Strategy</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">3 Sep 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03094871618-32" rel="noopener" title="Transparency Register entry (no page in this demo)">UniCredit</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>General discussion on the priorities of the European Commission</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">27 Mar 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=787513017798-23" rel="noopener" title="Transparency Register entry (no page in this demo)">InterDigital, Inc.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU tech competitiveness agenda and standardization policy</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">3 Jun 2025</td>
       <td>Executive Vice-President Henna Virkkunen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=577560851584-36" rel="noopener" title="Transparency Register entry (no page in this demo)">Terveyden ja hyvinvoinnin laitos</a> <span class="muted">(Think tanks and research institutions)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=796380111637-72" rel="noopener" title="Transparency Register entry (no page in this demo)">Helsinki EU Office</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Discussion on the Data Union Strategy, access to health data for health research, and EU crisis resilience and preparedness</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">27 Jan 2025</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=51080067776-74" rel="noopener" title="Transparency Register entry (no page in this demo)">EuroGeographics</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>European data space</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">9 Sep 2026</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=255859710443-50" rel="noopener" title="Transparency Register entry (no page in this demo)">Polish Electricity Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Priorities for EU energy policy</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">13 Nov 2025</td>
       <td>Commissioner Wopke Hoekstra</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5351830264-31" rel="noopener" title="Transparency Register entry (no page in this demo)">Bitkom e.V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>The intersection of digitalization and climate policy in the European Union, data centers, AI, and sustainability efforts.</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">22 Jun 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=33213703459-54" rel="noopener" title="Transparency Register entry (no page in this demo)">Insurance Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>European Sustainability reporting standards</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">9 Apr 2025</td>
@@ -264,75 +246,67 @@ Training Programme 2028-2034
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=936723992663-56" rel="noopener" title="Transparency Register entry (no page in this demo)">Everpure, Inc.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange of views on competitiveness and data centre energy
 efficiency</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">1 Jul 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=2680046412-48" rel="noopener" title="Transparency Register entry (no page in this demo)">EPIA SolarPower Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>SolarPower Europe proposals for the sector development and the EU involvement.</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">28 Apr 2026</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=37816636575-51" rel="noopener" title="Transparency Register entry (no page in this demo)">European Alliance to Save Energy</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Energy Efficiency and EU Competitiveness</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">17 Jun 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=4266797770-31" rel="noopener" title="Transparency Register entry (no page in this demo)">Siemens AG</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=43284012043-03" rel="noopener" title="Transparency Register entry (no page in this demo)">Alstom</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=46302264606-44" rel="noopener" title="Transparency Register entry (no page in this demo)">Schneider Electric</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1413466815-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Manufacture Française des Pneumatiques Michelin</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=76704342721-41" rel="noopener" title="Transparency Register entry (no page in this demo)">Orange</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">20 Apr 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="../org/64270747023-20.html">DIGITALEUROPE</a> <span class="muted">(Trade and business associations)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=11389287853-29" rel="noopener" title="Transparency Register entry (no page in this demo)">Cattaneo Zanetto Pomposo &amp; Co.</a> <span class="muted">(Professional consultancies)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">2 Mar 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="../org/1414929419-24.html">WWF European Policy Programme</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=57221111091-19" rel="noopener" title="Transparency Register entry (no page in this demo)">Frank Bold Society</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">10 Feb 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=024782946888-95" rel="noopener" title="Transparency Register entry (no page in this demo)">Danfoss A/S</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=76704342721-41" rel="noopener" title="Transparency Register entry (no page in this demo)">Orange</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=7790041608-14" rel="noopener" title="Transparency Register entry (no page in this demo)">ABB Ltd</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=4266797770-31" rel="noopener" title="Transparency Register entry (no page in this demo)">Siemens AG</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=46302264606-44" rel="noopener" title="Transparency Register entry (no page in this demo)">Schneider Electric</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1413466815-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Manufacture Française des Pneumatiques Michelin</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=639117311617-01" rel="noopener" title="Transparency Register entry (no page in this demo)">SAP</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">29 Jan 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=552069443013-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Stiftung Familienunternehmen und Politik</a> <span class="muted">(Trade and business associations)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">17 Dec 2025</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=1413466815-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Manufacture Française des Pneumatiques Michelin</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>European Sustainability Reporting Standards</td>
-      <td class="num">0.57</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

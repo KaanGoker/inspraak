@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Omnibus simplification of energy-efficient product legislation | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="Omnibus simplification of energy-efficient product legislation | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -70,14 +71,14 @@
     </figure>
   </div>
   <p class="small">
-    5 of 5 organisation submissions analysed by the model:
+    5 of 5 organisation submissions analysed; the model reads them as:
 <span class="tag">supports 1</span> <span class="tag">wants changes 4</span>   </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>DigitalTrade4.EU</strong>
         <span class="muted">Other, EST; register: Other organisations, public or mixed entities</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16872/F33569937_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -90,7 +91,7 @@
       <div class="submission-head">
         <strong>Europäische Feuerstätten Arbeitsgemeinschaft e. V.</strong>
         <span class="muted">Business association, DEU; register: Trade and business associations</span>
-        <span class="tag stance-supports">supports</span>
+        <span class="tag stance-supports">model reads as: supports</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16872/F33574011_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -103,7 +104,7 @@
       <div class="submission-head">
         <strong>Micro company, FRA</strong>
         <span class="muted">Company, FRA</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16872/F33574599_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -116,7 +117,7 @@
       <div class="submission-head">
         <strong>Micro company, FRA</strong>
         <span class="muted">Company, FRA</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16872/F33575621_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -129,7 +130,7 @@
       <div class="submission-head">
         <strong>Micro company, POL</strong>
         <span class="muted">Company, POL</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/16872/F33575692_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -142,11 +143,12 @@
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -155,7 +157,7 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">14 Apr 2026</td>
@@ -164,7 +166,6 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td>AccelerateEU
 Governance Regulation
 Energy Union Package</td>
-      <td class="num">0.66</td>
     </tr>
     <tr>
       <td class="nowrap">8 Jan 2026</td>
@@ -172,49 +173,42 @@ Energy Union Package</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=076619352960-83" rel="noopener" title="Transparency Register entry (no page in this demo)">Meliore Foundation</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Electrification Action Plan
 Governance Regulation and Energy Union Package</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">4 Mar 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=946343776-69" rel="noopener" title="Transparency Register entry (no page in this demo)">RENAULT</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Automotive Package and regulatory simplification</td>
-      <td class="num">0.62</td>
     </tr>
     <tr>
       <td class="nowrap">10 Mar 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=402232595916-61" rel="noopener" title="Transparency Register entry (no page in this demo)">International Marine Contractors Association (IMCA)</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Exchange of views on the Action Plan for Affordable Energy, the Clean Industrial and the revision of the EU energy security regulatory framework</td>
-      <td class="num">0.61</td>
     </tr>
     <tr>
       <td class="nowrap">24 Nov 2025</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=3954187491-70" rel="noopener" title="Transparency Register entry (no page in this demo)">International Association of Oil &amp; Gas Producers Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Simplification: sustainability and energy omnibuses</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">17 Jun 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=272386931951-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Xylem Inc.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=971446611568-25" rel="noopener" title="Transparency Register entry (no page in this demo)">Knauf Insulation</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=974875639237-65" rel="noopener" title="Transparency Register entry (no page in this demo)">Siemens Energy AG</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=37816636575-51" rel="noopener" title="Transparency Register entry (no page in this demo)">European Alliance to Save Energy</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=969504320672-09" rel="noopener" title="Transparency Register entry (no page in this demo)">ECOLAB</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Simplification agenda, Omnibus Packages; Clean Industrial Deal, Affordable Energy Action Plan</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=40386322300-77" rel="noopener" title="Transparency Register entry (no page in this demo)">eBay EU liaison office</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Simplification of environmental compliance obligations, Environmental Omnibus, Circular Economy Act and European Product Act.</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">10 Jul 2025</td>
       <td>Commissioner Apostolos Tzitzikostas</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=8999533555-91" rel="noopener" title="Transparency Register entry (no page in this demo)">Robert Bosch GmbH</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=522122412613-18" rel="noopener" title="Transparency Register entry (no page in this demo)">NOVE</a> <span class="muted">(Professional consultancies)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=26207914726-42" rel="noopener" title="Transparency Register entry (no page in this demo)">FuelsEurope</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=056319643095-46" rel="noopener" title="Transparency Register entry (no page in this demo)">Hexagon Composites ASA</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=312446938719-11" rel="noopener" title="Transparency Register entry (no page in this demo)">eFuel Alliance</a> <span class="muted">(Other organisations, public or mixed entities)</span></td>
       <td>Exchange of views on e-fuels and monitoring methodology.</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">2 Oct 2025</td>
@@ -223,14 +217,12 @@ Governance Regulation and Energy Union Package</td>
       <td>1. Environment &amp; industry concerning the upcoming environmental omnibus proposal: IED, permitting procedures, AAQD, urban wastewater (UWWTD), EUDR, waste/batteries, OSOA
 2. Circularity: ESPR and PPWR
 3. REACH revision</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">26 Feb 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=6256831207-27" rel="noopener" title="Transparency Register entry (no page in this demo)">ENEL SpA</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on on regulatory and trade developments in the European energy sector.</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">19 Sep 2025</td>
@@ -238,7 +230,6 @@ Governance Regulation and Energy Union Package</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=414057515145-62" rel="noopener" title="Transparency Register entry (no page in this demo)">DNV</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Governance Regulation
 Post 2030 Energy Framework</td>
-      <td class="num">0.6</td>
     </tr>
     <tr>
       <td class="nowrap">18 Feb 2025</td>
@@ -251,14 +242,12 @@ Extended producer responsibility
 End-of-Waste criteria
 
 Ecodesign for Sustainable Product Regulation (ESPR)</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">4 Nov 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=7824139202-85" rel="noopener" title="Transparency Register entry (no page in this demo)">EUROPEAN APPAREL AND TEXTILE CONFEDERATION</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Waste Framework Directive, extended producer responsibility (EPR), Ecodesign for sustainable regulation (ESPR), EU Customs reform.</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">16 May 2025</td>
@@ -266,63 +255,54 @@ Ecodesign for Sustainable Product Regulation (ESPR)</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=19736167705-91" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Unternehmensinitiative Energieeffizienz e.V.</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Energy Efficiency policies
 Affordable Energy Action Plan</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">2 Jun 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=835967332819-32" rel="noopener" title="Transparency Register entry (no page in this demo)">SSAB AB</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=191319744634-58" rel="noopener" title="Transparency Register entry (no page in this demo)">Stegra III (formerly Stegra and H2GS AB)</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Industrial Accelerator Act and Ecodesign for Sustainable Products Regulation</td>
-      <td class="num">0.59</td>
     </tr>
     <tr>
       <td class="nowrap">11 Dec 2025</td>
       <td>President Ursula von der Leyen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=6256831207-27" rel="noopener" title="Transparency Register entry (no page in this demo)">ENEL SpA</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Presentation of the group and views on energy policies</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">12 Mar 2025</td>
       <td>Commissioner Maria Luís Albuquerque</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=20457441380-38" rel="noopener" title="Transparency Register entry (no page in this demo)">BDEW Bundesverband der Energie- und Wasserwirtschaft e. V.</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Sustainability Omnibus and Affordable Energy Action Plan</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5989245104421-15" rel="noopener" title="Transparency Register entry (no page in this demo)">Zeppelin GmbH</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Internal Energy Market Regulation</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">16 Jun 2026</td>
       <td>Commissioner Valdis Dombrovskis</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=160101837530-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Techem Energy Services GmbH</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Internal Energy Market Regulation</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">15 Jan 2026</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=944604893432-85" rel="noopener" title="Transparency Register entry (no page in this demo)">The Shift Project</a> <span class="muted">(Think tanks and research institutions)</span></td>
       <td>Energy Security and Governance Regulation</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">1 Feb 2025</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5749958415-41" rel="noopener" title="Transparency Register entry (no page in this demo)">Confederation of Danish Industry</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Discussion on energy policies</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">6 Feb 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=08618215943-22" rel="noopener" title="Transparency Register entry (no page in this demo)">Jaguar Land Rover Limited</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Discussion on automotive industry initiatives and EU regulatory framework.</td>
-      <td class="num">0.58</td>
     </tr>
     <tr>
       <td class="nowrap">10 Mar 2026</td>
@@ -330,14 +310,12 @@ Affordable Energy Action Plan</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=818300434979-49" rel="noopener" title="Transparency Register entry (no page in this demo)">PGE Polska Grupa Energetyczna SA</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange of views on the application of EU public procurement
 rules to energy sector investments.</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">5 May 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=71549072613-57" rel="noopener" title="Transparency Register entry (no page in this demo)">European Portable Battery Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Batteries Regulation Due Diligence and Omnibus I proposal</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
@@ -346,28 +324,24 @@ rules to energy sector investments.</td>
       <td>Exchange views on the simplification of extended producer
 responsibility (EPR) obligations (suspension of authorized
 representative (AR) under the Environmental Omnibus)</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">9 Sep 2026</td>
       <td>Commissioner Dan Jørgensen</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=255859710443-50" rel="noopener" title="Transparency Register entry (no page in this demo)">Polish Electricity Association</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Priorities for EU energy policy</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">23 Jun 2026</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=20935778703-23" rel="noopener" title="Transparency Register entry (no page in this demo)">EuropeanIssuers</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Draft Delegated Acts revising the European Sustainability Reporting Standards (ESRS)</td>
-      <td class="num">0.57</td>
     </tr>
     <tr>
       <td class="nowrap">10 Feb 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=78662404191-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Umicore</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=2680046412-48" rel="noopener" title="Transparency Register entry (no page in this demo)">EPIA SolarPower Europe</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Exchange of views on Power Purchase Agreements (PPA) and the Batteries Regulation, specifically the Delegated Act (DA) on the methodology for the calculation and verification of the carbon footprint for electric vehicle batteries.</td>
-      <td class="num">0.56</td>
     </tr>
     <tr>
       <td class="nowrap">14 May 2025</td>
@@ -375,19 +349,19 @@ representative (AR) under the Environmental Omnibus)</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=46856801604-90" rel="noopener" title="Transparency Register entry (no page in this demo)">OXFAM INTERNATIONAL EU ADVOCACY OFFICE</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Safeguard of sustainability objectives in the context of regulatory
 simplification</td>
-      <td class="num">0.56</td>
     </tr>
     <tr>
       <td class="nowrap">15 Apr 2026</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=27762251795-15" rel="noopener" title="Transparency Register entry (no page in this demo)">Confederazione Generale dell&#39;Industria Italiana</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Energy policy topics</td>
-      <td class="num">0.56</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">

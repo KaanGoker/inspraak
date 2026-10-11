@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>&#34;Diversify EU&#34; instrument | Inspraak</title>
-<meta name="description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="&#34;Diversify EU&#34; instrument | Inspraak">
-<meta property="og:description" content="A multi-agent desk that matches Brussels organisations to open European Commission consultations: who already answered, who met the cabinets, what the proposal says, every figure linked to its public source. Built by Kaan Goker.">
+<meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="../static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="../static/favicon.png">
 <link rel="stylesheet" href="../static/style.css">
@@ -66,14 +67,14 @@
     </figure>
   </div>
   <p class="small">
-    2 of 2 organisation submissions analysed by the model:
+    2 of 2 organisation submissions analysed; the model reads them as:
 <span class="tag">wants changes 2</span>   </p>
   <ul class="submissions">
     <li class="submission">
       <div class="submission-head">
         <strong>Micro company, BEL</strong>
         <span class="muted">Company, BEL</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/19397/F33575555_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -86,7 +87,7 @@
       <div class="submission-head">
         <strong>Consell General de Cambres de Catalunya</strong>
         <span class="muted">Public authority, ESP</span>
-        <span class="tag stance-wants_changes">wants changes</span>
+        <span class="tag stance-wants_changes">model reads as: wants changes</span>
         <a class="small" href="https://ec.europa.eu/info/law/better-regulation/have-your-say/initiatives/19397/F33575721_en" rel="noopener">source</a>
       </div>
       <ul class="asks">
@@ -99,11 +100,12 @@
 </div></section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">60 meetings by subject similarity, approximate</span></summary>
 <div class="lobby">
   <p class="small">
     <span class="tag warn">subject match, approximate</span>
-The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
+The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded subject is close to this consultation's title and summary (embedding similarity at 0.45 or more, cached from the nightly map). Generic subjects such as "exchange of views on EU regulation" also pass, so read this as a lead, not a finding.
     Source: <a href="https://ec.europa.eu/transparency-initiative/meetings/data/meetings/dataxlsx?name=meetingscommissionrepresentatives2429" rel="noopener">Commission meetings file</a>, <a href="https://ec.europa.eu/transparency-initiative/meetings/listcommissioners?collegeid=0" rel="noopener">portal</a>.
   </p>
   <figure>
@@ -112,14 +114,13 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
   </figure>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th><th class="num">Similarity</th></tr></thead>
+    <thead><tr><th>Date</th><th>Cabinet</th><th>Interest representative</th><th>Subject as recorded</th></tr></thead>
     <tbody>
     <tr>
       <td class="nowrap">4 Dec 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=569885924378-48" rel="noopener" title="Transparency Register entry (no page in this demo)">SOLAR IMPULSE FOUNDATION</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>Priorities of the EU in the trade policy area</td>
-      <td class="num">0.73</td>
     </tr>
     <tr>
       <td class="nowrap">9 Dec 2025</td>
@@ -128,70 +129,60 @@ The top 60 cabinet meetings by similarity (the list stops at 60) whose recorded 
       <td>EU competitiveness agenda
 Simplification
 Economic Security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">9 Sep 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=597361847853-70" rel="noopener" title="Transparency Register entry (no page in this demo)">SEMI Europe GmbH</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU trade agenda and economic security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">16 Jul 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="../org/3978240953-79.html">BUSINESSEUROPE</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU trade agenda and economic security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">17 Jun 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=028570718529-43" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband Breitbandkommunikation e.V.</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=975978397991-05" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband Mittelständische Wirtschaft e.V.</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=06081633546-76" rel="noopener" title="Transparency Register entry (no page in this demo)">Bundesverband IT-Sicherheit e.V. (TeleTrusT)</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=202064594750-82" rel="noopener" title="Transparency Register entry (no page in this demo)">Stiftung Verantwortungseigentum e.V.</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=077142018281-86" rel="noopener" title="Transparency Register entry (no page in this demo)">European Entrepreneurs CEA-PME</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU’s trade agenda and economic security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jan 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=58746194306-23" rel="noopener" title="Transparency Register entry (no page in this demo)">FIPRA International SRL</a> <span class="muted">(Professional consultancies)</span></td>
       <td>EU Trade and Economic Security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jan 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=08569166274-90" rel="noopener" title="Transparency Register entry (no page in this demo)">MOL Hungarian Oil and Gas Company</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Trade and Economic Security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jan 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03181945560-59" rel="noopener" title="Transparency Register entry (no page in this demo)">Google Ireland Limited and its affiliates</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Trade and Economic Security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">30 Jan 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=972729217124-54" rel="noopener" title="Transparency Register entry (no page in this demo)">U. S. Steel Košice, s.r.o.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Trade and Economic Security</td>
-      <td class="num">0.72</td>
     </tr>
     <tr>
       <td class="nowrap">5 Sep 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=281508695943-08" rel="noopener" title="Transparency Register entry (no page in this demo)">Prewave</a> <span class="muted">(Professional consultancies)</span></td>
       <td>Introduction of Prewave to the European Commission - showcasing supply chain intelligence and aligning with political priorities on resilience</td>
-      <td class="num">0.71</td>
     </tr>
     <tr>
       <td class="nowrap">25 Sep 2025</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=000422497674-67" rel="noopener" title="Transparency Register entry (no page in this demo)">Arthur Cox LLP</a></td>
       <td>Discussion on the European Commission’s simplification agenda</td>
-      <td class="num">0.71</td>
     </tr>
     <tr>
       <td class="nowrap">12 Sep 2025</td>
@@ -203,138 +194,121 @@ industrial policy
 -Balancing openness with economic security in trade
 -Dependence on non-EU technology and the need for
 European alternatives</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">4 Jun 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=717488592282-11" rel="noopener" title="Transparency Register entry (no page in this demo)">Oettinger Consulting GmbH</a> <span class="muted">(Professional consultancies)</span></td>
       <td>EU Trade Policy / competitiveness</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">23 Apr 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=377580496287-61" rel="noopener" title="Transparency Register entry (no page in this demo)">KK Group</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Developments in EU trade policy</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">8 Apr 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=035366013790-68" rel="noopener" title="Transparency Register entry (no page in this demo)">Koninklijke Philips</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Current economic situation (tariffs), EU regulation, Innovation, Single Market, Public Procurement, Sustainability, data Protection</td>
-      <td class="num">0.7</td>
     </tr>
     <tr>
       <td class="nowrap">12 Dec 2024</td>
       <td>Executive Vice-President Roxana Mînzatu</td>
       <td><a href="../org/84973761187-60.html">EuroCommerce</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Situation of the retail and wholesale sector. Exchange of views on EU policies and funding instruments</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2025</td>
       <td>Executive Vice-President Roxana Mînzatu</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=781385241347-65" rel="noopener" title="Transparency Register entry (no page in this demo)">EIT Health</a></td>
       <td>Relevant policy developments on EU level</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">28 Oct 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=819446791825-58" rel="noopener" title="Transparency Register entry (no page in this demo)">Polish Confederation Lewiatan</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=50213201578-64" rel="noopener" title="Transparency Register entry (no page in this demo)">Hitachi Europe Ltd.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=606644737858-48" rel="noopener" title="Transparency Register entry (no page in this demo)">LyondellBasell Industries N.V.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=888725551808-41" rel="noopener" title="Transparency Register entry (no page in this demo)">Zentiva Group a.s.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5378003762-62" rel="noopener" title="Transparency Register entry (no page in this demo)">TOYOTA MOTOR EUROPE</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=391796433461-57" rel="noopener" title="Transparency Register entry (no page in this demo)">Huhtamäki Oyj</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=338398611148-62" rel="noopener" title="Transparency Register entry (no page in this demo)">RELX</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0745650927-75" rel="noopener" title="Transparency Register entry (no page in this demo)">ExxonMobil Petroleum &amp; Chemical</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=40471017282-57" rel="noopener" title="Transparency Register entry (no page in this demo)">Samsung Electronics Europe</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=857466510849-71" rel="noopener" title="Transparency Register entry (no page in this demo)">Koch Government Affairs, LLC</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=77608353460-77" rel="noopener" title="Transparency Register entry (no page in this demo)">RWE AG</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=02963738854-41" rel="noopener" title="Transparency Register entry (no page in this demo)">CEOE - Confederación Española de Organizaciones Empresariales</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=4447605981-76" rel="noopener" title="Transparency Register entry (no page in this demo)">Equinor ASA</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=4016736872-59" rel="noopener" title="Transparency Register entry (no page in this demo)">General Electric Company</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=05032108616-26" rel="noopener" title="Transparency Register entry (no page in this demo)">Shell Companies</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=90142503473-81" rel="noopener" title="Transparency Register entry (no page in this demo)">Vodafone Belgium SA</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=473235716272-48" rel="noopener" title="Transparency Register entry (no page in this demo)">Moeve</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=7721359944-96" rel="noopener" title="Transparency Register entry (no page in this demo)">IBM Corporation</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=962687110415-94" rel="noopener" title="Transparency Register entry (no page in this demo)">Metsäliitto Cooperative</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=69240395197-02" rel="noopener" title="Transparency Register entry (no page in this demo)">Repsol, S.A.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=674280348478-08" rel="noopener" title="Transparency Register entry (no page in this demo)">Tata Consultancy Services Belgium NV/SA</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=0801162959-21" rel="noopener" title="Transparency Register entry (no page in this demo)">Microsoft Corporation</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=887213694202-20" rel="noopener" title="Transparency Register entry (no page in this demo)">GE Vernova</a> <span class="muted">(Companies &amp; groups)</span>; <a href="../org/3978240953-79.html">BUSINESSEUROPE</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=002278013515-26" rel="noopener" title="Transparency Register entry (no page in this demo)">Uber</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=3394026642-58" rel="noopener" title="Transparency Register entry (no page in this demo)">BP p.l.c.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=144049521780-57" rel="noopener" title="Transparency Register entry (no page in this demo)">The Adecco Group</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=494613715191-85" rel="noopener" title="Transparency Register entry (no page in this demo)">Cisco Systems Inc.</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=021253717373-58" rel="noopener" title="Transparency Register entry (no page in this demo)">Workday</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=75617941310-89" rel="noopener" title="Transparency Register entry (no page in this demo)">Johnson &amp; Johnson</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=852220992305-91" rel="noopener" title="Transparency Register entry (no page in this demo)">Mitsubishi Electric Europe</a> <span class="muted">(Companies &amp; groups)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=46302264606-44" rel="noopener" title="Transparency Register entry (no page in this demo)">Schneider Electric</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Priorities of the EU’s trade agenda</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">19 Mar 2026</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=552069443013-09" rel="noopener" title="Transparency Register entry (no page in this demo)">Stiftung Familienunternehmen und Politik</a> <span class="muted">(Trade and business associations)</span></td>
       <td>Presentation of the Commission’s EU Inc proposal</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">12 Mar 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="../org/3978240953-79.html">BUSINESSEUROPE</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU’s competitiveness and trade agendas</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">13 May 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=052269393423-46" rel="noopener" title="Transparency Register entry (no page in this demo)">ASML Netherlands B.V.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU’s trade policy</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">20 Apr 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=052269393423-46" rel="noopener" title="Transparency Register entry (no page in this demo)">ASML Netherlands B.V.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU’s trade policy</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">16 May 2025</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=052269393423-46" rel="noopener" title="Transparency Register entry (no page in this demo)">ASML Netherlands B.V.</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU’s trade policy</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">3 Sep 2025</td>
       <td>Executive Vice-President Raffaele Fitto</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03094871618-32" rel="noopener" title="Transparency Register entry (no page in this demo)">UniCredit</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>General discussion on the priorities of the European Commission</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">20 Apr 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=628653448105-38" rel="noopener" title="Transparency Register entry (no page in this demo)">Nexperia</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Trade Policy</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">15 Jan 2025</td>
       <td>Executive Vice-President Stéphane Séjourné</td>
       <td><a href="../org/0014082722-83.html">EUROCHAMBRES - Association of European Chambers of Commerce and Industry</a> <span class="muted">(Trade and business associations)</span></td>
       <td>European Single Market and industrial policy</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">17 Feb 2025</td>
       <td>Commissioner Jessika Roswall</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=03506017714-81" rel="noopener" title="Transparency Register entry (no page in this demo)">Deutsche Umwelthilfe e.V.</a> <span class="muted">(Non-governmental organisations, platforms and networks and similar)</span></td>
       <td>European Commission Priorities</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">25 Jun 2026</td>
       <td>Commissioner Michael McGrath</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=5730715104804-66" rel="noopener" title="Transparency Register entry (no page in this demo)">The Gozo Business Chamber</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=891881518347-25" rel="noopener" title="Transparency Register entry (no page in this demo)">Malta Business Foundation</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=679480830815-40" rel="noopener" title="Transparency Register entry (no page in this demo)">Malta Employers Association</a> <span class="muted">(Trade and business associations)</span>; <a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=151792427812-95" rel="noopener" title="Transparency Register entry (no page in this demo)">Malta Chamber of SMEs</a> <span class="muted">(Trade and business associations)</span></td>
       <td>EU Inc proposal and competitiveness in Europe</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">14 Apr 2025</td>
       <td>Commissioner Andrius Kubilius</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=049566047779-57" rel="noopener" title="Transparency Register entry (no page in this demo)">Trafigura Pte Ltd</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>Exchange views on the EU’s economic and trade priorities, energy security, and the role of critical raw materials in strengthening Europe’s strategic autonomy.</td>
-      <td class="num">0.69</td>
     </tr>
     <tr>
       <td class="nowrap">7 Jul 2026</td>
       <td>Commissioner Maroš Šefčovič</td>
       <td><a href="https://transparency-register.europa.eu/searchregister-or-update/organisation-detail_en?id=236869539281-13" rel="noopener" title="Transparency Register entry (no page in this demo)">The LEGO Group</a> <span class="muted">(Companies &amp; groups)</span></td>
       <td>EU Trade policy</td>
-      <td class="num">0.68</td>
     </tr>
     </tbody>
   </table>
   </div>
-<p class="muted small">Showing 30 of 60.</p></div></section>
+<p class="muted small">Showing 30 of 60.</p></div>
+  </details>
+</section>
 
 </main>
 <footer class="site-footer">
