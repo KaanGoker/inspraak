@@ -86,55 +86,11 @@ def agent_env(db_url, monkeypatch):
 
 
 @pytest.fixture
-def snapshot(conn, fixtures, load_json):
-    """A small but complete snapshot: 3 registrants (Greenpeace among them), initiative 19418
-    with publication 26173 made open and in scope, 5 feedback rows (2 organisations), a
-    two-page proposal document, 4 meetings, hash vectors everywhere. Returns the connection."""
-    from datetime import datetime, timedelta
+def snapshot(conn, fixtures):
+    """The small but complete snapshot of `inspraak.seed` (3 registrants, Greenpeace among
+    them, publication 26173 open and in scope, 5 feedback rows, a two-page document, 4
+    meetings, hash vectors everywhere). Returns the connection."""
+    from inspraak.seed import seed_snapshot
 
-    import pymupdf
-
-    from inspraak.embed import HashEmbedder
-    from inspraak.embeddings import TARGETS, embed_target
-    from inspraak.ingest.documents import store_pages
-    from inspraak.ingest.hys import (
-        listing_to_initiative,
-        register_proposal_documents,
-        store_detail,
-        store_feedback,
-        store_initiatives,
-    )
-    from inspraak.ingest.meetings import load_meetings
-    from inspraak.ingest.register import load_register
-    from inspraak.privacy import scrub_feedback_page
-    from inspraak.store import publication_documents
-
-    load_register(conn, fixtures / "register_small.xml")
-    page = load_json("hys_listing_page.json")["initiativeResultDtoPage"]["content"]
-    store_initiatives(conn, [listing_to_initiative(i, datetime.now()) for i in page])
-    pubs = store_detail(conn, load_json("hys_detail_19418.json"))
-    scrubbed = scrub_feedback_page(load_json("hys_feedback_page_raw.json"))
-    store_feedback(conn, 26173, scrubbed["content"], scrubbed["totalElements"], False)
-    register_proposal_documents(conn, 26173, pubs[0]["attachments"])
-    conn.execute(
-        "UPDATE publications SET in_scope = true, feedback_status = 'OPEN', end_date = %s "
-        "WHERE id = 26173",
-        (datetime.now() + timedelta(days=30),),
-    )
-    document_id = publication_documents(conn, 26173)[0]["document_id"]
-    doc = pymupdf.open()
-    doc.new_page().insert_text(
-        (72, 72),
-        "Article 5 Age assurance obligations for platforms. Providers shall verify age "
-        "with privacy preserving methods. Children must not be profiled for advertising.",
-    )
-    doc.new_page().insert_text(
-        (72, 72), "Article 12 Fisheries quota are not in this act. Member States report yearly."
-    )
-    store_pages(conn, document_id, doc.tobytes())
-    load_meetings(conn, fixtures / "meetings_small.xlsx")
-    embedder = HashEmbedder()
-    for name in TARGETS:
-        embed_target(conn, TARGETS[name], embedder)
-    conn.commit()
+    seed_snapshot(conn, fixtures)
     return conn

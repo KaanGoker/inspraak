@@ -1,7 +1,7 @@
 UV ?= uv
 RUN := $(UV) run
 
-.PHONY: up down migrate ingest ingest-offline embed precompute demo worker probe web export test lint stats
+.PHONY: up down migrate ingest ingest-offline embed precompute demo demo-seed demo-local worker probe web export test lint stats
 
 up:            ## start postgres (5544) and redis (6390), wait until healthy, migrate
 	docker compose up -d --wait
@@ -27,6 +27,14 @@ precompute:    ## publication layer over the V1 scope, open publications first; 
 
 demo:          ## brief stage for demo_set.csv (one run per organisation without one); resumable
 	$(RUN) inspraak demo
+
+demo-seed:     ## the small fixture snapshot the tests use, precomputed, with one run (no key, no download)
+	$(RUN) inspraak demo-seed
+
+demo-local:    ## containers, fixture snapshot, app: a few minutes to a working page
+	$(MAKE) up
+	$(RUN) inspraak demo-seed
+	$(MAKE) web
 
 worker:        ## celery worker for the brief and nightly queues
 	$(RUN) celery -A inspraak.queue worker -Q brief,nightly -l info --concurrency 1

@@ -100,9 +100,10 @@ You need Docker, Python 3.12 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 cp .env.example .env              # LLM_PROVIDER=fake works without a key
-make up                           # postgres on 5544, redis on 6390, migrations
-make web                          # http://127.0.0.1:8010
+make demo-local                   # containers, a small fixture snapshot, the app on http://127.0.0.1:8010
 ```
+
+`make demo-local` loads the same small snapshot the tests use (three registrants, one open consultation, a two-page document, four meetings), runs the publication layer on the deterministic provider and starts one run that waits in the review inbox, so every page and the human checkpoint can be tried in a few minutes. `make up` and `make web` run the containers and the app on their own.
 
 A full snapshot (`make ingest`) downloads about 280 MB from the Commission at one request per second and takes a few hours; `make precompute` and `make demo` then build the publication layer and the 40 demo pages within the daily model budget. `make export` writes the public static site under `site/`. `make test` runs the 120 tests, each run on its own test database; `make lint` runs ruff.
 

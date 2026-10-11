@@ -530,6 +530,24 @@ def demo(
     )
 
 
+@app.command("demo-seed")
+def demo_seed(
+    force: bool = typer.Option(False, help="Empty a non-empty snapshot first (destructive)."),
+) -> None:
+    """Load the small fixture snapshot the tests use, precompute it with the deterministic
+    provider and start one run, so the app has pages to show without the full ingest.
+    Refuses to touch a database that already holds a snapshot unless --force is given."""
+    from inspraak.seed import clear_snapshot, seed_demo, snapshot_is_empty
+
+    with db.session() as conn:
+        if not snapshot_is_empty(conn):
+            if not force:
+                log("the database already holds a snapshot; pass --force to replace it")
+                raise typer.Exit(code=1)
+            clear_snapshot(conn)
+        say(seed_demo(conn, log=log))
+
+
 @run_app.command("show")
 def run_show(run_id: str) -> None:
     """Run row, trace, review items, drafts and call counts."""

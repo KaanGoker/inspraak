@@ -56,6 +56,7 @@ inspraak/
   queue.py          Celery app, brief queue with position
   web/              FastAPI app, view models, Jinja2 templates, SVG charts, CSS, htmx
   export.py         static export with relative links
+  seed.py           the small fixture snapshot behind `inspraak demo-seed` and the tests
   evaluate.py       the numbers behind docs/EVAL.md
   migrations/       numbered plain SQL files
 tests/              parsers on recorded fixtures, provider, jobs, graph with interrupt and resume, web, export
