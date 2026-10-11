@@ -71,6 +71,9 @@ def test_export_writes_a_relative_static_site(snapshot, agent_env, tmp_path):
             "requested by",
             "confidence 0",
             "confidence 1",
+            "similarity 0",
+            "relevance 0",
+            "relevance 1",
             "moon landing",
         ):
             assert leak not in lower, (page, leak)

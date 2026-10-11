@@ -117,7 +117,7 @@ button[disabled] { opacity: .5; cursor: default; }
 .table td, blockquote, .draft-text, .submission, .dl dd, .cite, .item { overflow-wrap: anywhere; }
 .trace-text { min-width: 200px; }
 details summary { cursor: pointer; }
-summary h4.inline, summary h3.inline { display: inline; margin: 0; }
+summary h4.inline, summary h3.inline, summary h2.inline { display: inline; margin: 0; }
 details.thin > summary { margin: 0.5rem 0; }
 summary::marker { color: var(--muted); }
 .box { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: .9rem 1rem; margin-bottom: 1rem; }
@@ -229,3 +229,5 @@ svg.bars { max-width: 560px; height: auto; display: block; }
 .about-author p { max-width: 75ch; }
 .eval-table td:first-child { white-space: nowrap; font-weight: 600; }
 @media (max-width: 560px) { .eval-table td:first-child { white-space: normal; } .credit-links { display: block; } .credit-links a { margin: 0 .7rem 0 0; } }
+
+.passages-fold > summary { margin: .2rem 0 .6rem; }

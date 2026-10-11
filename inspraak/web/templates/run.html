@@ -45,15 +45,17 @@
   <h2>Matches</h2>
   <div class="table-wrap">
   <table class="table small">
-    <thead><tr><th>Consultation</th><th>Deadline</th><th class="num">Similarity</th><th class="num">Relevance</th><th>Band</th>{% if not run.public %}<th>Decision</th>{% endif %}</tr></thead>
+    <thead><tr><th>Consultation</th><th>Deadline</th>{% if not run.public %}<th class="num">Similarity</th><th class="num">Relevance</th>{% endif %}<th>Band</th>{% if not run.public %}<th>Decision</th>{% endif %}</tr></thead>
     <tbody>
     {% set go = result.go_decision or {} %}
     {% for m in result.matches %}
     <tr>
       <td><a href="{{ u('consultation', m.publication_id) }}">{{ m.short_title or m.title }}</a></td>
       <td class="nowrap">{{ m.end_date | date }}</td>
+      {% if not run.public %}
       <td class="num">{{ '%.3f' % m.score }}</td>
       <td class="num">{% if m.relevance is defined and m.relevance is not none %}<span title="{{ m.reason }}">{{ '%.2f' % m.relevance }}</span>{% else %}<span class="muted">none</span>{% endif %}</td>
+      {% endif %}
       <td>{{ m.band }}</td>
       {% if not run.public %}<td>{% if m.publication_id in (go.go or []) %}go{% elif m.publication_id in (go.not_our_topic or []) %}not our topic{% elif m.publication_id in (go.no_go or []) %}no-go{% else %}<span class="muted">pending</span>{% endif %}</td>{% endif %}
     </tr>

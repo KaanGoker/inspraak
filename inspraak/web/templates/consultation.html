@@ -42,8 +42,10 @@
 </section>
 
 <section class="block">
-  <h2>Who met the cabinets on the subject</h2>
-  {% with lobby = lobby %}{% include "partials/lobby.html" %}{% endwith %}
+  <details>
+    <summary><h2 class="inline">Who met the cabinets on the subject</h2> <span class="muted small">{{ lobby.count }} meeting{{ 's' if lobby.count != 1 }} by subject similarity, approximate</span></summary>
+    {% with lobby = lobby %}{% include "partials/lobby.html" %}{% endwith %}
+  </details>
 </section>
 
 {% if not static_mode %}

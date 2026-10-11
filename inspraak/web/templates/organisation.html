@@ -106,12 +106,12 @@
           <h3><a href="{{ u('consultation', c.publication_id) }}">{{ c.short_title or c.title }}</a></h3>
           <p class="muted small">{{ c.title }}</p>
           {% if c.kept and not static_mode %}<p class="small muted">Shown because it has a draft; the matcher no longer ranks it among the top consultations for this profile.</p>{% endif %}
-          {% if c.reason %}<p class="small fit">Why it fits: {{ c.reason }} <span class="muted" title="{{ c.rerank_model }}">(model judgment; similarity {{ '%.2f' % c.score }})</span></p>{% endif %}
+          {% if c.reason %}<p class="small fit">Why it fits: {{ c.reason }} <span class="muted" title="{{ c.rerank_model }}">(model judgment{% if not static_mode %}; similarity {{ '%.2f' % c.score }}{% endif %})</span></p>{% endif %}
           {% if c.siblings %}<p class="muted small">Same initiative, also open: {% for s in c.siblings %}<a href="{{ u('consultation', s) }}">{{ s }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
         </div>
         <div class="c-meta">
           <span class="deadline" data-deadline="{{ c.end_date | deadline_iso }}">Deadline {{ c.end_date | date }} <strong class="countdown"></strong></span>
-          <span class="tag {{ 'warn' if c.band == 'uncertain' }}">{{ c.band_label }}, {% if c.reranked %}relevance {{ '%.2f' % c.relevance }}{% else %}similarity {{ '%.2f' % c.score }}{% endif %}</span>
+          <span class="tag {{ 'warn' if c.band == 'uncertain' }}">{{ c.band_label }}{% if not static_mode %}, {% if c.reranked %}relevance {{ '%.2f' % c.relevance }}{% else %}similarity {{ '%.2f' % c.score }}{% endif %}{% endif %}</span>
           {% if c.decision_label and not static_mode %}<span class="tag {{ 'ok' if c.decision_label == 'go' and not c.decision_is_demo else '' }}">{{ 'demo decision, no human review' if c.decision_is_demo else 'reviewer' }}: {{ c.decision_label }}</span>{% endif %}
           <a class="small" href="{{ c.publication.source }}" rel="noopener">portal</a>
         </div>
@@ -136,11 +136,14 @@
       <div class="block">
         <h4>What the proposal says on your topics <span class="muted small">({{ c.documents_count }} Commission document{{ 's' if c.documents_count != 1 }}; passages closest to the profile)</span></h4>
         {% if c.passages %}
+        {% set foreign = c.passages[0].language and c.passages[0].language | upper != 'EN' %}
+        {% if foreign %}<details class="passages-fold"><summary class="small muted">The Commission document is in {{ c.passages[0].language | upper }}; open to read the {{ c.passages | length }} passages in that language.</summary>{% endif %}
         <ol class="passages">
           {% for ps in c.passages %}
-          <li><blockquote>{{ ps.text }}</blockquote><span class="cite"><a href="{{ ps.source }}" rel="noopener">{{ (ps.document_title or ps.document_id) | truncate(70) }}, page {{ ps.page_no }}</a>{% if ps.language %} ({{ ps.language }}){% endif %}, similarity {{ ps.score }}</span></li>
+          <li><blockquote>{{ ps.text }}</blockquote><span class="cite"><a href="{{ ps.source }}" rel="noopener">{{ (ps.document_title or ps.document_id) | truncate(70) }}, page {{ ps.page_no }}</a>{% if ps.language %} ({{ ps.language }}){% endif %}{% if not static_mode %}, similarity {{ ps.score }}{% endif %}</span></li>
           {% endfor %}
         </ol>
+        {% if foreign %}</details>{% endif %}
         {% else %}<p class="muted small">No Commission document is attached to this publication, so there is nothing to cite.</p>{% endif %}
       </div>
 
