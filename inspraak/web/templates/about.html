@@ -35,7 +35,7 @@
     <thead><tr><th>What</th><th>Result</th><th>How it was measured</th></tr></thead>
     <tbody>
       {% if man.precision %}{% set pr = man.precision %}
-      <tr><td>Match precision</td><td><strong>{{ pr.relevant }} of {{ pr.pairs }}</strong> relevant ({{ pr.relevant | pct(pr.pairs) }}); {{ pr.rank_one_relevant }} of {{ pr.rank_one_pairs }} first places right. Before the model rerank: {{ pr.before.relevant }} of {{ pr.before.pairs }}.</td><td class="muted">{{ pr.pairs }} random organisation and consultation pairs, one rater, {{ pr.measured_on | date }}.</td></tr>
+      <tr><td>Match precision</td><td><strong>{{ pr.relevant }} of {{ pr.pairs }}</strong> suggested consultations relevant ({{ pr.relevant | pct(pr.pairs) }}); {{ pr.rank_one_relevant }} of {{ pr.rank_one_pairs }} first places right.</td><td class="muted">{{ pr.pairs }} random organisation and consultation pairs judged by a blind language-model judge against a written rubric, {{ pr.measured_on | date }}; inputs and labels are in the repository under docs/eval/.</td></tr>
       {% endif %}
       {% if man.recall %}{% set rc = man.recall %}
       <tr><td>Recall against real filings</td><td>The consultation an organisation really answered is in its top 5 in <strong>{{ '%.1f' % (rc.embedding_at_5 * 100) }}%</strong> of cases by embedding alone (random order: {{ '%.1f' % (rc.random_at_5 * 100) }}%). On a sample of {{ rc.sample }}, the rerank raises that from {{ '%.1f' % (rc.sample_embedding_at_5 * 100) }}% to <strong>{{ '%.1f' % (rc.sample_rerank_at_5 * 100) }}%</strong>, median rank {{ rc.sample_embedding_median_rank }} to {{ rc.sample_rerank_median_rank }}.</td><td class="muted">{{ rc.registrants | num }} registrants that filed on an in-scope consultation.</td></tr>
@@ -46,7 +46,7 @@
       <tr><td>Runs</td><td>{{ m.runs.current }} current runs for {{ m.runs.organisations }} organisations ({{ m.runs.superseded }} older runs replaced when the matcher changed). Reader cache: {{ m.reader_cache.hits }} of {{ m.reader_cache.reads }} summary reads.</td><td class="muted">Summaries and match judgments are shared, so a second organisation costs almost nothing.</td></tr>
     </tbody>
   </table></div>
-  <p class="small muted">Not measured: whether an organisation would send a draft, and a second rater for precision. Generic profiles (consultancies, think tanks with every interest ticked) still get a mixed list.</p>
+  <p class="small muted">Not measured: whether an organisation would send a draft, and a second judge for precision. Half of the suggested consultations are relevant, so the list is a shortlist to check, not a ranking to trust.</p>
   {% else %}
   <p class="muted">The evaluation file (docs/eval.json) is missing; run <code>inspraak eval-report --write docs/eval.json</code>.</p>
   {% endif %}

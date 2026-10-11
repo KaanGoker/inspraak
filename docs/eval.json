@@ -151,19 +151,13 @@
   },
   "manual": {
     "precision": {
-      "measured_on": "2026-10-05",
-      "method": "30 organisation and consultation pairs drawn with random.seed(42) from the demo match lists, judged against the register goals and declared interests by one rater (the coding agent, not blind); docs/EVAL.md lists every pair",
-      "relevant": 20,
+      "measured_on": "2026-10-11",
+      "method": "30 organisation and consultation pairs drawn with random.seed(42) from the demo match lists of 5 October, judged by a blind language-model judge against the written rubric in docs/eval/precision_rubric.md; the judge saw the register goals, interests and category and the consultation title and summary, never the matcher's score, rank, reason or any earlier verdict; inputs and labels are in docs/eval/",
+      "relevant": 15,
       "pairs": 30,
-      "relevant_with_borderline": 25,
-      "rank_one_relevant": 8,
+      "rank_one_relevant": 6,
       "rank_one_pairs": 9,
-      "before": {
-        "measured_on": "2026-10-03",
-        "relevant": 17,
-        "pairs": 30,
-        "relevant_with_borderline": 19
-      }
+      "judge": "Claude Sonnet, one pair per call, October 2026"
     },
     "recall": {
       "measured_on": "2026-10-05",

@@ -10,8 +10,8 @@ or counted by hand where it says so. The raw outputs are kept under `data/logs/`
 
 Every number the about page, the README and this file quote comes from `docs/eval.json`.
 `uv run inspraak eval-report --write docs/eval.json` rewrites its `measured` block from the
-tables and keeps its `manual` block (the hand check and the recall runs below, entered by
-hand with their dates). The about page reads the file at render time, and
+tables and keeps its `manual` block (the precision judgment and the recall runs below,
+entered by hand with their dates). The about page reads the file at render time, and
 `tests/test_web.py::test_about_numbers_come_from_the_eval_file` fails when the README or
 this file quotes a different critic, held back, quote or precision number. Definitions:
 analyses count every provider except the test stand-in; "held back" are analysed rows with
@@ -29,7 +29,7 @@ Written on 6 October 2026 from the snapshot refreshed on 5 October, 23:30 Brusse
 | Critic, current drafts | 38 of 49 sentences kept (77.6%) across 5 drafts |
 | Runs | 49 current for 40 organisations, 70 superseded |
 | Reader cache | 560 of 563 summary reads |
-| Match precision (hand check, 5 October) | 20 of 30 |
+| Match precision (blind judge, 11 October) | 15 of 30 |
 
 The 3 October text below reported 812 held back analyses; the tables gave 776 on 6
 October before the refresh and 778 after it, and 778 is the number used everywhere now.
@@ -87,12 +87,14 @@ Result: 40 runs (38 new in this stage), 0 errors. 35 wait at go / no-go, 4 wait 
 review with a machine draft, 1 is done (BEUC, approved in stage 2). On 5 October the 35
 runs waiting at go / no-go were rebuilt with matcher v2 (see "Matcher v2" below).
 
-## Match precision, hand-checked sample (matcher v1, 3 October)
+## Match precision, first sample (matcher v1, 3 October)
 
 Sample: 30 organisation and consultation pairs drawn with `random.seed(42)` from the 190
 pairs the 38 new runs produced (5 per organisation), so it covers ranks 1 to 5 and both
-bands. Each pair was judged by reading the organisation's register entry (goals and
-declared interests) next to the consultation's title and initiative.
+bands. Each pair was judged by one reader of the organisation's register entry (goals and
+declared interests) next to the consultation's title and initiative, with borderline
+cases counted both ways. This first sample is kept for the hub analysis below; it is not
+comparable with the blind judgment of the v2 lists, which uses a stricter written rubric.
 
 Rule used: **relevant** when the consultation's subject sits inside the organisation's
 stated mission, so that an organisation of that kind would plausibly answer it. A long
@@ -178,8 +180,8 @@ slots. Three changes, in `inspraak/agents/matcher.py` and `inspraak/agents/reran
    nearest deadline, with the best score of the group. The others are listed as siblings.
 3. **Rerank.** The 15 strongest cards go to the model in one call per organisation, with
    the register profile (name, category, goals, declared interests) and each consultation's
-   title and cached summary. The prompt carries the same relevance rule as the hand check
-   below. The model returns a relevance in [0, 1] and a one-line reason, shown on the card.
+   title and cached summary. The prompt carries a relevance rule close to the rubric used
+   for the precision check below. The model returns a relevance in [0, 1] and a one-line reason, shown on the card.
    Under 0.3 the card is dropped; 0.6 and over is the match band. Judgments are cached per
    organisation, publication and profile text (`match_reranks`). Model: Gemini Flash
    through the batch provider, outside the Gemini API budget. The fake provider stands in
@@ -248,73 +250,74 @@ on its page even when the matcher no longer ranks it: BEUC's approved draft on p
 procurement (25981) now shows "relevance 0.10" with a line saying it is shown because of
 the draft.
 
-### Match precision, hand-checked sample (v2)
+### Match precision, blind judgment (v2, 11 October)
 
-Same method as on 3 October: 30 pairs drawn with `random.seed(42)` and `random.sample`
-from the 162 pairs the 35 rebuilt runs produced, ordered by organisation and rank
-(`scripts/precision_sample.py --since '2026-10-05 20:25:00+00'`, which prints each pair
-with the register profile and the consultation summary). Same rule: relevant when the
-consultation's subject sits inside the organisation's stated mission; a long interest
-list alone does not make a technical act relevant; a large horizontal file counts for a
-general business federation or a consultancy.
+Sample: the same 30 pairs drawn with `random.seed(42)` from the 162 pairs of the 35
+rebuilt runs of 5 October (`scripts/precision_sample.py --since '2026-10-05 20:25:00+00'`),
+covering ranks 1 to 5 and both bands.
 
-**Who judged.** Claude (the coding agent that built this stage), reading the register
-goals and declared interests next to the consultation title and summary. Not Kaan, not a
-domain expert, and not blind: the judge built the matcher and saw the model's relevance
-next to each pair. To check that the judge is no softer than the 3 October one, the same
-judge re-judged the 30 pairs of the v1 table above with the same rule: same verdict on all
-30, 17 relevant.
+**Method.** 30 pairs judged by a blind language-model judge against a written rubric;
+inputs and labels are in `docs/eval/`. The rubric (`docs/eval/precision_rubric.md`) says a
+pair is relevant when the consultation's subject falls within the organisation's stated
+goals and declared interests in the Transparency Register, that a long interest list alone
+does not make a technical act relevant, that a large horizontal file counts for a general
+federation, consultancy or think tank, and that a borderline case is no. Each pair went to
+the judge in its own call (`docs/eval/precision_inputs.jsonl`: register goals, declared
+interests, category, consultation title and summary). The judge never saw the matcher's
+score, rank, relevance, reason or any earlier verdict. Verdicts with one sentence of
+reason each: `docs/eval/precision_judge.jsonl`. Judge: Claude Sonnet, October 2026.
 
-| # | Organisation | Rank | Consultation | Relevance | Band | Judged |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | AGE Platform Europe | 1 | 25731 victims' rights strategy | 0.8 | match | yes |
-| 2 | Acumen Public Affairs | 1 | 25981 public procurement | 0.8 | match | yes (horizontal, consultancy) |
-| 3 | Acumen Public Affairs | 3 | 25759 energy and tyre labelling omnibus | 0.7 | match | no (borderline) |
-| 4 | Cefic | 4 | 26119 "Diversify EU" instrument | 0.7 | match | yes |
-| 5 | CEPS | 1 | 26119 "Diversify EU" instrument | 0.9 | match | yes |
-| 6 | CAN Europe | 2 | 26060 data centre standards | 0.8 | match | yes (energy efficiency) |
-| 7 | CAN Europe | 3 | 26084 air pollution programme format | 0.7 | match | no |
-| 8 | ACV-CSC | 4 | 23919 territorial supply constraints | 0.3 | uncertain | no |
-| 9 | Corporate Europe Observatory | 5 | 26119 "Diversify EU" instrument | 0.4 | uncertain | no |
-| 10 | DIGITALEUROPE | 4 | 25527 Dual-Use Regulation evaluation | 0.8 | match | yes |
-| 11 | DIGITALEUROPE | 5 | 25280 Horizon Europe joint undertakings | 0.7 | match | yes |
-| 12 | Egmont | 3 | 25896 International Procurement Instrument | 0.8 | match | no (borderline) |
-| 13 | Eurocities | 4 | 26171 Atlantic macro-regional strategy | 0.6 | match | yes (borderline) |
-| 14 | ECRE | 1 | 25894 Schengen visa code recast | 0.8 | match | yes |
-| 15 | European Environmental Bureau | 2 | 26097 early warning report on waste | 1.0 | match | yes |
-| 16 | European Policy Centre | 1 | 26119 "Diversify EU" instrument | 0.9 | match | yes |
-| 17 | European Policy Centre | 2 | 25397 Europol Regulation | 0.8 | match | no (borderline) |
-| 18 | European Policy Centre | 3 | 24198 Cloud and AI Development Act | 0.8 | match | yes |
-| 19 | European Policy Centre | 5 | 25527 Dual-Use Regulation evaluation | 0.8 | match | no |
-| 20 | FGTB-ABVV | 2 | 25923 omnibus on taxation | 0.6 | match | yes (tax fairness) |
-| 21 | IEEP | 2 | 26097 early warning report on waste | 1.0 | match | yes |
-| 22 | IEEP | 3 | 26171 Atlantic macro-regional strategy | 0.7 | match | yes (borderline) |
-| 23 | Rud Pedersen Brussels | 2 | 26119 "Diversify EU" instrument | 0.8 | match | yes (horizontal, consultancy) |
-| 24 | SEC Newgate EU | 5 | 25527 Dual-Use Regulation evaluation | 0.5 | uncertain | no |
-| 25 | Transparency International EU | 1 | 25981 public procurement | 0.9 | match | yes |
-| 26 | Transparency International EU | 4 | 25402 Eurojust Regulation | 0.7 | match | no (borderline) |
-| 27 | VBO FEB | 1 | 24198 Cloud and AI Development Act | 0.8 | match | yes |
-| 28 | WWF European Policy Programme | 1 | 25794 ETS directive | 1.0 | match | yes |
-| 29 | industriAll Europe | 1 | 25280 Horizon Europe joint undertakings | 0.8 | match | no (borderline, as on 3 October) |
-| 30 | logos public affairs | 4 | 25981 public procurement | 0.8 | match | yes (horizontal, consultancy) |
+| # | Organisation | Rank | Consultation | Judged |
+| --- | --- | --- | --- | --- |
+| 1 | AGE Platform Europe | 1 | 25731 EU Strategy on victims’ rights (2026 - 2030) | no |
+| 2 | Acumen Public Affairs | 1 | 25981 Revision of EU rules on public procurement | yes |
+| 3 | Acumen Public Affairs | 3 | 25759 Omnibus simplification of energy-efficient product legislation | no |
+| 4 | CEFIC - European Chemical Industry Council | 4 | 26119 "Diversify EU" instrument | no |
+| 5 | Centre for European Policy Studies | 1 | 26119 "Diversify EU" instrument | yes |
+| 6 | Climate Action Network Europe | 2 | 26060 Minimum performance standards for data centres in Europe | yes |
+| 7 | Climate Action Network Europe | 3 | 26084 Common format for initial and updated National Air Pollution Control Programmes | no |
+| 8 | Confédération des Syndicats Chrétiens de Belgique | 4 | 23919 Tackling unjustified territorial supply constraints in the Single Market | no |
+| 9 | Corporate Europe Observatory | 5 | 26119 "Diversify EU" instrument | no |
+| 10 | DIGITALEUROPE | 4 | 25527 Evaluation of Regulation (EU) 2021/821 (the ‘Dual-Use Regulation’) | yes |
+| 11 | DIGITALEUROPE | 5 | 25280 European partnerships implemented as joint undertakings under Horizon Europe (2028-2034) | no |
+| 12 | Egmont - Royal Institute for International Relations | 3 | 25896 Review of the International Procurement Instrument | no |
+| 13 | Eurocities | 4 | 26171 Atlantic maritime and macro-regional strategy | no |
+| 14 | European Council on Refugees and Exiles | 1 | 25894 Revision of Schengen short-stay visa procedures (recast) | no |
+| 15 | European Environmental Bureau | 2 | 26097 Early warning report on waste 2027 | yes |
+| 16 | European Policy Centre | 1 | 26119 "Diversify EU" instrument | yes |
+| 17 | European Policy Centre | 2 | 25397 Proposal for a new Regulation on the European Union Agency for Law Enforcement Cooperation (Europol) | no |
+| 18 | European Policy Centre | 3 | 24198 Cloud and AI Development Act | yes |
+| 19 | European Policy Centre | 5 | 25527 Evaluation of Regulation (EU) 2021/821 (the ‘Dual-Use Regulation’) | yes |
+| 20 | Fédération Générale du Travail de Belgique - Algemeen Belgisch Vakverbond | 2 | 25923 Omnibus on taxation | no |
+| 21 | Institute for European Environmental Policy | 2 | 26097 Early warning report on waste 2027 | yes |
+| 22 | Institute for European Environmental Policy | 3 | 26171 Atlantic maritime and macro-regional strategy | no |
+| 23 | Rud Pedersen Brussels | 2 | 26119 "Diversify EU" instrument | yes |
+| 24 | SEC NEWGATE EU | 5 | 25527 Evaluation of Regulation (EU) 2021/821 (the ‘Dual-Use Regulation’) | yes |
+| 25 | Transparency International Liaison Office to the European Union | 1 | 25981 Revision of EU rules on public procurement | yes |
+| 26 | Transparency International Liaison Office to the European Union | 4 | 25402 Eurojust Regulation Revision | no |
+| 27 | VERBOND VAN BELGISCHE ONDERNEMINGEN / FEDERATION DES ENTREPRISES DE BELGIQUE | 1 | 24198 Cloud and AI Development Act | yes |
+| 28 | WWF European Policy Programme | 1 | 25794 EU emissions trading system for maritime, aviation and stationary installations, and market stability reserve - review | yes |
+| 29 | industriAll European Trade Union | 1 | 25280 European partnerships implemented as joint undertakings under Horizon Europe (2028-2034) | no |
+| 30 | logos public affairs | 4 | 25981 Revision of EU rules on public procurement | yes |
 
-**Precision on the sample: 20 of 30 (67%), up from 17 of 30 (57%).** Counting the
-borderline pairs as relevant: 25 of 30 (83%), up from 19 of 30 (63%). By band: `match` 20
-of 27 (74%, was 13 of 25), `uncertain` 0 of 3 (was 4 of 5).
+**Precision on the sample: 15 of 30 (50%).** Rank 1 pairs: 6 of 9 relevant. By band:
+`match` 14 of 27, `uncertain` 1 of 3. A 95% interval on 15 of 30 runs from about 33% to
+67%, so this is a small sample.
 
 What the sample shows:
 
-- The top of the list improved most. Rank 1 pairs: 8 of 9 relevant (v1: 1 of 6).
-- Europol no longer leads generic profiles; the one Europol pair left (EPC) is borderline.
-- The reranker's band now separates: the three uncertain pairs were all judged not
-  relevant. Relevance 0.7 and 0.8 still holds misses (7 of the 10 misses), so the score is
-  a ranking, not a guarantee.
-- The gain is smaller than hoped (the review hoped for 75%). Think tanks and consultancies
-  with every interest ticked still get a mix: the model, like the embedding, gives a broad
-  profile the benefit of the doubt on mid-size files (dual use, procurement instrument).
-- 30 pairs from one judge is a small sample: a 95% interval on 20 of 30 runs from about 49%
-  to 81%, so the two samples overlap. The direction is consistent with the rank 1 numbers
-  and the band split, not proven by them.
+- Specialists on their own file are found: WWF and the ETS review, EEB and IEEP and the
+  waste early warning report, CAN Europe and data centre efficiency standards, the
+  consultancies and federations and the horizontal procurement, trade and digital files.
+- The misses are of two kinds. Narrow technical acts handed to broad profiles (the energy
+  labelling omnibus to a consultancy, the Horizon Europe joint undertakings to a trade
+  union and an industry association), and files that touch a ticked interest area but not
+  the goals (the victims' rights strategy for an older persons' platform, the Eurojust
+  revision for an anti-corruption office, the Atlantic strategy for a city network).
+- The judge counts borderline as no, so the earlier figures that counted borderline
+  pairs as relevant are not comparable. The model's own relevance score does not separate
+  the two groups well: 13 of the 15 misses carry a relevance of 0.6 or more.
+- The list is a shortlist to check, not a ranking to trust. The about page says so.
 
 ## Quotes verified
 
@@ -436,8 +439,8 @@ BEUC draft: 38 of 49 sentences supported (77.6%) across the 5 current drafts.
 
 ## What is not measured
 
-- Precision is one judge's verdict on 30 pairs per matcher version; no second rater, and
-  the v2 judge (the coding agent) was not blind to the matcher's output.
+- Precision is one blind judge's verdict on 30 pairs; there is no second judge and no
+  domain expert, and the 95% interval is wide.
 - Draft quality beyond sentence support (tone, whether an organisation would send it) is
   not scored. The drafts are labelled "machine draft, awaiting human review".
 - The Anthropic provider is not exercised (no key).
