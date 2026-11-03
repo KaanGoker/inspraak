@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
-  <p class="kicker">Consultation radar for Brussels organisations</p>
-  <h1>Which open Commission consultations should your organisation answer?</h1>
-  <p class="lede">Pick an organisation and get the open Have Your Say consultations that fit it, who already answered and what they asked, who met the Commissioners' cabinets on the subject and what the proposal says, with every figure linked to its public source. Agents do the reading; a person decides before anything is drafted.</p>
+  <p class="kicker">For Brussels organisations</p>
+  <h1>Don't miss the EU consultations that matter to you</h1>
+  <p class="lede">The European Commission asks the public for feedback before it changes a law. Inspraak finds the open consultations that fit your organisation and shows who has already answered. If you want, it drafts a reply for a person to check.</p>
   {% if static_mode %}
   <div class="search">
     <label class="visually-hidden" for="q">Organisation</label>
@@ -50,7 +50,7 @@
   {% else %}
   <form class="search" action="{{ u('search') }}" method="get" role="search">
     <label class="visually-hidden" for="q">Organisation</label>
-    <input id="q" name="q" type="search" placeholder="e.g. BEUC, Zero Waste Europe, 9505781573-45" autocomplete="off"
+    <input id="q" name="q" type="search" placeholder="Your organisation, e.g. BEUC or Zero Waste Europe" autocomplete="off"
            hx-get="{{ u('search') }}" hx-trigger="input changed delay:300ms, search" hx-target="#results" hx-indicator="#results">
     <button type="submit">Search</button>
     <div id="results" class="results" aria-live="polite"></div>
@@ -58,69 +58,49 @@
   {% endif %}
 </section>
 
+<section class="steps" aria-labelledby="steps-h">
+  <h2 id="steps-h" class="visually-hidden">How it works</h2>
+  <ol class="step-list">
+    <li><strong>Pick your organisation</strong><span>Search above, or open one of the examples below.</span></li>
+    <li><strong>See what fits</strong><span>The open consultations on your topics, how many days are left and who has already answered.</span></li>
+    <li><strong>Answer in time</strong><span>Read a draft reply built from the Commission's own documents. A person checks it; nothing is sent for you.</span></li>
+  </ol>
+</section>
+
 <section id="demo">
-  <h2>Organisations <span class="muted h-sub">{{ demo_organisations | length }} with a page</span></h2>
   {% if demo_organisations %}
-  <p class="muted">{% if static_mode %}Each page shows the open consultations that fit the organisation, with a reason, who already answered, cabinet meetings on the subject and the proposal passages closest to its profile.{% else %}Organisations with at least one run. Their pages show the full picture, including drafts where a reviewer said go.{% endif %}</p>
+  {% set featured = demo_organisations | selectattr('drafts') | list %}
+  {% if featured | length < 3 %}{% set featured = demo_organisations[:6] %}{% endif %}
+  <h2>Examples to start with</h2>
   <ul class="card-list">
-    {% for o in demo_organisations %}
-    <li class="card">
-      <a class="card-title" href="{{ u('org', o.tr_id) }}">{{ o.name }}</a>
-      <div class="muted">{{ o.acronym ~ ', ' if o.acronym }}{{ o.category }}, {{ o.head_city | default('', true) | title }}{{ ', ' if o.head_city }}{{ o.head_country | title }}</div>
-      {% if not static_mode %}
-      <div class="tags">
-        <span class="tag">{{ o.runs }} run{{ 's' if o.runs != 1 }}</span>
-        {% if o.drafts %}<span class="tag">{{ o.drafts }} draft{{ 's' if o.drafts != 1 }}</span>{% endif %}
-        {% if o.machine_drafts %}<span class="tag warn">{{ o.machine_drafts }} awaiting review</span>{% endif %}
-      </div>
-      {% endif %}
-    </li>
-    {% endfor %}
+    {% for o in featured[:6] %}{% include "partials/org_card.html" %}{% endfor %}
   </ul>
+  {% if demo_organisations | length > featured[:6] | length %}
+  <details class="all-orgs">
+    <summary>All {{ demo_organisations | length }} organisations with a page</summary>
+    <ul class="card-list">
+      {% for o in demo_organisations %}{% include "partials/org_card.html" %}{% endfor %}
+    </ul>
+  </details>
+  {% endif %}
   {% else %}
-  <p class="muted">No run yet. Search an organisation above and start one from its page.</p>
+  <p class="muted">No organisation page yet. Search an organisation above and start one from its page.</p>
   {% endif %}
 </section>
 
-{% if snapshot_date %}<p class="asof small muted">Data as of {{ snapshot_date | datetime }} (Brussels time).</p>{% endif %}
-<section class="stats">
-  <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants in the register export</span></div>
-  <div class="stat"><span class="stat-n" id="open-count" data-n="{{ open_publications | length }}">{{ open_publications | length }}</span><span class="stat-l">consultations open today</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions stored</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen submissions counted, never stored</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">cabinet meetings, 2024 to 2029 mandate</span></div>
-  <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">document pages indexed</span></div>
-</section>
-
-<section class="agents" aria-labelledby="agents-h">
-  <h2 id="agents-h">How a page is made</h2>
-  <ol class="agent-flow">
-    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
-    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
-    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
-    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
-    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
-    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
-    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
-    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
-  </ol>
-  <p class="agent-caption small"><span class="agent-sup">Supervisor</span> routes between the agents on what the run already holds, and a second human review closes the run. LangGraph with a Postgres checkpointer, so a run can wait days for a decision. {% if static_mode %}This snapshot shows the first five agents' output; drafts and decisions stay in the local app. {% endif %}<a href="{{ u('about') }}#method">Method and evaluation</a></p>
-</section>
-
 <section id="consultations">
-  <h2>Open consultations in scope <span class="muted h-sub">by deadline{% if snapshot_date %}, open on {{ snapshot_date | date }}{% endif %}</span></h2>
+  <h2>Open consultations <span class="muted h-sub">closing soonest first</span></h2>
+  {% if snapshot_date %}<p class="small muted">Data from {{ snapshot_date | date }}. Consultations that have closed since then are hidden.</p>{% endif %}
   <p id="closed-since" class="small muted" hidden></p>
   <div class="table-wrap">
   <table class="table">
-    <thead><tr><th>Deadline</th><th>Consultation</th><th>Type</th><th class="num">Organisations</th><th class="num">Citizens</th></tr></thead>
+    <thead><tr><th>Deadline</th><th>Consultation</th><th class="num">Answers from organisations</th></tr></thead>
     <tbody>
     {% for p in open_publications %}
     <tr data-open-row>
       <td class="nowrap" data-deadline="{{ p.end_date | deadline_iso }}">{{ p.end_date | date }} <span class="countdown muted small"></span></td>
-      <td><a href="{{ u('consultation', p.id) }}">{{ p.short_title or p.title }}</a>{% if p.dg %} <span class="muted">{{ p.dg }}</span>{% endif %}</td>
-      <td class="nowrap muted">{{ p.type | replace('_', ' ') | lower }}</td>
+      <td><a href="{{ u('consultation', p.id) }}">{{ p.short_title or p.title }}</a></td>
       <td class="num">{{ p.org_feedback_count | num }}</td>
-      <td class="num">{{ p.citizen_feedback_count | num }}</td>
     </tr>
     {% endfor %}
     </tbody>

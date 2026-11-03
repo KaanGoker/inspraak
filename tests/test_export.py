@@ -88,12 +88,12 @@ def test_export_writes_a_relative_static_site(snapshot, agent_env, tmp_path):
     assert noindex in (out / "consultation" / f"{PUB}.html").read_text(encoding="utf-8")
     assert noindex not in (out / "about.html").read_text(encoding="utf-8")
     assert "Start a run" not in org and "<form" not in org
-    assert "submissions in this snapshot" in org or "submission in this snapshot" in org
+    assert "submissions on the portal are not" in org  # the scope of "its past answers" is stated
     assert 'data-deadline="' in org
     assert 'href="../consultation/26173.html"' in org
-    assert 'href="../static/style.css"' in org
+    assert 'href="../static/style.css?v=3"' in org
     home = (out / "index.html").read_text(encoding="utf-8")
-    assert 'href="static/style.css"' in home and f'href="org/{GREENPEACE}.html"' in home
+    assert 'href="static/style.css?v=3"' in home and f'href="org/{GREENPEACE}.html"' in home
     assert "search.json" in home
     assert '<meta name="robots"' not in home
     run_page = (out / "run" / f"{run['id']}.html").read_text(encoding="utf-8")

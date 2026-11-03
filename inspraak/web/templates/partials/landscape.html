@@ -36,7 +36,6 @@
         <strong>{{ s.organization }}</strong>
         <span class="muted">{{ s.user_type }}{{ ', ' ~ s.country if s.country }}{% if s.register_category %}; register: {{ s.register_category }}{% endif %}</span>
         <span class="tag stance-{{ s.stance }}">model reads as: {{ s.stance_label }}</span>
-        {% if not static_mode %}<span class="muted small">confidence {{ s.confidence }}</span>{% endif %}
         <a class="small" href="{{ s.source }}" rel="noopener">source</a>
       </div>
       {% if s.key_asks %}

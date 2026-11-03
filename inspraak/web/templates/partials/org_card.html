@@ -1,0 +1,7 @@
+{# expects: o (a demo organisation row) #}
+<li class="card">
+  <a class="card-title" href="{{ u('org', o.tr_id) }}">{{ o.acronym or o.name }}</a>
+  {% if o.acronym %}<div class="small">{{ o.name }}</div>{% endif %}
+  <div class="muted small">{{ o.category | short_category }}, {{ (o.head_city or o.head_country) | default('', true) | title }}</div>
+  {% if o.drafts and not static_mode %}<div class="tags"><span class="tag ok">draft reply ready</span></div>{% endif %}
+</li>

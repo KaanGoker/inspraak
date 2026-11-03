@@ -175,7 +175,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def about(request: Request):
         with db.session(settings.database_url) as conn:
             data = views.about(conn)
-        return page("about.html", request, **data, title="About and method")
+        return page("about.html", request, **data, title="How it works")
 
     @app.get("/healthz")
     def healthz():

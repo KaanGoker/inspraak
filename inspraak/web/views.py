@@ -72,7 +72,7 @@ REVIEW_KIND_LABELS = {
     "attachment": "submission without readable text",
     "conflict": "conflict with a stored earlier position",
 }
-PASSAGES = 5
+PASSAGES = 3
 MEETINGS_SHOWN = 12
 COUNTRIES_SHOWN = 10
 
@@ -114,6 +114,15 @@ def clean_summary(summary: dict[str, Any] | None) -> dict[str, Any] | None:
     return row
 
 
+def is_readable_passage(text: str | None) -> bool:
+    """False for table residue from a PDF: a passage where many words are bare numbers."""
+    words = (text or "").split()
+    if len(words) < 12:
+        return False
+    numbers = sum(1 for w in words if w.strip(".,;:%()*").isdigit())
+    return numbers / len(words) < 0.15
+
+
 def label_type(code: str | None) -> str:
     if not code:
         return "unknown"
@@ -137,7 +146,20 @@ def days_left(end: datetime | str | None, now: datetime | None = None) -> int | 
 
 def home(conn: psycopg.Connection) -> dict[str, Any]:
     stats = store.snapshot_stats(conn)
-    open_pubs = [_pub_row(p) for p in store.list_publications(conn, open_only=True)]
+    open_pubs: list[dict[str, Any]] = []
+    by_title: dict[str, dict[str, Any]] = {}
+    for p in store.list_publications(conn, open_only=True):
+        row = _pub_row(p)
+        # one initiative often has several open publications under one title: one row, counts added
+        key = (row.get("short_title") or row.get("title") or "").strip().lower()
+        first = by_title.get(key)
+        if first is None:
+            by_title[key] = row
+            open_pubs.append(row)
+        else:
+            first["org_feedback_count"] = (first.get("org_feedback_count") or 0) + (
+                row.get("org_feedback_count") or 0
+            )
     return {
         "stats": stats,
         "open_publications": open_pubs,
@@ -230,8 +252,9 @@ def organisation(
             keep=sorted(drafts),
         )
 
-    # matcher order (rerank, else similarity); a consultation with a draft comes first
-    matches.sort(key=lambda m: (m["publication_id"] not in drafts, m["rank"]))
+    # matcher order (rerank, else similarity); uncertain fits and cards kept only for their
+    # draft go last, so the first card is always the best fit
+    matches.sort(key=lambda m: (bool(m.get("kept")) or m["band"] == "uncertain", m["rank"]))
     consultations = [
         _organisation_consultation(conn, m, vector, decisions, drafts, now) for m in matches
     ]
@@ -378,11 +401,13 @@ def _organisation_consultation(
 ) -> dict[str, Any]:
     pid = m["publication_id"]
     pub = store.get_publication(conn, pid)
-    landscape = _landscape(conn, pub, limit=8)
+    landscape = _landscape(conn, pub, limit=3)
     lobby = _lobby(conn, pub, shown=MEETINGS_SHOWN)
     passages = []
     if vector is not None:
-        for c in store.similar_chunks(conn, pid, vector, limit=PASSAGES):
+        for c in store.similar_chunks(conn, pid, vector, limit=PASSAGES * 3):
+            if len(passages) == PASSAGES or not is_readable_passage(c["text"]):
+                continue
             passages.append(
                 {
                     "chunk_id": c["id"],
@@ -401,7 +426,7 @@ def _organisation_consultation(
         **m,
         "publication": _pub_row(pub),
         "days_left": days_left(pub["end_date"], now),
-        "band_label": "match" if m["band"] == "match" else "uncertain relevance",
+        "band_label": "good fit" if m["band"] == "match" else "possible fit",
         "summary": clean_summary(summary),
         "landscape": landscape,
         "lobby": lobby,

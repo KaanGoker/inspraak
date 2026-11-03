@@ -78,7 +78,7 @@ def export_site(
         write(out / "index.html", renderer.render("home.html", title="Inspraak", **home))
         write(
             out / "about.html",
-            renderer.render("about.html", title="About and method", **views.about(conn)),
+            renderer.render("about.html", title="How it works", **views.about(conn)),
         )
 
         # organisations and their runs

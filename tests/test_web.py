@@ -31,7 +31,7 @@ def client(snapshot, agent_env, monkeypatch):
 def test_pages_render_from_the_snapshot(client):
     r = client.get("/")
     assert r.status_code == 200
-    assert "Open consultations in scope" in r.text and "with a page" in r.text
+    assert "Open consultations" in r.text and "Pick your organisation" in r.text
     assert "/consultation/26173" in r.text
 
     r = client.get("/search", params={"q": "greenpeace"}, headers={"HX-Request": "true"})
@@ -42,14 +42,14 @@ def test_pages_render_from_the_snapshot(client):
 
     r = client.get(f"/org/{GREENPEACE}")
     assert r.status_code == 200
-    assert "Profile as registered" in r.text and "Matching open consultations" in r.text
+    assert "About " in r.text and "Open consultations for" in r.text
     assert links.organisation(GREENPEACE) in r.text
     assert "subject match, approximate" in r.text
     assert "No draft" in r.text
 
     r = client.get(f"/consultation/{PUB}")
     assert r.status_code == 200
-    assert "Who already submitted" in r.text and "By stakeholder type" in r.text
+    assert "Who has already answered" in r.text and "By stakeholder type" in r.text
     assert links.initiative(19418) in r.text
     assert '<svg class="bars"' in r.text
 

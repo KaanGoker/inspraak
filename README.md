@@ -8,7 +8,7 @@
 
 Inspraak finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Built with LangGraph (two human checkpoints and a critic that removes any sentence it cannot cite), Postgres with pgvector and the Gemini free tier.
 
-**Live demo:** [kaangoker.github.io/inspraak](https://kaangoker.github.io/inspraak/), a static snapshot of 5 October 2026 with 40 Brussels organisations and 81 consultations. No drafts and no review decisions are public.
+**Live demo:** [kaangoker.dev/inspraak](https://kaangoker.dev/inspraak/), a static snapshot of 5 October 2026 with 40 Brussels organisations and 81 consultations. No drafts and no review decisions are public.
 
 Built by [Kaan Goker](https://kaangoker.dev) ([LinkedIn](https://linkedin.com/in/kaangoker)). Not affiliated with any organisation it shows.
 

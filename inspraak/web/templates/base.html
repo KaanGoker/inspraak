@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 {% set page_title = title ~ " | Inspraak" if title and title != "Inspraak" else "Inspraak, a consultation radar for Brussels organisations" %}
 {% set page_description = description | default("Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.", true) %}
 <title>{{ page_title }}</title>
@@ -12,13 +13,13 @@
 <meta property="og:site_name" content="Inspraak">
 <meta property="og:title" content="{{ page_title }}">
 <meta property="og:description" content="{{ page_description }}">
-<meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta property="og:image" content="https://kaangoker.dev/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="twitter:image" content="https://kaangoker.dev/inspraak/static/og.png">
 <link rel="icon" type="image/svg+xml" href="{{ u('static', 'mark.svg') }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ u('static', 'favicon.png') }}">
 {% block head_extra %}{% endblock %}
-<link rel="stylesheet" href="{{ u('static', 'style.css') }}">
+<link rel="stylesheet" href="{{ u('static', 'style.css') }}?v=3">
 {% if not static_mode %}<script src="{{ u('static', 'htmx.min.js') }}" defer></script>{% endif %}
 </head>
 <body>
@@ -29,10 +30,10 @@
   <div class="wrap bar">
     <a class="brand" href="{{ u('home') }}"><img src="{{ u('static', 'mark.svg') }}" alt="" width="26" height="26" style="vertical-align:-6px;margin-right:8px">Inspraak <span class="brand-sub">consultation desk</span></a>
     <nav class="nav">
-      <a href="{{ u('home') }}">Organisations</a>
+      <a href="{{ u('home') }}#demo">Organisations</a>
       <a href="{{ u('home') }}#consultations">Consultations</a>
       {% if not static_mode %}<a href="{{ u('inbox') }}">Review inbox</a>{% endif %}
-      <a href="{{ u('about') }}">About and method</a>
+      <a href="{{ u('about') }}">How it works</a>
     </nav>
   </div>
 </header>

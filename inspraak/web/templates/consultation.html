@@ -5,12 +5,11 @@
 {% set p = publication %}
 <nav class="crumbs"><a href="{{ u('home') }}#consultations">Consultations</a> / {{ p.id }}</nav>
 <h1>{{ p.short_title or p.title }}</h1>
-<p class="lede">{{ p.title }}</p>
+{% if p.short_title and p.short_title != p.title %}<details class="small muted"><summary>Full official title</summary>{{ p.title }}</details>{% endif %}
 <p class="small">
   <span class="tag {{ 'ok' if p.is_open else '' }}">{{ 'open on ' ~ (snapshot_date | date) if p.is_open and static_mode and snapshot_date else ('open' if p.is_open else 'closed') }}</span>
-  {{ p.type | replace('_', ' ') | lower }}{% if p.initiative_reference %}, {{ p.initiative_reference }}{% endif %}{% if p.dg %}, {{ p.dg }}{% endif %}.
-  Feedback period {{ p.published_at | date }} to <strong>{{ p.end_date | date }}</strong>{% if p.is_open %} <span data-deadline="{{ p.end_date | deadline_iso }}">(<span class="countdown">open</span>)</span>{% endif %}.
-  <a href="{{ p.source }}" rel="noopener">Initiative on the portal</a>.
+  Open for answers from {{ p.published_at | date }} to <strong>{{ p.end_date | date }}</strong>{% if p.is_open %} <span data-deadline="{{ p.end_date | deadline_iso }}">(<span class="countdown">open</span>)</span>{% endif %}.
+  <a href="{{ p.source }}" rel="noopener">Answer on the Commission's site</a>.
   {% if p.topics %}<span class="muted">Topics: {{ p.topics | join(', ') }}.</span>{% endif %}
 </p>
 {% if initiatives | length > 1 %}
@@ -37,7 +36,7 @@
 </section>
 
 <section class="block">
-  <h2>Who already submitted</h2>
+  <h2>Who has already answered</h2>
   {% with land = landscape, pub = p %}{% include "partials/landscape.html" %}{% endwith %}
 </section>
 

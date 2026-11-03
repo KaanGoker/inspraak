@@ -5,13 +5,13 @@
 {% set p = profile %}
 <nav class="crumbs"><a href="{{ u('home') }}">Organisations</a> / {{ p.acronym or p.name }}</nav>
 <h1>{{ p.name }}{% if p.acronym %} <span class="muted h-sub">{{ p.acronym }}</span>{% endif %}</h1>
-<p class="lede">{{ p.category }}. Head office {{ p.head_city | default('', true) | title }}{{ ', ' if p.head_city }}{{ p.head_country | default('', true) | title }}.
-  Register ID <a href="{{ p.source }}" rel="noopener">{{ p.tr_id }}</a>{% if p.last_update %}, last updated {{ p.last_update | date }}{% endif %}.</p>
+<p class="lede">{{ p.category | short_category }}, {{ p.head_city | default('', true) | title }}{{ ', ' if p.head_city }}{{ p.head_country | default('', true) | title }}. <a class="small" href="{{ p.source }}" rel="noopener">EU Transparency Register entry</a></p>
 
 <div class="page-grid">
 <aside class="side" id="profile">
   <section class="box">
-    <h2>Profile as registered</h2>
+    <h2>About {{ p.acronym or p.name }}</h2>
+    <p class="muted small">As the organisation describes itself in the EU Transparency Register. This is what the matching reads.</p>
     {% if p.edited_fields and not static_mode %}<p class="small"><span class="tag ok">reviewer corrections applied</span> {{ p.edited_fields | join(', ') }}</p>{% endif %}
     <dl class="dl">
       <dt>Goals</dt><dd>{% if p.goals and p.goals | length > 900 %}<details><summary>{{ p.goals | truncate(400) }}</summary>{{ p.goals }}</details>{% else %}{{ p.goals or 'not stated' }}{% endif %}</dd>
@@ -47,7 +47,7 @@
   </section>
 
   <section class="box">
-    <h2>Own voice <span class="muted h-sub">{{ submissions | length }} submission{{ 's' if submissions | length != 1 }} in this snapshot ({{ scope_publications }} consultations)</span></h2>
+    <h2>Its past answers <span class="muted h-sub">{{ submissions | length }}</span></h2>
     {% if submissions %}
     <ul class="plain">
       {% for s in submissions %}
@@ -59,7 +59,7 @@
   </section>
 
   <section class="box">
-    <h2>Own cabinet meetings <span class="muted h-sub">{{ own_meetings_count }}</span></h2>
+    <h2>Its meetings with the Commission <span class="muted h-sub">{{ own_meetings_count }}</span></h2>
     {% if own_meetings %}
     <ul class="plain small">
       {% for m in own_meetings[:10] %}<li>{{ m.meeting_date | date }}: {{ m.cabinet | replace('Cabinet of ', '') }}, "{{ m.subject }}"</li>{% endfor %}
@@ -68,8 +68,9 @@
     {% else %}<p class="muted small">No meeting with a Commissioner cabinet recorded under this register ID in the 2024 to 2029 file.</p>{% endif %}
   </section>
 
-  <section class="box">
-    <h2>{{ 'Run trace' if static_mode else 'Runs' }}</h2>
+  <details class="box behind">
+    <summary><h2 class="inline">Behind the scenes</h2></summary>
+    <p class="muted small">How this page was made, step by step, for the technically curious.</p>
     {% if not static_mode %}
     <form method="post" action="{{ u('org', p.tr_id) }}/run" class="form inline">
       <input name="requested_by" value="reviewer" aria-label="Your name">
@@ -88,34 +89,51 @@
     </ul>
     {% else %}<p class="muted small">No run yet.</p>{% endif %}
     {% if open_review_items and not static_mode %}<p class="small"><a href="{{ u('inbox') }}">{{ open_review_items }} open item{{ 's' if open_review_items != 1 }} in the review inbox</a></p>{% endif %}
-  </section>
+    {% if memory and not static_mode %}
+    <h3 class="small">Memory, {{ memory | length }} rows</h3>
+    <ul class="plain small">
+      {% for m in memory | reverse %}<li><span class="muted">{{ m.created_at | date }}, {{ m.kind | replace('_', ' ') }}{% if m.publication_id %}, <a href="{{ u('consultation', m.publication_id) }}">{{ m.publication_id }}</a>{% endif %}:</span> {% for k, v in m.content.items() %}{% if v and (v is string or v is number) %}{{ k | replace('_', ' ') }}: {{ v | string | truncate(120) }} {% elif v and k == 'interests' %}interests: {{ v | join(', ') }} {% endif %}{% endfor %}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </details>
 </aside>
 
 <div class="main-col">
   <section>
-    <h2>Matching open consultations <span class="muted h-sub">{{ consultations | length }}, {{ 'by relevance' if static_mode else 'drafts first, then by relevance' }}{% if snapshot_date %}, open on {{ snapshot_date | date }}{% endif %}</span></h2>
+    {% set good = consultations | selectattr('band', 'equalto', 'match') | rejectattr('kept') | list %}
+    {% if consultations %}
+    <div class="overview">
+      <p class="overview-lead"><strong>{{ good | length or consultations | length }} open consultation{{ 's' if (good | length or consultations | length) != 1 }}</strong> fit{{ 's' if (good | length or consultations | length) == 1 }} {{ p.acronym or p.name }}{% if good | length and good | length < consultations | length %}, plus {{ consultations | length - good | length }} possible fit{{ 's' if consultations | length - good | length != 1 }}{% endif %}.</p>
+      {% set best = consultations[0] %}
+      {% set soonest = (good or consultations) | sort(attribute='end_date') | first %}
+      <ul class="plain overview-list">
+        <li><span class="muted">Best fit:</span> <a href="#c{{ best.publication_id }}">{{ best.short_title or best.title }}</a> <span class="small" data-deadline="{{ best.end_date | deadline_iso }}">until {{ best.end_date | date }} <strong class="countdown"></strong></span></li>
+        {% if soonest.publication_id != best.publication_id %}<li><span class="muted">Closing soonest:</span> <a href="#c{{ soonest.publication_id }}">{{ soonest.short_title or soonest.title }}</a> <span class="small" data-deadline="{{ soonest.end_date | deadline_iso }}">until {{ soonest.end_date | date }} <strong class="countdown"></strong></span></li>{% endif %}
+      </ul>
+      <p class="small muted">Open a consultation below to see what it is about, who has already answered and{% if not static_mode %} a draft reply{% else %} the key passages{% endif %}.{% if snapshot_date %} Data from {{ snapshot_date | date }}.{% endif %}</p>
+    </div>
+    {% endif %}
+    <h2>Open consultations for {{ p.acronym or p.name }}</h2>
     {% if not has_vector %}
     <p class="notice">This profile has no vector yet, so nothing can be matched. Run <code>inspraak embed --target organisations</code>.</p>
     {% elif not consultations %}
     <p class="muted">No open in-scope consultation scores above the threshold for this profile{% if corrections %} ({{ corrections | length }} marked "not our topic" are excluded){% endif %}.</p>
     {% endif %}
     {% for c in consultations %}
-    <article class="consultation {{ 'uncertain' if c.band == 'uncertain' }}" id="c{{ c.publication_id }}" data-open-card>
-      <header class="c-head">
-        <div>
-          <h3><a href="{{ u('consultation', c.publication_id) }}">{{ c.short_title or c.title }}</a></h3>
-          <p class="muted small">{{ c.title }}</p>
-          {% if c.kept and not static_mode %}<p class="small muted">Shown because it has a draft; the matcher no longer ranks it among the top consultations for this profile.</p>{% endif %}
-          {% if c.reason %}<p class="small fit">Why it fits: {{ c.reason }} <span class="muted" title="{{ c.rerank_model }}">(model judgment{% if not static_mode %}; similarity {{ '%.2f' % c.score }}{% endif %})</span></p>{% endif %}
-          {% if c.siblings %}<p class="muted small">Same initiative, also open: {% for s in c.siblings %}<a href="{{ u('consultation', s) }}">{{ s }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
-        </div>
-        <div class="c-meta">
-          <span class="deadline" data-deadline="{{ c.end_date | deadline_iso }}">Deadline {{ c.end_date | date }} <strong class="countdown"></strong></span>
-          <span class="tag {{ 'warn' if c.band == 'uncertain' }}">{{ c.band_label }}{% if not static_mode %}, {% if c.reranked %}relevance {{ '%.2f' % c.relevance }}{% else %}similarity {{ '%.2f' % c.score }}{% endif %}{% endif %}</span>
-          {% if c.decision_label and not static_mode %}<span class="tag {{ 'ok' if c.decision_label == 'go' and not c.decision_is_demo else '' }}">{{ 'demo decision, no human review' if c.decision_is_demo else 'reviewer' }}: {{ c.decision_label }}</span>{% endif %}
-          <a class="small" href="{{ c.publication.source }}" rel="noopener">portal</a>
-        </div>
-      </header>
+    {% set weak = c.band == 'uncertain' or c.kept %}
+    <details class="consultation {{ 'uncertain' if weak }}" id="c{{ c.publication_id }}" data-open-card{{ ' open' if loop.first }}>
+      <summary class="c-head">
+        <span class="c-title">{{ c.short_title or c.title }}</span>
+        <span class="c-meta">
+          <span class="deadline" data-deadline="{{ c.end_date | deadline_iso }}">until {{ c.end_date | date }} <strong class="countdown"></strong></span>
+          <span class="tag {{ 'warn' if weak else 'ok' }}">{{ 'possible fit' if weak else c.band_label }}</span>
+          {% if c.draft and not static_mode %}<span class="tag">draft reply</span>{% endif %}
+          {% if c.decision_label and not c.decision_is_demo and not static_mode %}<span class="tag {{ 'ok' if c.decision_label == 'go' }}">reviewer: {{ c.decision_label }}</span>{% endif %}
+        </span>
+        {% if c.reason %}<span class="fit small">{{ c.reason }}</span>{% endif %}
+      </summary>
+      <p class="small c-links"><a href="{{ u('consultation', c.publication_id) }}">Full consultation page</a> <a href="{{ c.publication.source }}" rel="noopener">Answer on the Commission's site</a>{% if c.kept and not static_mode %} <span class="muted">Listed because it has a draft reply, not for its fit.</span>{% endif %}</p>
+      {% if c.siblings %}<p class="muted small">Same initiative, also open: {% for s in c.siblings %}<a href="{{ u('consultation', s) }}">{{ s }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>{% endif %}
       {% set thin = c.documents_count == 0 and not c.landscape.read and not c.draft %}
       {% if thin %}
       <details class="thin">
@@ -124,44 +142,45 @@
 
       {% if c.summary %}
       <div class="block">
-        <h4>What the Commission proposes <span class="muted small">(summary from the document, cached {{ c.summary.created_at | date }}, {{ c.summary.model }})</span></h4>
+        <h4>What the Commission proposes</h4>
         <p>{{ c.summary.summary.one_paragraph }}</p>
         {% if c.summary.summary.key_points %}<ul class="small">{% for k in c.summary.summary.key_points %}<li>{{ k }}</li>{% endfor %}</ul>{% endif %}
         {% if c.summary.summary.what_is_asked %}<p class="small"><strong>What is asked:</strong> {{ c.summary.summary.what_is_asked }}</p>{% endif %}
+        <p class="muted small">Summary written by AI from the Commission's document.</p>
       </div>
       {% else %}
-      <p class="muted small">No cached summary yet for this consultation; the title, the dossier text and the passages below are what there is.</p>
+      <p class="muted small">No summary yet for this consultation.</p>
       {% endif %}
 
       <div class="block">
-        <h4>What the proposal says on your topics <span class="muted small">({{ c.documents_count }} Commission document{{ 's' if c.documents_count != 1 }}; passages closest to the profile)</span></h4>
+        <h4>Key passages on your topics</h4>
         {% if c.passages %}
         {% set foreign = c.passages[0].language and c.passages[0].language | upper != 'EN' %}
         {% if foreign %}<details class="passages-fold"><summary class="small muted">The Commission document is in {{ c.passages[0].language | upper }}; open to read the {{ c.passages | length }} passages in that language.</summary>{% endif %}
         <ol class="passages">
           {% for ps in c.passages %}
-          <li><blockquote>{{ ps.text }}</blockquote><span class="cite"><a href="{{ ps.source }}" rel="noopener">{{ (ps.document_title or ps.document_id) | truncate(70) }}, page {{ ps.page_no }}</a>{% if ps.language %} ({{ ps.language }}){% endif %}{% if not static_mode %}, similarity {{ ps.score }}{% endif %}</span></li>
+          <li><blockquote>{{ ps.text }}</blockquote><span class="cite"><a href="{{ ps.source }}" rel="noopener">{{ (ps.document_title or ps.document_id) | truncate(70) }}, page {{ ps.page_no }}</a>{% if ps.language %} ({{ ps.language }}){% endif %}</span></li>
           {% endfor %}
         </ol>
         {% if foreign %}</details>{% endif %}
-        {% else %}<p class="muted small">No Commission document is attached to this publication, so there is nothing to cite.</p>{% endif %}
+        {% else %}<p class="muted small">The Commission has not attached a document yet.</p>{% endif %}
       </div>
 
       <div class="block">
-        <h4>Who already submitted</h4>
+        <h4>Who has already answered</h4>
         {% with land = c.landscape, pub = c.publication %}{% include "partials/landscape.html" %}{% endwith %}
       </div>
 
       <div class="block">
         <details>
-          <summary><h4 class="inline">Who met the cabinets on the subject</h4> <span class="muted small">{{ c.lobby.count }} meeting{{ 's' if c.lobby.count != 1 }} by subject similarity, approximate</span></summary>
+          <summary><h4 class="inline">Who met the Commission about it</h4> <span class="muted small">{{ c.lobby.count }} meeting{{ 's' if c.lobby.count != 1 }}, approximate</span></summary>
           {% with lobby = c.lobby %}{% include "partials/lobby.html" %}{% endwith %}
         </details>
       </div>
 
       {% if not static_mode %}
       <div class="block">
-        <h4>Draft response</h4>
+        <h4>Draft reply</h4>
         {% if c.draft %}
           {% with draft = c.draft %}{% include "partials/draft.html" %}{% endwith %}
         {% elif c.decision_label == 'go' %}
@@ -174,26 +193,10 @@
       </div>
       {% endif %}
       {% if thin %}</details>{% endif %}
-    </article>
+    </details>
     {% endfor %}
   </section>
 
-  {% if memory and not static_mode %}
-  <section>
-    <h2>Memory <span class="muted h-sub">{{ memory | length }} rows</span></h2>
-    <div class="table-wrap">
-    <table class="table small">
-      <thead><tr><th>When</th><th>Kind</th><th>Consultation</th><th>Content</th></tr></thead>
-      <tbody>
-      {% for m in memory | reverse %}
-      <tr><td class="nowrap">{{ m.created_at | datetime }}</td><td>{{ m.kind | replace('_', ' ') }}</td><td>{% if m.publication_id %}<a href="{{ u('consultation', m.publication_id) }}">{{ m.publication_id }}</a>{% endif %}</td>
-        <td>{% for k, v in m.content.items() %}{% if v and (v is string or v is number) %}<span class="muted">{{ k | replace('_', ' ') }}:</span> {{ v | string | truncate(120) }} {% elif v and k == 'interests' %}<span class="muted">interests:</span> {{ v | join(', ') }} {% endif %}{% endfor %}</td></tr>
-      {% endfor %}
-      </tbody>
-    </table>
-    </div>
-  </section>
-  {% endif %}
 </div>
 </div>
 {% endblock %}

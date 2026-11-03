@@ -123,6 +123,27 @@ def pct(part: Any, whole: Any) -> str:
         return ""
 
 
+SHORT_CATEGORIES = {
+    "Non-governmental organisations, platforms and networks and similar": "NGO",
+    "Companies & groups": "Company",
+    "Trade and business associations": "Business association",
+    "Trade unions and professional associations": "Trade union or professional body",
+    "Professional consultancies": "Consultancy",
+    "Think tanks and research institutions": "Think tank",
+    "Other organisations, public or mixed entities": "Public or mixed body",
+    "Academic institutions": "University",
+    "Associations and networks of public authorities": "Network of public authorities",
+    "Self-employed individuals": "Self-employed",
+    "Law firms": "Law firm",
+    "Organisations representing churches and religious communities": "Religious organisation",
+    "Entities, offices or networks established by third countries": "Third-country office",
+}
+
+
+def short_category(category: str | None) -> str:
+    return SHORT_CATEGORIES.get(category or "", category or "")
+
+
 def build_env() -> Environment:
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES)),
@@ -138,6 +159,7 @@ def build_env() -> Environment:
             "ms": fmt_ms,
             "pct": pct,
             "deadline_iso": deadline_iso,
+            "short_category": short_category,
         }
     )
     env.globals["Markup"] = Markup
