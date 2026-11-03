@@ -62,7 +62,7 @@
   <h2 id="steps-h" class="visually-hidden">How it works</h2>
   <ol class="step-list">
     <li><strong>Pick your organisation</strong><span>Search above, or open one of the examples below.</span></li>
-    <li><strong>See what fits</strong><span>The open consultations on your topics, how many days are left and who has already answered.</span></li>
+    <li><strong>See what fits</strong><span>The open consultations on your topics, how many days are left and who has already answered.{% if match_precision %} About half of the suggestions are a real fit ({{ match_precision.relevant }} of {{ match_precision.pairs }} in a blind test), so check each one.{% endif %}</span></li>
     <li><strong>Answer in time</strong><span>{% if static_mode %}Read the key passages of the Commission's document, then answer on the Commission's site before the deadline.{% else %}Read a draft reply built from the Commission's own documents. A person checks it; nothing is sent for you.{% endif %}</span></li>
   </ol>
 </section>

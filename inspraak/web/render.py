@@ -183,9 +183,15 @@ class Renderer:
         self.env = build_env()
         # shown in the footer of every page; the export sets it once, the app per request
         self.snapshot_date = snapshot_date
+        # the blind-test match precision, shown wherever matches are listed; views pulls in
+        # the agents, so it is imported here and not at module level
+        from inspraak.web.views import load_evaluation
+
+        self.match_precision = ((load_evaluation() or {}).get("manual") or {}).get("precision")
 
     def render(self, template: str, *, rel: str = "", **context: Any) -> str:
         context.setdefault("snapshot_date", self.snapshot_date)
+        context.setdefault("match_precision", self.match_precision)
         # house rule: no long dash on a page, register names and titles included
         return plain_dashes(
             self.env.get_template(template).render(

@@ -46,6 +46,7 @@ def test_pages_render_from_the_snapshot(client):
     assert links.organisation(GREENPEACE) in r.text
     assert "subject match, approximate" in r.text
     assert "No draft" in r.text
+    assert "Check each match yourself" in r.text and "(15 of 30)" in r.text
 
     r = client.get(f"/consultation/{PUB}")
     assert r.status_code == 200
@@ -57,6 +58,8 @@ def test_pages_render_from_the_snapshot(client):
     assert "Not official, and it can be wrong" in client.get("/about").text
     disclaimer = client.get("/disclaimer").text
     assert "Not official" in disclaimer and "within 48 hours" in disclaimer
+    assert "15 of 30 suggestions were a real fit" in disclaimer
+    assert "15 of 30 in a blind test" in client.get("/").text
     assert client.get("/healthz").json()["ok"] is True
     assert client.get("/org/000-00").status_code == 404
     assert client.get("/consultation/1").status_code == 404

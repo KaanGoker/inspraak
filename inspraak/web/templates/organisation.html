@@ -104,6 +104,7 @@
     {% if consultations %}
     <div class="overview">
       <p class="overview-lead"><strong>{{ good | length or consultations | length }} open consultation{{ 's' if (good | length or consultations | length) != 1 }}</strong> fit{{ 's' if (good | length or consultations | length) == 1 }} {{ p.acronym or p.name }}{% if good | length and good | length < consultations | length %}, plus {{ consultations | length - good | length }} possible fit{{ 's' if consultations | length - good | length != 1 }}{% endif %}.</p>
+      {% if match_precision %}<p class="notice small"><strong>Check each match yourself.</strong> In a blind test about half of the suggestions were a real fit ({{ match_precision.relevant }} of {{ match_precision.pairs }}). <a href="{{ u('about') }}#evaluation">How it was measured</a></p>{% endif %}
       {% set best = consultations[0] %}
       {% set soonest = (good or consultations) | sort(attribute='end_date') | first %}
       <ul class="plain overview-list">

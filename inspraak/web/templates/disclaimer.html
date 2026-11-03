@@ -16,7 +16,7 @@
   <ul>
     <li>The organisations on this site did not ask for a page and do not use Inspraak. Their page shows how the tool would work for them.</li>
     <li>A page holds only what the organisation made public itself: its entry in the EU Transparency Register and the answers it sent on the Commission's portal.</li>
-    <li>A "good fit" or "possible fit" is a guess by software. It says nothing about what the organisation thinks or plans.</li>
+    <li>A "good fit" or "possible fit" is a guess by software{% if match_precision %}: in a blind test, {{ match_precision.relevant }} of {{ match_precision.pairs }} suggestions were a real fit{% endif %}. It says nothing about what the organisation thinks or plans.</li>
   </ul>
 </section>
 
