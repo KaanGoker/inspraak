@@ -3,19 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About and method | Inspraak</title>
+<meta name="color-scheme" content="light">
+<title>How it works | Inspraak</title>
 <meta name="description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
 <meta name="author" content="Kaan Goker">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Inspraak">
-<meta property="og:title" content="About and method | Inspraak">
+<meta property="og:title" content="How it works | Inspraak">
 <meta property="og:description" content="Finds the open European Commission consultations a Brussels organisation should answer, shows who already responded and what they asked, and drafts a reply only after a person says go. Every figure links to its public source. Built by Kaan Goker.">
-<meta property="og:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta property="og:image" content="https://kaangoker.dev/inspraak/static/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://kaangoker.github.io/inspraak/static/og.png">
+<meta name="twitter:image" content="https://kaangoker.dev/inspraak/static/og.png">
 <link rel="icon" type="image/svg+xml" href="static/mark.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="static/favicon.png">
-<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/style.css?v=3">
 </head>
 <body>
 <div class="snapshot-bar"><div class="wrap">Static snapshot of 5 Oct 2026: precomputed pages, no drafts or review decisions. <a href="about.html#method">How it works</a></div></div>
@@ -23,14 +24,14 @@
   <div class="wrap bar">
     <a class="brand" href="index.html"><img src="static/mark.svg" alt="" width="26" height="26" style="vertical-align:-6px;margin-right:8px">Inspraak <span class="brand-sub">consultation desk</span></a>
     <nav class="nav">
-      <a href="index.html">Organisations</a>
+      <a href="index.html#demo">Organisations</a>
       <a href="index.html#consultations">Consultations</a>
-      <a href="about.html">About and method</a>
+      <a href="about.html">How it works</a>
     </nav>
   </div>
 </header>
 <main class="wrap">
-<h1>About and method</h1>
+<h1>How it works</h1>
 <p class="lede">Inspraak (Dutch for having a say) is a consultation desk for Brussels organisations. It joins three public sources on one key, the EU Transparency Register ID, and puts a small team of agents on top. This page says who built it, how it works, what it does not do, and where the numbers come from.</p>
 
 <section class="block about-author" id="author">
@@ -41,6 +42,16 @@
 
 <section class="block" id="method">
   <h2>How it works</h2>
+  <ol class="agent-flow">
+    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
+    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
+    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
+    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
+    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
+    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
+    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
+    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+  </ol>
   <p>A supervisor routes one run per organisation through seven agents. It decides on what the run already holds and calls no model. The run stops twice for a person: at go / no-go, before anything is drafted, and again at draft review. Its state lives in a Postgres checkpointer, so a run can wait days for a decision.</p>
   <ol>
     <li><strong>Profiler.</strong> The organisation's own register entry (goals, interests, category, budget), shown as registered, plus its earlier submissions in the snapshot. A reviewer can correct the profile; corrections are stored as memory, the register is never changed.</li>
@@ -52,6 +63,17 @@
     <li><strong>Critic.</strong> Checks every sentence of the draft and removes what it cannot source. A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past submission or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person. Nothing is ever submitted to the Commission by this system.</li>
   </ol>
 <p class="small muted">This public snapshot shows the output of the first five agents. Drafts, go / no-go decisions and review notes stay in the local app: they are written for the people using it, not for publication.</p></section>
+
+<section class="block" id="data">
+  <h2>The data behind it</h2>
+<p class="small muted">Snapshot of 5 Oct 2026, 23:30 (Brussels time).</p>  <div class="stats">
+    <div class="stat"><span class="stat-n">17,897</span><span class="stat-l">organisations in the EU Transparency Register</span></div>
+    <div class="stat"><span class="stat-n">9,181</span><span class="stat-l">answers from organisations stored</span></div>
+    <div class="stat"><span class="stat-n">23,351</span><span class="stat-l">answers from citizens counted, never stored</span></div>
+    <div class="stat"><span class="stat-n">11,531</span><span class="stat-l">meetings with Commissioners' cabinets, 2024 to 2029</span></div>
+    <div class="stat"><span class="stat-n">36,563</span><span class="stat-l">pages of Commission documents indexed</span></div>
+  </div>
+</section>
 
 <section class="block" id="evaluation">
   <h2>Evaluation</h2>

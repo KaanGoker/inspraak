@@ -1,20 +1,22 @@
 :root {
-  --ink: #1c2431;
-  --muted: #5d6673;
-  --paper: #f6f5f1;
+  color-scheme: light;
+  --ink: #26313f;
+  --muted: #667085;
+  --paper: #fbfcfe;
   --card: #ffffff;
-  --line: #d8d5cc;
-  --line-soft: #e8e6df;
-  --accent: #1f4e8c;
-  --accent-ink: #163a69;
-  --accent-soft: #e9eff8;
-  --bar: #3b6ea5;
-  --warn-ink: #7a4f00;
-  --warn-bg: #fff4d6;
-  --ok-ink: #1d6b3a;
-  --ok-bg: #e4f3ea;
-  --bad-ink: #8a2c2c;
-  --bad-bg: #f9e6e6;
+  --line: #e3e8ef;
+  --line-soft: #eef1f5;
+  --accent: #2563c9;
+  --accent-ink: #1d4fa3;
+  --accent-soft: #eef4fd;
+  --bar: #5b8fd6;
+  --warn-ink: #8a5a00;
+  --warn-bg: #fff8e6;
+  --ok-ink: #18794e;
+  --ok-bg: #eaf7f0;
+  --bad-ink: #a23b3b;
+  --bad-bg: #fdeeee;
+  --shadow: 0 1px 3px rgba(16, 24, 40, .06);
   --serif: Georgia, "Times New Roman", Times, serif;
   --sans: "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -110,9 +112,7 @@ button[disabled] { opacity: .5; cursor: default; }
 .side { order: 1; min-width: 0; }
 .main-col { order: 0; min-width: 0; }
 @media (min-width: 960px) {
-  .page-grid { grid-template-columns: 320px minmax(0, 1fr); }
-  .side { order: 0; }
-  .main-col { order: 1; }
+  .page-grid { grid-template-columns: minmax(0, 1fr) 300px; }
 }
 .table td, blockquote, .draft-text, .submission, .dl dd, .cite, .item { overflow-wrap: anywhere; }
 .trace-text { min-width: 200px; }
@@ -231,3 +231,43 @@ svg.bars { max-width: 560px; height: auto; display: block; }
 @media (max-width: 560px) { .eval-table td:first-child { white-space: normal; } .credit-links { display: block; } .credit-links a { margin: 0 .7rem 0 0; } }
 
 .passages-fold > summary { margin: .2rem 0 .6rem; }
+
+/* ---- plain reading: steps, overview, folded consultation cards ---- */
+.steps { margin: 1.2rem 0 .4rem; }
+.step-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .7rem; counter-reset: step; }
+.step-list li { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: .8rem .9rem .8rem 3rem; position: relative; counter-increment: step; }
+.step-list li::before { content: counter(step); position: absolute; left: .9rem; top: .75rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: .85rem; display: flex; align-items: center; justify-content: center; }
+.step-list strong { display: block; }
+.step-list span { display: block; color: var(--muted); font-size: .9rem; }
+.all-orgs { margin-top: .9rem; }
+.all-orgs > summary { font-weight: 600; color: var(--accent); margin-bottom: .7rem; }
+
+.overview { background: var(--accent-soft); border: 1px solid #c9d7ea; border-radius: 4px; padding: .9rem 1.1rem; margin: .4rem 0 0; }
+.overview-lead { font-size: 1.1rem; margin-bottom: .4rem; }
+.overview-list li { border-top-color: #c9d7ea; }
+.overview p:last-child { margin-bottom: 0; }
+
+details.consultation { padding: 0; }
+details.consultation > summary.c-head { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .3rem 1rem; padding: .9rem 1.1rem; margin: 0; cursor: pointer; }
+details.consultation > summary.c-head::-webkit-details-marker { display: none; }
+details.consultation > summary .c-title { font-family: var(--serif); font-weight: 600; font-size: 1.1rem; line-height: 1.25; color: var(--accent); }
+details.consultation > summary .c-title::before { content: "\25B8"; display: inline-block; width: 1.1em; color: var(--muted); transition: transform .15s; }
+details.consultation[open] > summary .c-title::before { transform: rotate(90deg); }
+details.consultation > summary .fit { grid-column: 1 / -1; color: var(--ink); padding-left: 1.1em; }
+details.consultation[open] > summary { border-bottom: 1px solid var(--line-soft); }
+details.consultation > :not(summary) { margin-left: 1.1rem; margin-right: 1.1rem; }
+details.consultation > :last-child { margin-bottom: 1rem; }
+.c-links { margin-top: .7rem; display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+details.behind > summary { margin: 0; }
+@media (max-width: 560px) { details.consultation > summary.c-head { grid-template-columns: 1fr; } }
+
+/* ---- light look: soft shadows instead of heavy borders ---- */
+.card, .box, .consultation, .step-list li, .stat, .item, .table, .result-list { box-shadow: var(--shadow); }
+.consultation { border-left-width: 3px; }
+.overview { border-color: #d6e4f8; }
+.tag { border-color: #d6e4f8; }
+.site-header { box-shadow: var(--shadow); }
+.site-footer { background: var(--paper); }
+.snapshot-bar { background: var(--accent-soft); color: var(--ink); border-bottom: 1px solid var(--line); }
+.snapshot-bar a { color: var(--accent); }
+h1, h2, h3 { color: #1f2a37; }
