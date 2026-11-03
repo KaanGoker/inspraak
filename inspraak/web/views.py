@@ -828,6 +828,7 @@ def about(conn: psycopg.Connection) -> dict[str, Any]:
             if c["provider"] != "fake"
         ],
         "snapshot_date": _snapshot_date(conn),
+        "demo_count": conn.execute("SELECT count(DISTINCT tr_id) AS n FROM runs").fetchone()["n"],
         "sources": {
             "register": links.REGISTER_EXPORT,
             "hys": links.HYS,

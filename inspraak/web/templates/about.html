@@ -4,121 +4,145 @@
 {% set m = ev.measured or {} %}
 {% set man = ev.manual or {} %}
 <h1>How it works</h1>
-<p class="lede">Inspraak (Dutch for having a say) is a consultation desk for Brussels organisations. It joins three public sources on one key, the EU Transparency Register ID, and puts a small team of agents on top. This page says who built it, how it works, what it does not do, and where the numbers come from.</p>
-
-<section class="block about-author" id="author">
-  <h2>Who built it</h2>
-  <p>I'm Kaan Goker. I did the Advanced Master of Artificial Intelligence at KU Leuven and specialised in natural language processing and speech recognition. EU consultations looked like a good test for that: the data is public, but it sits on three sites and in many languages, and a small organisation rarely has a free day to read it all. I wanted to see how much of that reading a few agents with strict sourcing rules could do, and where they still get it wrong.</p>
-  <p class="small"><a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source code on GitHub</a> <span class="muted">(MIT licence)</span>. <a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a>. <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a>. Corrections: <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>.</p>
-</section>
+<p class="lede">Inspraak (Dutch for "having a say") finds the open EU consultations an organisation should answer and shows what others have already said. It is an independent demo built by one person, not an official EU tool.</p>
 
 <section class="block" id="method">
-  <h2>How it works</h2>
-  <ol class="agent-flow">
-    <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
-    <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
-    <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
-    <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
-    <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
-    <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
-    <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
-    <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+  <h2>Five steps</h2>
+  <ol class="step-list step-list-long">
+    <li><strong>Read the organisation</strong><span>Its entry in the EU Transparency Register (goals, interests, category) and the answers it sent before.</span></li>
+    <li><strong>Find what fits</strong><span>Compare it with every open consultation. A language model checks the 15 closest and writes one line on why each fits.</span></li>
+    <li><strong>Show who answered</strong><span>Who already sent an answer and what they asked for. Every quote is checked word for word against their answer.</span></li>
+    <li><strong>Read the proposal</strong><span>The passages of the Commission's document that touch the organisation's topics, with the page number.</span></li>
+    <li><strong>Draft only after a yes</strong><span>A person decides first. Then a draft is written, and every sentence without a source is removed. Nothing is sent to the Commission.</span></li>
   </ol>
-  <p>A supervisor routes one run per organisation through seven agents. It decides on what the run already holds and calls no model. The run stops twice for a person: at go / no-go, before anything is drafted, and again at draft review. Its state lives in a Postgres checkpointer, so a run can wait days for a decision.</p>
-  <ol>
-    <li><strong>Profiler.</strong> The organisation's own register entry (goals, interests, category, budget), shown as registered, plus its earlier submissions in the snapshot. A reviewer can correct the profile; corrections are stored as memory, the register is never changed.</li>
-    <li><strong>Matcher.</strong> Open Have Your Say consultations are matched to the profile by embedding similarity (a small multilingual model, run locally), with a penalty for consultations that sit close to almost every profile. Consultations of the same initiative share one card. The 15 strongest are then judged by a language model in one call per organisation: a relevance between 0 and 1 and a one-line reason, shown on the card and cached, so reading a page never calls a model. "Not our topic" decisions exclude a consultation and lower the score of similar ones next time.</li>
-    <li><strong>Landscape.</strong> Who already submitted, counted by the stakeholder type and country each submitter declared on the portal. For organisation submissions one model call extracts a stance and up to three key asks with a verbatim quote; a quote that cannot be found character for character in the submission is dropped. Stance labels under 0.6 confidence are held back for review.</li>
-    <li><strong>Lobby mapper.</strong> Meetings from the Commission's file whose recorded subject is close to the consultation's title and summary. The subject is short free text, so this is marked approximate everywhere it appears. Counts by register category of the interest representative, never a label such as "ally" or "opponent".</li>
-    <li><strong>Reader.</strong> The Commission document, page by page. Passages closest to the profile are cited to the page of the PDF.</li>
-    <li><strong>Drafter.</strong> Written only after a person says go, within the 4,000 character limit of the portal, in the organisation's own voice (its earlier submissions).</li>
-    <li><strong>Critic.</strong> Checks every sentence of the draft and removes what it cannot source. A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past submission or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person. Nothing is ever submitted to the Commission by this system.</li>
-  </ol>
-  {% if static_mode %}<p class="small muted">This public snapshot shows the output of the first five agents. Drafts, go / no-go decisions and review notes stay in the local app: they are written for the people using it, not for publication.</p>{% endif %}
+  {% if static_mode %}<p class="small muted">This public demo shows steps 1 to 4. Drafts and decisions stay in the local app.</p>{% endif %}
+
+  <details class="more">
+    <summary>The technical version: seven agents and a supervisor</summary>
+    <ol class="agent-flow">
+      <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
+      <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
+      <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
+      <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
+      <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
+      <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
+      <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
+      <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
+    </ol>
+    <p>A supervisor routes one run per organisation through seven agents. It decides on what the run already holds and calls no model. The run stops twice for a person: at go / no-go, before anything is drafted, and again at draft review. Its state lives in a Postgres checkpointer, so a run can wait days for a decision.</p>
+    <ol>
+      <li><strong>Profiler.</strong> The organisation's own register entry (goals, interests, category, budget), shown as registered, plus its earlier submissions in the snapshot. A reviewer can correct the profile; corrections are stored as memory, the register is never changed.</li>
+      <li><strong>Matcher.</strong> Open Have Your Say consultations are matched to the profile by embedding similarity (a small multilingual model, run locally), with a penalty for consultations that sit close to almost every profile. Consultations of the same initiative share one card. The 15 strongest are then judged by a language model in one call per organisation: a relevance between 0 and 1 and a one-line reason, shown on the card and cached, so reading a page never calls a model. "Not our topic" decisions exclude a consultation and lower the score of similar ones next time.</li>
+      <li><strong>Landscape.</strong> Who already submitted, counted by the stakeholder type and country each submitter declared on the portal. For organisation submissions one model call extracts a stance and up to three key asks with a verbatim quote; a quote that cannot be found character for character in the submission is dropped. Stance labels under 0.6 confidence are held back for review.</li>
+      <li><strong>Lobby mapper.</strong> Meetings from the Commission's file whose recorded subject is close to the consultation's title and summary. The subject is short free text, so this is marked approximate everywhere it appears. Counts by register category of the interest representative, never a label such as "ally" or "opponent".</li>
+      <li><strong>Reader.</strong> The Commission document, page by page. Passages closest to the profile are cited to the page of the PDF.</li>
+      <li><strong>Drafter.</strong> Written only after a person says go, within the 4,000 character limit of the portal, in the organisation's own voice (its earlier submissions).</li>
+      <li><strong>Critic.</strong> Checks every sentence of the draft and removes what it cannot source. A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past submission or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person. Nothing is ever submitted to the Commission by this system.</li>
+    </ol>
+    <p class="small muted">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for the bulk work and the rerank, with a deterministic stand-in for the tests.</p>
+  </details>
+</section>
+
+<section class="block" id="who">
+  <h2>Who it is for</h2>
+  <p>Any of the {{ stats.organisations | num }} organisations in the EU Transparency Register: NGOs, companies, trade unions, business associations, universities. {% if demo_count %}This demo shows {{ demo_count }} of them, all based in Brussels.{% endif %}</p>
 </section>
 
 <section class="block" id="data">
-  <h2>The data behind it</h2>
-  {% if snapshot_date %}<p class="small muted">Snapshot of {{ snapshot_date | datetime }} (Brussels time).</p>{% endif %}
-  <div class="stats">
-    <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">organisations in the EU Transparency Register</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">answers from organisations stored</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">answers from citizens counted, never stored</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">meetings with Commissioners' cabinets, 2024 to 2029</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">pages of Commission documents indexed</span></div>
+  <h2>Where the data comes from</h2>
+  <p>Three public EU sources, joined on the register ID of each organisation.{% if snapshot_date %} The data is from {{ snapshot_date | date }}; consultations opened after that date are missing.{% endif %}</p>
+  <div class="sources">
+    <a class="source" href="{{ sources.register }}" rel="noopener"><strong>EU Transparency Register</strong><span>Who each organisation is: goals, interests, category, city.</span><span class="source-n">{{ stats.organisations | num }} organisations</span></a>
+    <a class="source" href="{{ sources.hys }}" rel="noopener"><strong>Have Your Say</strong><span>The Commission's consultation portal: the consultations, the answers sent to them and the Commission's documents.</span><span class="source-n">{{ stats.feedback_organisations | num }} answers, {{ stats.document_pages | num }} pages</span></a>
+    <a class="source" href="{{ sources.meetings }}" rel="noopener"><strong>Commission meetings</strong><span>Who met the Commissioners' teams, and on what subject, since 2024.</span><span class="source-n">{{ stats.meetings | num }} meetings</span></a>
   </div>
+  <details class="more">
+    <summary>All numbers from this snapshot</summary>
+    <div class="stats">
+      <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants ({{ stats.organisations_belgium | num }} with a Belgian head office)</span></div>
+      <div class="stat"><span class="stat-n">{{ stats.publications_in_scope | num }}</span><span class="stat-l">publications in scope, {{ stats.publications_open_in_scope }} open on {{ snapshot_date | date }}</span></div>
+      <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions; {{ stats.feedback_tr_id_in_register | num }} join the register</span></div>
+      <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen rows, counted only</span></div>
+      <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">pages from {{ stats.documents_parsed_ok | num }} documents, {{ stats.chunks | num }} chunks</span></div>
+      <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">meetings, {{ stats.meeting_org_links | num }} organisation links</span></div>
+    </div>
+    <p class="small muted">Register: the full XML export, updated daily. Have Your Say: the portal's own JSON backend, one request per second. Meetings: the Commission's file for 2024 to 2029 (XLSX).</p>
+  </details>
 </section>
 
 <section class="block" id="evaluation">
-  <h2>Evaluation</h2>
+  <h2>How good is it</h2>
   {% if m %}
-  <p>In short: useful as a shortlist to check, not as a ranking to trust. Measured on the snapshot of {{ m.snapshot | date }}; the same figures are in the project's docs/EVAL.md.</p>
-  <div class="table-wrap"><table class="table small eval-table">
-    <thead><tr><th>What</th><th>Result</th><th>How it was measured</th></tr></thead>
-    <tbody>
-      {% if man.precision %}{% set pr = man.precision %}
-      <tr><td>Match precision</td><td><strong>{{ pr.relevant }} of {{ pr.pairs }}</strong> suggested consultations relevant ({{ pr.relevant | pct(pr.pairs) }}); {{ pr.rank_one_relevant }} of {{ pr.rank_one_pairs }} first places right.</td><td class="muted">{{ pr.pairs }} random organisation and consultation pairs judged by a blind language-model judge against a written rubric, {{ pr.measured_on | date }}; inputs and labels are in the repository under docs/eval/.</td></tr>
-      {% endif %}
-      {% if man.recall %}{% set rc = man.recall %}
-      <tr><td>Recall against real filings</td><td>The consultation an organisation really answered is in its top 5 in <strong>{{ '%.1f' % (rc.embedding_at_5 * 100) }}%</strong> of cases by embedding alone (random order: {{ '%.1f' % (rc.random_at_5 * 100) }}%). On a sample of {{ rc.sample }}, the rerank raises that from {{ '%.1f' % (rc.sample_embedding_at_5 * 100) }}% to <strong>{{ '%.1f' % (rc.sample_rerank_at_5 * 100) }}%</strong>, median rank {{ rc.sample_embedding_median_rank }} to {{ rc.sample_rerank_median_rank }}.</td><td class="muted">{{ rc.registrants | num }} registrants that filed on an in-scope consultation.</td></tr>
-      {% endif %}
-      <tr><td>Quotes verified</td><td><strong>{{ m.analyses.quotes_verified | num }} of {{ m.analyses.quotes_total | num }}</strong> found word for word in their submission ({{ m.analyses.quotes_verified_pct }}%). The rest were dropped before storage.</td><td class="muted">Every quote, checked by code, not by a model.</td></tr>
-      <tr><td>Submissions processed</td><td>{{ m.analyses.rows_total | num }} organisation submissions: {{ m.analyses.analysed | num }} analysed, {{ m.analyses.no_text | num }} without readable text (counted only). {{ m.analyses.held_back | num }} stances held back for low confidence.</td><td class="muted">All of them, not a sample.</td></tr>
-      <tr><td>Critic</td><td>{{ m.critic.supported }} of {{ m.critic.sentences }} draft sentences kept ({{ m.critic.supported_pct }}%) across the {{ m.critic.drafts }} current drafts; the others were removed and listed.</td><td class="muted">Drafts not rejected by a reviewer.</td></tr>
-      <tr><td>Runs</td><td>{{ m.runs.current }} current runs for {{ m.runs.organisations }} organisations ({{ m.runs.superseded }} older runs replaced when the matcher changed). Reader cache: {{ m.reader_cache.hits }} of {{ m.reader_cache.reads }} summary reads.</td><td class="muted">Summaries and match judgments are shared, so a second organisation costs almost nothing.</td></tr>
-    </tbody>
-  </table></div>
-  <p class="small muted">Not measured: whether an organisation would send a draft, and a second judge for precision. Half of the suggested consultations are relevant, so the list is a shortlist to check, not a ranking to trust.</p>
-  {% else %}
-  <p class="muted">The evaluation file (docs/eval.json) is missing; run <code>inspraak eval-report --write docs/eval.json</code>.</p>
-  {% endif %}
-  {% if llm_calls %}
-  <details class="small"><summary>Model calls by provider and purpose</summary>
+  {% set pr = man.precision %}
+  <p>{% if pr %}About half of the suggestions are a real fit: {{ pr.relevant }} of {{ pr.pairs }} in a blind test. {% endif %}Use the list as a shortlist to check, not as a ranking to trust. Quotes are safer: {{ m.analyses.quotes_verified_pct }}% were found word for word, and the rest were dropped.</p>
+  <details class="more">
+    <summary>Full evaluation</summary>
+    <p class="small muted">Measured on the snapshot of {{ m.snapshot | date }}; the same figures are in the project's docs/EVAL.md.</p>
+    <div class="table-wrap"><table class="table small eval-table">
+      <thead><tr><th>What</th><th>Result</th><th>How it was measured</th></tr></thead>
+      <tbody>
+        {% if pr %}
+        <tr><td>Match precision</td><td><strong>{{ pr.relevant }} of {{ pr.pairs }}</strong> suggested consultations relevant ({{ pr.relevant | pct(pr.pairs) }}); {{ pr.rank_one_relevant }} of {{ pr.rank_one_pairs }} first places right.</td><td class="muted">{{ pr.pairs }} random organisation and consultation pairs judged by a blind language-model judge against a written rubric, {{ pr.measured_on | date }}; inputs and labels are in the repository under docs/eval/.</td></tr>
+        {% endif %}
+        {% if man.recall %}{% set rc = man.recall %}
+        <tr><td>Recall against real filings</td><td>The consultation an organisation really answered is in its top 5 in <strong>{{ '%.1f' % (rc.embedding_at_5 * 100) }}%</strong> of cases by embedding alone (random order: {{ '%.1f' % (rc.random_at_5 * 100) }}%). On a sample of {{ rc.sample }}, the rerank raises that from {{ '%.1f' % (rc.sample_embedding_at_5 * 100) }}% to <strong>{{ '%.1f' % (rc.sample_rerank_at_5 * 100) }}%</strong>, median rank {{ rc.sample_embedding_median_rank }} to {{ rc.sample_rerank_median_rank }}.</td><td class="muted">{{ rc.registrants | num }} registrants that filed on an in-scope consultation.</td></tr>
+        {% endif %}
+        <tr><td>Quotes verified</td><td><strong>{{ m.analyses.quotes_verified | num }} of {{ m.analyses.quotes_total | num }}</strong> found word for word in their submission ({{ m.analyses.quotes_verified_pct }}%). The rest were dropped before storage.</td><td class="muted">Every quote, checked by code, not by a model.</td></tr>
+        <tr><td>Submissions processed</td><td>{{ m.analyses.rows_total | num }} organisation submissions: {{ m.analyses.analysed | num }} analysed, {{ m.analyses.no_text | num }} without readable text (counted only). {{ m.analyses.held_back | num }} stances held back for low confidence.</td><td class="muted">All of them, not a sample.</td></tr>
+        <tr><td>Critic</td><td>{{ m.critic.supported }} of {{ m.critic.sentences }} draft sentences kept ({{ m.critic.supported_pct }}%) across the {{ m.critic.drafts }} current drafts; the others were removed and listed.</td><td class="muted">Drafts not rejected by a reviewer.</td></tr>
+        <tr><td>Runs</td><td>{{ m.runs.current }} current runs for {{ m.runs.organisations }} organisations ({{ m.runs.superseded }} older runs replaced when the matcher changed). Reader cache: {{ m.reader_cache.hits }} of {{ m.reader_cache.reads }} summary reads.</td><td class="muted">Summaries and match judgments are shared, so a second organisation costs almost nothing.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">Not measured: whether an organisation would send a draft, and a second judge for precision.</p>
+    {% if llm_calls %}
+    <p class="small"><strong>Model calls by provider and purpose</strong></p>
     <div class="table-wrap"><table class="table small inline-table">
       <thead><tr><th>Provider</th><th>Purpose</th><th class="num">OK</th><th class="num">Failed</th></tr></thead>
       <tbody>{% for c in llm_calls %}<tr><td>{{ c.provider_label }} <span class="muted">({{ c.model }})</span></td><td>{{ c.purpose | replace('_', ' ') }}</td><td class="num">{{ c.ok | num }}</td><td class="num">{{ c.failed }}</td></tr>{% endfor %}</tbody>
     </table></div>
-    <p class="muted">The command line providers do not report token counts.</p>
+    <p class="small muted">The command line providers do not report token counts.</p>
+    {% endif %}
   </details>
+  {% else %}
+  <p class="muted">The evaluation file (docs/eval.json) is missing; run <code>inspraak eval-report --write docs/eval.json</code>.</p>
   {% endif %}
 </section>
 
-<section class="block">
-  <h2>Limits, stated plainly</h2>
+<section class="block" id="limits">
+  <h2>Not official, and it can be wrong</h2>
   <ul>
-    <li>Everything runs from a local snapshot{% if snapshot_date %} (taken {{ snapshot_date | datetime }}, Brussels time){% endif %}. A consultation published later is missing, and counts and deadlines can have moved since. Deadlines are shown as dates; the countdown is worked out in your browser.</li>
-    <li>The Have Your Say endpoints are the portal's own backend, not a documented API.</li>
-    <li>Scope: consultations closing within 90 days plus up to 40 recently closed ones with at least 20 organisation submissions. Feedback is capped at 5,000 rows per publication; five closed consultations are partial and say so.</li>
-    <li>Matching is similarity plus one model judgment, not a guarantee. The uncertain band is a prompt to check, not a filter.</li>
-    <li>Quotes marked "machine translation by the Commission" come from the English translation the portal publishes next to a submission written in another language. The original language is named; the original wording can differ.</li>
-    <li>Stakeholder types come from the portal's own declaration field and register categories from the register. The model never assigns a category.</li>
-    <li>Meeting subjects are a few words ("EU environmental priorities"). A similarity threshold of 0.45 keeps the list useful, not exact.</li>
-    <li>Scanned PDFs have no text layer and are not OCRed; such submissions appear as "without readable text".</li>
-    <li>Summaries, stances and match reasons are model output. They are cached per publication and shared, so one organisation's page may show a summary written days earlier.</li>
-    <li>Citizens: no name, no text and no register number of an EU or non-EU citizen row is stored. A database constraint makes it impossible to insert one; they are counted and nothing else.</li>
-    <li>Small firms: a submitter with no register number that declared itself a micro company is shown as "Micro company" and its country, because such a name is often a person's name. Long numbers in organisation names (tax or company numbers) are masked.</li>
+    <li>This is an independent project by one person. It is not made by, for or with the European Commission or any organisation on this site.</li>
+    <li>The organisations shown did not ask for their page and do not use it. Each page is built from what the organisation itself made public in the register and on the portal.</li>
+    <li>Summaries, match reasons and stances are written by AI and can be wrong. The Commission's own page is the source, and every consultation links to it.</li>
+    <li>Citizens who answered a consultation are counted, never named or quoted.</li>
+    <li>Found a mistake, or want your organisation's page removed? Mail <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>. Removal requests are handled within 48 hours.</li>
   </ul>
+  <details class="more">
+    <summary>All limits, in detail</summary>
+    <ul>
+      <li>Everything runs from a local snapshot{% if snapshot_date %} (taken {{ snapshot_date | datetime }}, Brussels time){% endif %}. A consultation published later is missing, and counts and deadlines can have moved since. Deadlines are shown as dates; the countdown is worked out in your browser.</li>
+      <li>The Have Your Say endpoints are the portal's own backend, not a documented API.</li>
+      <li>Scope: consultations closing within 90 days plus up to 40 recently closed ones with at least 20 organisation submissions. Feedback is capped at 5,000 rows per publication; five closed consultations are partial and say so.</li>
+      <li>Matching is similarity plus one model judgment, not a guarantee. A "possible fit" is a prompt to check, not a filter.</li>
+      <li>Quotes marked "machine translation by the Commission" come from the English translation the portal publishes next to a submission written in another language. The original language is named; the original wording can differ.</li>
+      <li>Stakeholder types come from the portal's own declaration field and register categories from the register. The model never assigns a category.</li>
+      <li>Meeting subjects are a few words ("EU environmental priorities"). A similarity threshold of 0.45 keeps the list useful, not exact.</li>
+      <li>Scanned PDFs have no text layer and are not OCRed; such submissions appear as "without readable text".</li>
+      <li>Summaries, stances and match reasons are cached per publication and shared, so one organisation's page may show a summary written days earlier.</li>
+      <li>Citizens: no name, no text and no register number of an EU or non-EU citizen row is stored. A database constraint makes it impossible to insert one.</li>
+      <li>Small firms: a submitter with no register number that declared itself a micro company is shown as "Micro company" and its country, because such a name is often a person's name. Long numbers in organisation names (tax or company numbers) are masked.</li>
+    </ul>
+  </details>
 </section>
 
-<section class="block">
-  <h2>Numbers from this snapshot</h2>
-  <div class="stats">
-    <div class="stat"><span class="stat-n">{{ stats.organisations | num }}</span><span class="stat-l">registrants ({{ stats.organisations_belgium | num }} with a Belgian head office)</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.publications_in_scope | num }}</span><span class="stat-l">publications in scope, {{ stats.publications_open_in_scope }} open on {{ snapshot_date | date }}</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.feedback_organisations | num }}</span><span class="stat-l">organisation submissions; {{ stats.feedback_tr_id_in_register | num }} join the register</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.feedback_citizens | num }}</span><span class="stat-l">citizen rows, counted only</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.document_pages | num }}</span><span class="stat-l">pages from {{ stats.documents_parsed_ok | num }} documents, {{ stats.chunks | num }} chunks</span></div>
-    <div class="stat"><span class="stat-n">{{ stats.meetings | num }}</span><span class="stat-l">meetings, {{ stats.meeting_org_links | num }} organisation links</span></div>
-  </div>
-</section>
-
-<section class="block">
-  <h2>Sources</h2>
-  <ul>
-    <li><a href="{{ sources.register }}" rel="noopener">EU Transparency Register, full XML export</a> (daily).</li>
-    <li><a href="{{ sources.hys }}" rel="noopener">Have Your Say</a>: initiative listing and detail, feedback rows, Commission documents, through the portal's JSON backend, one request per second.</li>
-    <li><a href="{{ sources.meetings }}" rel="noopener">Commission meetings with interest representatives, 2024 to 2029</a> (XLSX).</li>
+<section class="block about-author" id="author">
+  <h2>Who built it</h2>
+  <p>I'm Kaan. I did the Advanced Master of Artificial Intelligence at KU Leuven and specialized in natural language processing and speech recognition. EU consultations looked like a good test for that: the data is public, but it sits on three sites and in many languages, and a small organisation rarely has a free day to read it all. I wanted to see how much of that reading a few agents with strict sourcing rules could do, and where they still get it wrong.</p>
+  <ul class="link-row">
+    <li><a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a></li>
+    <li><a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a></li>
+    <li><a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source code</a> <span class="muted">(MIT license)</span></li>
+    <li><a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak">nadirkaangoker@gmail.com</a></li>
   </ul>
-  <p class="muted small">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for the bulk work and the rerank, with a deterministic stand-in for the tests.</p>
 </section>
 {% endblock %}
