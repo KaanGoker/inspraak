@@ -59,7 +59,7 @@
       <div><dt>Drafter</dt><dd>Writes a reply in the organisation's own voice.<span>Within the portal's 4,000 character limit, based on its earlier answers.</span></dd></div>
       <div><dt>Critic</dt><dd>Removes every sentence it cannot source.<span>A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past answer or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person, and nothing is ever submitted to the Commission.</span></dd></div>
     </dl>
-    <p class="small muted">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for the bulk work and the rerank, with a deterministic stand-in for the tests.</p>
+    <p class="small muted">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for most of the work and the rerank, Claude Haiku for part of the answer analyses, and a deterministic stand-in for the tests.</p>
   </details>
 </section>
 
