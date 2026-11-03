@@ -19,7 +19,7 @@
 <link rel="icon" type="image/svg+xml" href="{{ u('static', 'mark.svg') }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ u('static', 'favicon.png') }}">
 {% block head_extra %}{% endblock %}
-<link rel="stylesheet" href="{{ u('static', 'style.css') }}?v=5">
+<link rel="stylesheet" href="{{ u('static', 'style.css') }}?v=6">
 {% if not static_mode %}<script src="{{ u('static', 'htmx.min.js') }}" defer></script>{% endif %}
 </head>
 <body>
@@ -35,6 +35,8 @@
       {% if not static_mode %}<a href="{{ u('inbox') }}">Review inbox</a>{% endif %}
       <a href="{{ u('about') }}">How it works</a>
       <a href="{{ u('disclaimer') }}">Disclaimer</a>
+      <a href="https://github.com/KaanGoker/inspraak" rel="noopener">Code</a>
+      <a class="nav-me" href="https://kaangoker.dev/" rel="noopener">Kaan Goker</a>
     </nav>
   </div>
 </header>
