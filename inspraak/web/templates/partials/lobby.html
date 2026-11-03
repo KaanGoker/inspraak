@@ -18,7 +18,7 @@
     <tr>
       <td class="nowrap">{{ m.date | date }}</td>
       <td>{{ m.cabinet | replace('Cabinet of ', '') }}</td>
-      <td>{% for o in m.orgs %}{% if o.tr_id %}<a href="{{ u('org', o.tr_id) }}">{{ o.name }}</a>{% else %}{{ o.name }}{% endif %}{% if o.category %} <span class="muted">({{ o.category }})</span>{% endif %}{{ '; ' if not loop.last }}{% endfor %}</td>
+      <td>{% for o in m.orgs %}{% if o.tr_id %}<a href="{{ u('org', o.tr_id) }}">{{ o.name or 'Register ID ' ~ o.tr_id }}</a>{% else %}{{ o.name or 'Name not recorded' }}{% endif %}{% if o.category %} <span class="muted">({{ o.category }})</span>{% endif %}{{ '; ' if not loop.last }}{% endfor %}</td>
       <td>{{ m.subject }}</td>
       {% if not static_mode %}<td class="num">{{ m.score }}</td>{% endif %}
     </tr>

@@ -323,3 +323,12 @@ def test_about_numbers_come_from_the_eval_file(tmp_path):
         assert text in readme, f"README does not quote the {what} number {text}"
         assert text in eval_md, f"docs/EVAL.md does not quote the {what} number {text}"
     assert json.loads((root / "docs" / "eval.json").read_text("utf-8")) == ev
+
+
+def test_placeholder_submitter_names_read_plainly():
+    from inspraak.web.render import submitter_name
+
+    assert submitter_name("None") == "No name given"
+    assert submitter_name(" n/a ") == "No name given"
+    assert submitter_name(None) == "No name given"
+    assert submitter_name("BEUC") == "BEUC"

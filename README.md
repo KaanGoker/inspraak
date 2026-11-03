@@ -51,7 +51,7 @@ graph LR
 | critic | 1 per draft | Keeps a fact only with a Commission passage and a position only with the organisation's own material |
 | review | 0 | A person approves, edits or rejects; an edit is kept for the next draft |
 
-The live path uses `gemini-3.5-flash-lite` on the free tier. `LLM_PROVIDER=fake` is a deterministic stand-in that runs the whole system and the test suite without a key. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+The live path uses `gemini-3.5-flash-lite` on the free tier; part of the one-off analysis of answers ran on Claude Haiku (see docs/EVAL.md). `LLM_PROVIDER=fake` is a deterministic stand-in that runs the whole system and the test suite without a key. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Measured
 

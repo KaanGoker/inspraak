@@ -33,7 +33,7 @@
     {% for s in land.submissions %}
     <li class="submission">
       <div class="submission-head">
-        <strong>{{ s.organization }}</strong>
+        <strong>{{ s.organization | submitter_name }}</strong>
         <span class="muted">{{ s.user_type }}{{ ', ' ~ s.country if s.country }}{% if s.register_category %}; register: {{ s.register_category }}{% endif %}</span>
         <span class="tag stance-{{ s.stance }}">model reads as: {{ s.stance_label }}</span>
         <a class="small" href="{{ s.source }}" rel="noopener">source</a>

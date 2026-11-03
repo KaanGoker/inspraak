@@ -142,6 +142,14 @@ SHORT_CATEGORIES = {
 }
 
 
+PLACEHOLDER_NAMES = frozenset({"", "none", "n/a", "na", "-", ".", "x", "null"})
+
+
+def submitter_name(name: str | None) -> str:
+    """A submitter that typed "None" or "-" as its organisation reads as a bug; say so plainly."""
+    return "No name given" if (name or "").strip().lower() in PLACEHOLDER_NAMES else name
+
+
 def short_category(category: str | None) -> str:
     return SHORT_CATEGORIES.get(category or "", category or "")
 
@@ -162,6 +170,7 @@ def build_env() -> Environment:
             "pct": pct,
             "deadline_iso": deadline_iso,
             "short_category": short_category,
+            "submitter_name": submitter_name,
         }
     )
     env.globals["Markup"] = Markup
