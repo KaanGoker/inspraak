@@ -19,12 +19,12 @@
 <link rel="icon" type="image/svg+xml" href="{{ u('static', 'mark.svg') }}">
 <link rel="icon" type="image/png" sizes="32x32" href="{{ u('static', 'favicon.png') }}">
 {% block head_extra %}{% endblock %}
-<link rel="stylesheet" href="{{ u('static', 'style.css') }}?v=4">
+<link rel="stylesheet" href="{{ u('static', 'style.css') }}?v=5">
 {% if not static_mode %}<script src="{{ u('static', 'htmx.min.js') }}" defer></script>{% endif %}
 </head>
 <body>
 {% if static_mode %}
-<div class="snapshot-bar"><div class="wrap">Static snapshot{% if snapshot_date %} of {{ snapshot_date | date }}{% endif %}: precomputed pages, no drafts or review decisions. <a href="{{ u('about') }}#method">How it works</a></div></div>
+<div class="snapshot-bar"><div class="wrap">Independent demo, not an official EU site. AI summaries can be wrong{% if snapshot_date %}; data from {{ snapshot_date | date }}{% endif %}. <a href="{{ u('disclaimer') }}">Disclaimer</a></div></div>
 {% endif %}
 <header class="site-header">
   <div class="wrap bar">
@@ -34,6 +34,7 @@
       <a href="{{ u('home') }}#consultations">Consultations</a>
       {% if not static_mode %}<a href="{{ u('inbox') }}">Review inbox</a>{% endif %}
       <a href="{{ u('about') }}">How it works</a>
+      <a href="{{ u('disclaimer') }}">Disclaimer</a>
     </nav>
   </div>
 </header>
@@ -43,7 +44,7 @@
 <footer class="site-footer">
   <div class="wrap">
     <p class="credit"><strong>Built by Kaan Goker</strong> <span class="credit-links"><a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a> <a href="https://github.com/KaanGoker/inspraak" rel="noopener">Source on GitHub</a> <a href="https://linkedin.com/in/kaangoker" rel="noopener">LinkedIn</a></span></p>
-    <p>Independent project, not of or for the European Commission or any organisation shown. Summaries are written by AI and can be wrong; the Commission's own page is the source. Data: public EU sources (Have Your Say, the EU Transparency Register, the Commission's meetings file), snapshot of {{ (snapshot_date | date) or 'the last ingest' }}. A mistake, or want a page removed? Mail <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>, removal within 48 hours. <a href="{{ u('about') }}#limits">Limits and privacy</a>.</p>
+    <p>Independent project, not of or for the European Commission or any organisation shown. Summaries are written by AI and can be wrong; the Commission's own page is the source. Data: public EU sources (Have Your Say, the EU Transparency Register, the Commission's meetings file), snapshot of {{ (snapshot_date | date) or 'the last ingest' }}. A mistake, or want a page removed? Mail <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>, removal within 48 hours. <a href="{{ u('disclaimer') }}">Disclaimer and privacy</a>.</p>
     <p class="muted">Every number and quote links to its source. Citizens are counted, never named or quoted. Meeting rows are matched on their subject text and are approximate.{% if not static_mode %} Drafts are written for a human to review and are never submitted by this system.{% endif %}</p>
   </div>
 </footer>

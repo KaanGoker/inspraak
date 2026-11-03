@@ -6,6 +6,7 @@ Layout (relative links only, so it serves from any path, GitHub Pages included):
 
     site/index.html             home with a search over search.json
     site/about.html
+    site/disclaimer.html
     site/search.json            [{tr_id, name, acronym, category, country, url}]
     site/org/<tr_id>.html       organisations with at least one run (or --org ...)
     site/consultation/<id>.html every in-scope publication
@@ -79,6 +80,10 @@ def export_site(
         write(
             out / "about.html",
             renderer.render("about.html", title="How it works", **views.about(conn)),
+        )
+        write(
+            out / "disclaimer.html",
+            renderer.render("disclaimer.html", title="Disclaimer", **views.about(conn)),
         )
 
         # organisations and their runs

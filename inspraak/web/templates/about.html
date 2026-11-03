@@ -18,27 +18,19 @@
   {% if static_mode %}<p class="small muted">This public demo shows steps 1 to 4. Drafts and decisions stay in the local app.</p>{% endif %}
 
   <details class="more">
-    <summary>The technical version: seven agents and a supervisor</summary>
-    <ol class="agent-flow">
-      <li class="agent"><span class="agent-name">Profiler</span><span class="agent-does">reads the register entry and past submissions</span></li>
-      <li class="agent"><span class="agent-name">Matcher</span><span class="agent-does">ranks open consultations, one model rerank</span></li>
-      <li class="agent"><span class="agent-name">Landscape</span><span class="agent-does">who already answered, verified quotes</span></li>
-      <li class="agent"><span class="agent-name">Lobby mapper</span><span class="agent-does">cabinet meetings on the subject</span></li>
-      <li class="agent"><span class="agent-name">Reader</span><span class="agent-does">the proposal, cited page by page</span></li>
-      <li class="agent human"><span class="agent-name">Human go / no-go</span><span class="agent-does">nothing is drafted without it</span></li>
-      <li class="agent"><span class="agent-name">Drafter</span><span class="agent-does">a 4,000 character response</span></li>
-      <li class="agent"><span class="agent-name">Critic</span><span class="agent-does">removes every sentence it cannot source</span></li>
-    </ol>
-    <p>A supervisor routes one run per organisation through seven agents. It decides on what the run already holds and calls no model. The run stops twice for a person: at go / no-go, before anything is drafted, and again at draft review. Its state lives in a Postgres checkpointer, so a run can wait days for a decision.</p>
-    <ol>
-      <li><strong>Profiler.</strong> The organisation's own register entry (goals, interests, category, budget), shown as registered, plus its earlier submissions in the snapshot. A reviewer can correct the profile; corrections are stored as memory, the register is never changed.</li>
-      <li><strong>Matcher.</strong> Open Have Your Say consultations are matched to the profile by embedding similarity (a small multilingual model, run locally), with a penalty for consultations that sit close to almost every profile. Consultations of the same initiative share one card. The 15 strongest are then judged by a language model in one call per organisation: a relevance between 0 and 1 and a one-line reason, shown on the card and cached, so reading a page never calls a model. "Not our topic" decisions exclude a consultation and lower the score of similar ones next time.</li>
-      <li><strong>Landscape.</strong> Who already submitted, counted by the stakeholder type and country each submitter declared on the portal. For organisation submissions one model call extracts a stance and up to three key asks with a verbatim quote; a quote that cannot be found character for character in the submission is dropped. Stance labels under 0.6 confidence are held back for review.</li>
-      <li><strong>Lobby mapper.</strong> Meetings from the Commission's file whose recorded subject is close to the consultation's title and summary. The subject is short free text, so this is marked approximate everywhere it appears. Counts by register category of the interest representative, never a label such as "ally" or "opponent".</li>
-      <li><strong>Reader.</strong> The Commission document, page by page. Passages closest to the profile are cited to the page of the PDF.</li>
-      <li><strong>Drafter.</strong> Written only after a person says go, within the 4,000 character limit of the portal, in the organisation's own voice (its earlier submissions).</li>
-      <li><strong>Critic.</strong> Checks every sentence of the draft and removes what it cannot source. A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past submission or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person. Nothing is ever submitted to the Commission by this system.</li>
-    </ol>
+    <summary>The technical version: the agents behind it</summary>
+    <p>One supervisor sends each organisation through seven agents and stops twice for a person.</p>
+    <dl class="tech-list">
+      <div><dt>Supervisor</dt><dd>Sends one run per organisation through the agents. It calls no model and decides only on what the run already holds.<span>The run stops for a person at go / no-go, before anything is drafted, and again at draft review. Its state lives in a LangGraph Postgres checkpointer, so a run can wait days for a decision.</span></dd></div>
+      <div><dt>Profiler</dt><dd>Reads the organisation's register entry and the answers it sent before.<span>Goals, interests, category and budget, shown as registered. A reviewer can correct the profile; corrections are stored as memory and the register is never changed.</span></dd></div>
+      <div><dt>Matcher</dt><dd>Finds the open consultations closest to the profile.<span>Embedding similarity with a small multilingual model run locally, with a penalty for consultations close to almost every profile. Consultations of one initiative share a card. One language model call then judges the 15 strongest: a relevance between 0 and 1 and a one-line reason, cached, so reading a page never calls a model. "Not our topic" excludes a consultation and lowers similar ones next time.</span></dd></div>
+      <div><dt>Landscape</dt><dd>Shows who already answered and what they asked for.<span>Counted by the stakeholder type and country each submitter declared on the portal. For each organisation's answer, one model call extracts a stance and up to three key asks with a verbatim quote. A quote not found character for character in the answer is dropped, and stances under 0.6 confidence wait for review.</span></dd></div>
+      <div><dt>Lobby mapper</dt><dd>Finds meetings with Commissioners' teams on the same subject.<span>Matched on the short subject text of each meeting, so it is marked approximate everywhere. Counted by register category, never with a label such as "ally" or "opponent".</span></dd></div>
+      <div><dt>Reader</dt><dd>Picks the passages of the Commission's document that touch the organisation's topics.<span>Read page by page and cited to the page of the PDF.</span></dd></div>
+      <div class="human"><dt>Go / no-go</dt><dd>A person decides whether the organisation should answer.<span>Nothing is drafted without it.</span></dd></div>
+      <div><dt>Drafter</dt><dd>Writes a reply in the organisation's own voice.<span>Within the portal's 4,000 character limit, based on its earlier answers.</span></dd></div>
+      <div><dt>Critic</dt><dd>Removes every sentence it cannot source.<span>A fact needs a Commission passage. A position (we support, we call for, the Commission must) needs the organisation's own past answer or register goals; a Commission passage alone does not make it the organisation's view. The draft then waits for a person, and nothing is ever submitted to the Commission.</span></dd></div>
+    </dl>
     <p class="small muted">Stack: Python, Postgres with pgvector, Redis and Celery, LangGraph with a Postgres checkpointer, FastAPI with Jinja2 and HTMX, local embeddings (fastembed). Models: Gemini Flash for the bulk work and the rerank, with a deterministic stand-in for the tests.</p>
   </details>
 </section>
@@ -117,6 +109,7 @@
     <li>Citizens who answered a consultation are counted, never named or quoted.</li>
     <li>Found a mistake, or want your organisation's page removed? Mail <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a>. Removal requests are handled within 48 hours.</li>
   </ul>
+  <p>The full text is on the <a href="{{ u('disclaimer') }}">disclaimer page</a>.</p>
   <details class="more">
     <summary>All limits, in detail</summary>
     <ul>

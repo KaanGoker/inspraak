@@ -177,6 +177,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             data = views.about(conn)
         return page("about.html", request, **data, title="How it works")
 
+    @app.get("/disclaimer", response_class=HTMLResponse)
+    def disclaimer(request: Request):
+        with db.session(settings.database_url) as conn:
+            data = views.about(conn)
+        return page("disclaimer.html", request, **data, title="Disclaimer")
+
     @app.get("/healthz")
     def healthz():
         with db.session(settings.database_url) as conn:

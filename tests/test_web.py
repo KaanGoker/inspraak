@@ -55,6 +55,8 @@ def test_pages_render_from_the_snapshot(client):
 
     assert client.get("/inbox").status_code == 200
     assert "Not official, and it can be wrong" in client.get("/about").text
+    disclaimer = client.get("/disclaimer").text
+    assert "Not official" in disclaimer and "within 48 hours" in disclaimer
     assert client.get("/healthz").json()["ok"] is True
     assert client.get("/org/000-00").status_code == 404
     assert client.get("/consultation/1").status_code == 404

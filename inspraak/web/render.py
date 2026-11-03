@@ -22,6 +22,7 @@ STATIC = Path(__file__).parent / "static"
 APP_PATHS = {
     "home": "/",
     "about": "/about",
+    "disclaimer": "/disclaimer",
     "inbox": "/inbox",
     "search": "/search",
     "org": "/org/{id}",
@@ -32,6 +33,7 @@ APP_PATHS = {
 STATIC_PATHS = {
     "home": "index.html",
     "about": "about.html",
+    "disclaimer": "disclaimer.html",
     "inbox": None,
     "search": None,
     "org": "org/{id}.html",

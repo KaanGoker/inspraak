@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Disclaimer</h1>
+<p class="lede">Inspraak is a demo built by one person to test how far AI agents can go with public EU data. Read this before you rely on anything on it.</p>
+
+<section class="block" id="official">
+  <h2>Not official</h2>
+  <ul>
+    <li>Inspraak is an independent project. It is not made by, for or with the European Commission, any other EU institution or any organisation on this site. None of them has checked or approved it.</li>
+    <li>It does not use the EU flag or the Commission's logo. "Have Your Say" and "EU Transparency Register" are named only as the public sources it reads.</li>
+  </ul>
+</section>
+
+<section class="block" id="organisations">
+  <h2>The organisations shown</h2>
+  <ul>
+    <li>The organisations on this site did not ask for a page and do not use Inspraak. Their page shows how the tool would work for them.</li>
+    <li>A page holds only what the organisation made public itself: its entry in the EU Transparency Register and the answers it sent on the Commission's portal.</li>
+    <li>A "good fit" or "possible fit" is a guess by software. It says nothing about what the organisation thinks or plans.</li>
+  </ul>
+</section>
+
+<section class="block" id="ai">
+  <h2>AI can be wrong</h2>
+  <ul>
+    <li>Summaries, match reasons, stances and key asks are written by AI (Gemini Flash). They are marked as AI output and can be wrong or out of date.</li>
+    <li>Quotes are copied word for word and checked by code. A quote that cannot be found in the original answer is dropped.</li>
+    <li>The Commission's own page is always the source, and every consultation links to it. Read the original documents before you answer a consultation.</li>
+    <li>Nothing on this site is legal, policy or professional advice.</li>
+  </ul>
+</section>
+
+<section class="block" id="data">
+  <h2>Data and reuse</h2>
+  <ul>
+    <li>{% if snapshot_date %}The data is from {{ snapshot_date | date }}. {% endif %}Counts and deadlines can have changed since, and consultations published later are missing.</li>
+    <li>Sources, all © European Union: the <a href="{{ sources.register }}" rel="noopener">EU Transparency Register</a> (reused under the Commission's reuse notice, Decision 2011/833/EU), <a href="{{ sources.hys }}" rel="noopener">Have Your Say</a> (consultations, Commission documents and published answers) and the <a href="{{ sources.meetings }}" rel="noopener">Commission's meetings with interest representatives</a> (CC BY 4.0).</li>
+    <li>Inspraak changed this data: it is filtered, counted, matched and summarized. The original records are on the sites above.</li>
+    <li>Short quotes from published answers are shown with a link to the full answer. Each answer remains the work of the organisation that wrote it.</li>
+  </ul>
+</section>
+
+<section class="block" id="privacy">
+  <h2>Privacy</h2>
+  <ul>
+    <li>Citizens who answered a consultation are counted. Their names and answers are never stored or shown.</li>
+    <li>A small firm with no register number that called itself a micro company is shown as "Micro company" and its country, because such a name is often a person's name. Long tax or company numbers in names are masked.</li>
+    <li>Commissioners and their teams appear only as the Commission's official meeting file lists them, in their official role.</li>
+    <li>If an answer was deleted or made anonymous on the portal after {% if snapshot_date %}{{ snapshot_date | date }}{% else %}the snapshot{% endif %}, it can still show here until the next update. Mail me and it is removed.</li>
+    <li>This site sets no cookies and has no analytics. It is hosted on GitHub Pages, which keeps its own server logs.</li>
+  </ul>
+</section>
+
+<section class="block" id="contact">
+  <h2>Corrections and removal</h2>
+  <p>Found a mistake, or want a page or a quote removed? Mail <a href="mailto:nadirkaangoker@gmail.com?subject=Inspraak%20correction">nadirkaangoker@gmail.com</a> with the page and what is wrong. Removal requests are handled within 48 hours.</p>
+  <p class="small muted">Inspraak is run by Kaan Goker, Leuven, Belgium (<a href="https://kaangoker.dev" rel="noopener">kaangoker.dev</a>).</p>
+</section>
+{% endblock %}
