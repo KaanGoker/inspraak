@@ -4,7 +4,7 @@
 {% block content %}
 {% set p = profile %}
 <nav class="crumbs"><a href="{{ u('home') }}">Organisations</a> / {{ p.acronym or p.name }}</nav>
-<h1>{{ p.name }}{% if p.acronym %} <span class="muted h-sub">{{ p.acronym }}</span>{% endif %}</h1>
+<h1>{{ p.name }}{% if p.acronym and p.acronym | lower not in p.name | lower %} <span class="muted h-sub">{{ p.acronym }}</span>{% endif %}</h1>
 <p class="lede">{{ p.category | short_category }}, {{ p.head_city | default('', true) | title }}{{ ', ' if p.head_city }}{{ p.head_country | default('', true) | title }}. <a class="small" href="{{ p.source }}" rel="noopener">EU Transparency Register entry</a></p>
 
 <div class="page-grid">
@@ -20,7 +20,7 @@
       {% if p.interest_represented %}<dt>Interest represented</dt><dd>{{ p.interest_represented }}</dd>{% endif %}
       {% if p.eu_legislative_proposals %}<dt>Files followed</dt><dd>{% if p.eu_legislative_proposals | length > 300 %}<details><summary>{{ p.eu_legislative_proposals | truncate(160) }}</summary>{{ p.eu_legislative_proposals }}</details>{% else %}{{ p.eu_legislative_proposals }}{% endif %}</dd>{% endif %}
       {% if p.website %}<dt>Website</dt><dd><a href="{{ p.website if p.website.startswith('http') else 'https://' ~ p.website }}" rel="noopener">{{ p.website }}</a></dd>{% endif %}
-      {% if p.total_budget or p.costs_min %}<dt>Budget</dt><dd>{% if p.total_budget %}{{ p.total_budget | num }} EUR{% else %}{{ p.costs_min | num }} to {{ p.costs_max | num }} EUR (lobbying costs){% endif %}{% if p.fin_year_end %}, year to {{ p.fin_year_end | date }}{% endif %}</dd>{% endif %}
+      {% if p.total_budget or p.costs_min %}<dt>Budget</dt><dd>{% if p.total_budget %}{{ p.total_budget | num }} EUR{% else %}{{ p.costs_min | num }}{% if p.costs_max and p.costs_max > p.costs_min %} to {{ p.costs_max | num }}{% endif %} EUR{% if not p.costs_max or p.costs_max < p.costs_min %} or more{% endif %} (lobbying costs){% endif %}{% if p.fin_year_end %}, year to {{ p.fin_year_end | date }}{% endif %}</dd>{% endif %}
       {% if p.members_fte %}<dt>Staff on EU files</dt><dd>{{ "%g" | format(p.members_fte | float | round(1)) }} FTE{% if p.ep_accredited %}, {{ p.ep_accredited }} EP accredited{% endif %}</dd>{% endif %}
       {% if p.note and not static_mode %}<dt>Reviewer note</dt><dd>{{ p.note }}</dd>{% endif %}
     </dl>
