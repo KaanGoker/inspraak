@@ -295,3 +295,4 @@ details.more .agent-flow { margin-top: .3rem; }
 .tech-list dd { margin: 0; }
 .tech-list dd span { display: block; margin-top: .25rem; font-size: .88rem; color: var(--muted); }
 @media (max-width: 560px) { .tech-list > div { grid-template-columns: 1fr; } }
+.nav .nav-me { font-weight: 600; color: var(--accent-ink); }
